@@ -13,10 +13,13 @@ exports.handler = async function (event) {
     const { question, ruleSet } = JSON.parse(event.body);
 
     try {
-        const questionEmbedding = await embeddingModel.embedContent({
-            content: question,
-            taskType: "RETRIEVAL_QUERY"
-        });
+        // Replace it with this:
+const questionEmbedding = await embeddingModel.embedContent({
+    content: {
+        parts: [{ text: question }]
+    },
+    taskType: "RETRIEVAL_QUERY"
+});
 
         const queryResponse = await pineconeIndex.query({
             vector: questionEmbedding.embedding.values,
