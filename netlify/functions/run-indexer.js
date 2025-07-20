@@ -26,8 +26,8 @@ exports.handler = async function (event) {
 
     try {
         console.log("Starting indexing process...");
-        await pineconeIndex.deleteAll();
-        console.log("Cleared old data from Pinecone index.");
+      //  await pineconeIndex.deleteAll();
+      //  console.log("Cleared old data from Pinecone index.");
 
         const filePath = path.resolve(__dirname, '../../rulebooks/2025-NCAA.txt');
         const text = await fs.readFile(filePath, 'utf-8');
