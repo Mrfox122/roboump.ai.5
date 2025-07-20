@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Indexer</title>
+</head>
+<body>
+    <h1>Run Indexer</h1>
+    <input type="password" id="secretKey" placeholder="Enter Secret Key">
+    <button onclick="runIndexer()">Run Indexing Script</button>
+    <pre id="response"></pre>
+
+    <script>
+        async function runIndexer() {
+            const secret = document.getElementById('secretKey').value;
+            const responseEl = document.getElementById('response');
+            responseEl.textContent = 'Starting indexing... please wait.';
+
+            const response = await fetch('/api/run-indexer', {
+                method: 'POST',
+                headers: { 'x-secret-key': secret }
+            });
+
+            const result = await response.text();
+            responseEl.textContent = result;
+        }
+    </script>
+</body>
+</html>
