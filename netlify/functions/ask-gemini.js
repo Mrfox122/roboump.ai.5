@@ -3,10 +3,7 @@ const { Pinecone } = require("@pinecone-database/pinecone");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 // Initialize clients from environment variables
-const pinecone = new Pinecone({
-    environment: process.env.PINECONE_ENVIRONMENT,
-    apiKey: process.env.PINECONE_API_KEY
-});
+const pinecone = new Pinecone();
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const pineconeIndex = pinecone.index("umpire-rules");
 const embeddingModel = genAI.getGenerativeModel({ model: "embedding-001" });
