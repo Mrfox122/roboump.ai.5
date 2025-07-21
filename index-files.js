@@ -1,29 +1,19 @@
-
-
-
 // index-files.js (Final Corrected Version)
+require('dotenv').config();
 const { Pinecone } = require("@pinecone-database/pinecone");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const fs = require("fs");
 const path = require("path");
 
-// --- CONFIGURE THIS SECTION ---
-const PINECONE_API_KEY = "pcsk_469654_FBzHXBc9RN2nbkPCZYdDo4kbMpUrC95iX7xdXAHCAZPrCp6mvaxnYNY17qVhe9o";
-const GOOGLE_API_KEY = "AIzaSyBZltm0VI1pS3Pg5Bbj9H4LWYkoJtXhzYA";
-
 const filesToIndex = [
     { path: './rulebooks/2025-NCAA.txt', ruleSet: 'NCAA' },
-    // { path: './rulebooks/2025-CCA.txt', ruleSet: 'NCAA' },
 ];
-// --------------------------------
+
+// Initializes clients automatically from your .env file
+const pinecone = new Pinecone();
+const genAI = new GoogleGenerativeAI(process.env.GOOGLE_API_KEY);
 
 const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-
-const pinecone = new Pinecone({
-    apiKey: PINECONE_API_KEY
-});
-
-const genAI = new GoogleGenerativeAI(GOOGLE_API_KEY);
 const pineconeIndex = pinecone.index("umpire-rules");
 const embeddingModel = genAI.getGenerativeModel({ model: "embedding-001" });
 
@@ -37,7 +27,6 @@ const chunkText = (text, chunkSize = 400, overlap = 40) => {
 
 async function indexFile(filePath, ruleSet) {
     console.log(`Processing ${filePath}...`);
-    
     const text = fs.readFileSync(filePath, 'utf-8');
     const cleanedText = text.replace(/\s+/g, ' ');
 
@@ -52,8 +41,12 @@ async function indexFile(filePath, ruleSet) {
         if (nonEmptyBatch.length === 0) continue;
 
         console.log(`Processing batch ${Math.floor(i / batchSize) + 1} of ${Math.ceil(textChunks.length / batchSize)}...`);
+        
         const result = await embeddingModel.batchEmbedContents({
-            requests: nonEmptyBatch.map(chunk => ({ content: chunk, taskType: "RETRIEVAL_DOCUMENT" }))
+            requests: nonEmptyBatch.map(chunk => ({
+                content: { parts: [{ text: chunk }] },
+                taskType: "RETRIEVAL_DOCUMENT"
+            }))
         });
 
         const vectors = result.embeddings.map((embedding, j) => ({
