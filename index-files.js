@@ -7,6 +7,7 @@ const path = require("path");
 
 const filesToIndex = [
     { path: './rulebooks/2025-NCAA.txt', ruleSet: 'NCAA' },
+    { path: './rulebooks/2025-CCA.txt', ruleSet: 'CCA' },
 ];
 
 // Initializes clients automatically from your .env file
