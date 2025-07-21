@@ -3,27 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Umpire AI Assistant</title>
+    <title>Robo Ump AI</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <h1>Umpire AI Assistant ⚾</h1>
-    <p>Ask a question about a baseball rule.</p>
-    
-    <div id="rulebook-selector">
-        <button data-rulebook="High School (NFHS)">High School</button>
-        <button data-rulebook="NCAA">NCAA</button>
-        <button data-rulebook="MLB">MLB</button>
+    <div class="container">
+        <h1>Robo Ump AI</h1>
+        <p>Ask a question about NCAA or CCA baseball rules.</p>
+        <div class="input-area">
+            <input type="text" id="questionInput" placeholder="e.g., What is the infield fly rule?">
+            <button id="askButton">Ask</button>
+        </div>
+        <div id="answer-container" class="answer-container">
+            <p id="answer"></p>
+        </div>
     </div>
-
-    <textarea id="question-input" placeholder="e.g., What is the infield fly rule?"></textarea>
-    <button id="ask-button">Ask the Expert</button>
-    
-    <div id="answer-container">
-        <p id="loading-indicator" class="hidden">Thinking...</p>
-        <p id="answer-text"></p>
-    </div>
-
     <script src="script.js"></script>
 </body>
 </html>

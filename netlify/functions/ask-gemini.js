@@ -1,35 +1,31 @@
-// The NEW and FAST ask-gemini.js (Corrected with CommonJS syntax)
+// netlify/functions/ask-gemini.js (Simplified for global search)
 const { Pinecone } = require("@pinecone-database/pinecone");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
-// Initialize clients from environment variables
-const pinecone = new Pinecone();
+const pinecone = new Pinecone(); 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const pineconeIndex = pinecone.index("umpire-rules");
 const embeddingModel = genAI.getGenerativeModel({ model: "embedding-001" });
 const generativeModel = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 exports.handler = async function (event) {
-    const { question, ruleSet } = JSON.parse(event.body);
+    const { question } = JSON.parse(event.body); // No longer need ruleSet
 
     try {
-        // Replace it with this:
-const questionEmbedding = await embeddingModel.embedContent({
-    content: {
-        parts: [{ text: question }]
-    },
-    taskType: "RETRIEVAL_QUERY"
-});
+        const questionEmbedding = await embeddingModel.embedContent({
+            content: { parts: [{ text: question }] },
+            taskType: "RETRIEVAL_QUERY"
+        });
 
+        // The filter has been removed to search the entire index
         const queryResponse = await pineconeIndex.query({
             vector: questionEmbedding.embedding.values,
-            topK: 5,
-            filter: { ruleSet: { "$eq": ruleSet } }
+            topK: 5, 
         });
         
         const context = queryResponse.matches.map(match => match.metadata.text).join("\n\n---\n\n");
 
-        const prompt = `Based on the following sections from the official rulebook, please answer the user's question.
+        const prompt = `Based on the following sections from the official rulebooks, please answer the user's question.
 
         Context from Rulebook:
         ${context}
