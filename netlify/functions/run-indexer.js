@@ -4,7 +4,6 @@ const { GoogleGenerativeAI } = require("@google/generative-ai");
 const fs = require("fs").promises;
 const path = require("path");
 
-// Initialize clients from environment variables
 const pinecone = new Pinecone(); 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const pineconeIndex = pinecone.index("umpire-rules");
@@ -39,12 +38,33 @@ exports.handler = async function (event) {
             let nonEmptyBatch = batch.filter(chunk => chunk && chunk.trim().length > 10);
             if (nonEmptyBatch.length === 0) continue;
 
-            // This is the corrected section
             const result = await embeddingModel.batchEmbedContents({
                 requests: nonEmptyBatch.map(chunk => ({
-                    content: { parts: [{ text: chunk }] }, // Correctly formatted content
+                    content: { parts: [{ text: chunk }] },
                     taskType: "RETRIEVAL_DOCUMENT"
                 }))
             });
 
-            const vectors = result.embeddings.map((
+            const vectors = result.embeddings.map((embedding, j) => ({
+                id: `${path.basename(filePath)}-${i + j}`,
+                values: embedding.values,
+                metadata: { text: nonEmptyBatch[j], ruleSet: 'NCAA' }
+            }));
+
+            await pineconeIndex.upsert(vectors);
+            console.log(`Successfully indexed batch of ${vectors.length} vectors.`);
+        }
+        
+        return {
+            statusCode: 200,
+            body: "Indexing complete!",
+        };
+
+    } catch (error) {
+        console.error("Indexing failed:", error);
+        return {
+            statusCode: 500,
+            body: JSON.stringify({ error: error.message }),
+        };
+    }
+}; // <-- This closing brace and semicolon were likely missing.
