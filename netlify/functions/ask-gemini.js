@@ -26,7 +26,7 @@ exports.handler = async function (event) {
 
         // --- IMPROVEMENT 1: SIMILARITY THRESHOLD ---
         // Filter out results that are not highly relevant (score < 0.75)
-        const SIMILARITY_THRESHOLD = 0.75;
+        const SIMILARITY_THRESHOLD = 0.6;
         const relevantMatches = queryResponse.matches.filter(match => match.score > SIMILARITY_THRESHOLD);
 
 //friends code
