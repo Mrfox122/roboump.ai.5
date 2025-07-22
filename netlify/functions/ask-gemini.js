@@ -29,6 +29,20 @@ exports.handler = async function (event) {
         const SIMILARITY_THRESHOLD = 0.75;
         const relevantMatches = queryResponse.matches.filter(match => match.score > SIMILARITY_THRESHOLD);
 
+//friends code
+console.log("📊 SIMILARITY SCORES & MATCHED TEXT PREVIEWS:");
+if (relevantMatches.length === 0) {
+  console.log("⚠️ No matches passed the similarity threshold.");
+} else {
+  relevantMatches.forEach((match, index) => {
+    console.log(`--- Match ${index + 1} ---`);
+    console.log(`Score: ${match.score}`);
+    console.log(`Preview: ${match.metadata?.text?.slice(0, 300)}\n`);
+  });
+}
+
+
+
         if (relevantMatches.length === 0) {
             return {
                 statusCode: 200,
