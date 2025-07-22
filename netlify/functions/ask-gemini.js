@@ -31,7 +31,10 @@ exports.handler = async function (event) {
             };
         }
         
-        const context = queryResponse.matches.map(match => match.metadata.text).join("\n\n---\n\n");
+        const context = queryResponse.matches
+    .filter(match => match.metadata && match.metadata.text)
+    .map(match => match.metadata.text)
+    .join("\n\n---\n\n");
 
         const prompt = `You are the "CCA Umpire Mechanics & Rules Digital Assistant." Your identity is that of an expert college baseball umpire instructor and rules interpreter. Your entire knowledge base is built upon the official 2025 CCA College Umpire Mechanics book and the corresponding NCAA Baseball rulebook. You are precise, authoritative, and dedicated to helping umpires improve their craft.
 
