@@ -66,19 +66,25 @@ async function indexFile(filePath, ruleSetArray) {
         });
 
 
-        const vectors = result.embeddings.map((embedding, j) => ({
+// Before upsert:
+const vectors = result.embeddings.map((embedding, j) => ({
+  id: `${path.basename(filePath)}-${i + j}`,
+  values: embedding.values,
+  metadata: {
+    text: batch[j], // Ensure this is the exact text chunk
+    ruleSet: ruleSetArray
+  }
+}));
 
-            id: `${path.basename(filePath)}-${i + j}`,
-
-            values: embedding.values,
-
-            metadata: { text: batch[j], ruleSet: ruleSetArray }
-
-        }));
-
-vectors.forEach(vector => {
-  console.log(`Upserting vector id=${vector.id} with metadata text length=${vector.metadata?.text?.length || 0}`);
+// Add logging to confirm text length exists
+vectors.forEach((vector) => {
+  if (!vector.metadata.text || vector.metadata.text.length < 10) {
+    console.warn(`Warning: Vector id=${vector.id} has missing or too short metadata.text!`);
+  } else {
+    console.log(`Upserting vector id=${vector.id} with metadata text length=${vector.metadata.text.length}`);
+  }
 });
+
 
         await pineconeIndex.upsert(vectors);
 
