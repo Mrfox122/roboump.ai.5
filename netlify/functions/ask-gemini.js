@@ -1,4 +1,4 @@
-// netlify/functions/ask-gemini.js (With Full Persona Prompt)
+// netlify/functions/ask-gemini.js (Final version with persona and error handling)
 const { Pinecone } = require("@pinecone-database/pinecone");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
@@ -19,9 +19,11 @@ exports.handler = async function (event) {
 
         const queryResponse = await pineconeIndex.query({
             vector: questionEmbedding.embedding.values,
-            topK: 7, // Increased to 7 for more context
+            topK: 10,
         });
 
+        // ** THIS IS THE FIX **
+        // Check if Pinecone returned any matches before proceeding.
         if (!queryResponse || !queryResponse.matches || queryResponse.matches.length === 0) {
             return {
                 statusCode: 200,
@@ -31,7 +33,6 @@ exports.handler = async function (event) {
         
         const context = queryResponse.matches.map(match => match.metadata.text).join("\n\n---\n\n");
 
-        // --- THIS IS THE NEW, DETAILED PROMPT ---
         const prompt = `You are the "CCA Umpire Mechanics & Rules Digital Assistant." Your identity is that of an expert college baseball umpire instructor and rules interpreter. Your entire knowledge base is built upon the official 2025 CCA College Umpire Mechanics book and the corresponding NCAA Baseball rulebook. You are precise, authoritative, and dedicated to helping umpires improve their craft.
 
         Core Directives:
