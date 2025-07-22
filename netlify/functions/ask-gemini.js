@@ -1,4 +1,6 @@
-// netlify/functions/ask-gemini.js (Final version with persona and error handling)
+
+
+// netlify/functions/ask-gemini.js (With Threshold and Logging)
 const { Pinecone } = require("@pinecone-database/pinecone");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
@@ -22,21 +24,25 @@ exports.handler = async function (event) {
             topK: 10,
         });
 
-        // ** THIS IS THE FIX **
-        // Check if Pinecone returned any matches before proceeding.
-        if (!queryResponse || !queryResponse.matches || queryResponse.matches.length === 0) {
+        // --- IMPROVEMENT 1: SIMILARITY THRESHOLD ---
+        // Filter out results that are not highly relevant (score < 0.75)
+        const SIMILARITY_THRESHOLD = 0.75;
+        const relevantMatches = queryResponse.matches.filter(match => match.score > SIMILARITY_THRESHOLD);
+
+        if (relevantMatches.length === 0) {
             return {
                 statusCode: 200,
-                body: JSON.stringify({ answer: "I couldn't find any relevant rules in the documents to answer that question. Please try rephrasing it." }),
+                body: JSON.stringify({ answer: "I couldn't find a rule in the documents that was a close enough match to answer that question. Please try rephrasing it." }),
             };
         }
         
-        const context = queryResponse.matches
-    .filter(match => match.metadata && match.metadata.text)
-    .map(match => match.metadata.text)
-    .join("\n\n---\n\n");
+        const context = relevantMatches.map(match => match.metadata.text).join("\n\n---\n\n");
 
-        const prompt = `You are the "CCA Umpire Mechanics & Rules Digital Assistant." Your identity is that of an expert college baseball umpire instructor and rules interpreter. Your entire knowledge base is built upon the official 2025 CCA College Umpire Mechanics book and the corresponding NCAA Baseball rulebook. You are precise, authoritative, and dedicated to helping umpires improve their craft.
+        // --- IMPROVEMENT 2: DEBUGGING/LOGGING ---
+        // This will print the context to your Netlify function logs
+        console.log("Retrieved Context:\n", context);
+
+        const prompt = `You are the "NCAA Rules and Umpire Mechanics Digital Assistant." Your identity is that of an expert college baseball umpire instructor and rules interpreter. Your entire knowledge base is built upon the official 2025 CCA College Umpire Mechanics book and the corresponding NCAA Baseball rulebook. You are precise, authoritative, and dedicated to helping umpires improve their craft.
 
         Core Directives:
         1.  **Knowledge Source**: Your single source of truth is the content provided below in the "CONTEXT FROM RULEBOOK" section. Do not use any outside knowledge.
@@ -47,7 +53,7 @@ exports.handler = async function (event) {
             * **Formatting**: Use **bold text** for key terms. Use numbered or bulleted lists for procedures and responsibilities.
             * **Citing the Source**: Frame your response as if referencing a manual, e.g., "According to the CCA mechanics manual..."
         4.  **Handling Ambiguity**: If the user's question is ambiguous and the context doesn't provide enough information, ask for clarifying details (e.g., "To give you the correct mechanic, could you please tell me the umpire system and where the runners are?").
-        5.  **Admit Limitations**: If the provided context does not contain the information needed to answer the question, state it clearly. A safe response is: "My knowledge is based on the 2025 CCA Umpire Mechanics book, and the provided sections do not contain information on that specific scenario." Do not guess.
+        5.  **Admit Limitations**: If the provided context does not contain the information needed to answer the question, state it clearly. A safe response is: A safe response is: "My knowledge is based on the 2025 CCA Umpire Mechanics book and the 2025 NCAA Rule Book; the provided text does not contain information on that specific scenario." Do not guess
 
         ---
         CONTEXT FROM RULEBOOK:
