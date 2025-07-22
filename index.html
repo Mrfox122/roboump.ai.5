@@ -9,9 +9,14 @@
 <body>
     <div class="container">
         <h1>Umpire AI Assistant</h1>
-        <p>Your expert resource for college baseball rules and mechanics.</p>
+        <p>Your expert resource for baseball rules and mechanics.</p>
         <div class="input-area">
-            <input type="text" id="questionInput" placeholder="e.g., Explain the infield fly rule mechanic.">
+            <select id="ruleSetSelect">
+                <option value="NCAA">NCAA Rules</option>
+                <option value="NFHS">NFHS (High School) Rules</option>
+                <option value="MLB">MLB (Pro) Rules</option>
+            </select>
+            <input type="text" id="questionInput" placeholder="e.g., What is the infield fly rule?">
             <button id="askButton">Ask</button>
         </div>
         <div id="answer-container" class="answer-container">

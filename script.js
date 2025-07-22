@@ -7,7 +7,9 @@ document.getElementById('questionInput').addEventListener('keyup', function(even
 
 async function askQuestion() {
     const questionInput = document.getElementById('questionInput');
+    const ruleSetSelect = document.getElementById('ruleSetSelect'); // Get the dropdown
     const question = questionInput.value;
+    const ruleSet = ruleSetSelect.value; // Get the selected value
     const answerEl = document.getElementById('answer');
     const button = document.getElementById('askButton');
 
@@ -16,14 +18,15 @@ async function askQuestion() {
         return;
     }
 
-    answerEl.textContent = 'Consulting the expert...';
+    answerEl.textContent = 'Searching the rulebook...';
     button.disabled = true;
 
     try {
         const response = await fetch('/api/ask-gemini', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ question: question })
+            // Send both the question and the selected ruleSet
+            body: JSON.stringify({ question: question, ruleSet: ruleSet }) 
         });
 
         if (!response.ok) {
