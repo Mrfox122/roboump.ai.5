@@ -16,14 +16,14 @@ async function askQuestion() {
         return;
     }
 
-    answerEl.textContent = 'Consulting the expert...';
+    answerEl.textContent = 'Searching the rulebook...';
     button.disabled = true;
 
     try {
         const response = await fetch('/api/ask-gemini', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ question: question })
+            body: JSON.stringify({ question: question }) // No longer sends ruleSet
         });
 
         if (!response.ok) {
