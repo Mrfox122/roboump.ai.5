@@ -76,6 +76,9 @@ async function indexFile(filePath, ruleSetArray) {
 
         }));
 
+vectors.forEach(vector => {
+  console.log(`Upserting vector id=${vector.id} with metadata text length=${vector.metadata?.text?.length || 0}`);
+});
 
         await pineconeIndex.upsert(vectors);
 

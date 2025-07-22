@@ -31,15 +31,13 @@ exports.handler = async function (event) {
 
 //friends code
 console.log("📊 SIMILARITY SCORES & MATCHED TEXT PREVIEWS:");
-if (relevantMatches.length === 0) {
-  console.log("⚠️ No matches passed the similarity threshold.");
-} else {
-  relevantMatches.forEach((match, index) => {
-    console.log(`--- Match ${index + 1} ---`);
-    console.log(`Score: ${match.score}`);
-    console.log(`Preview: ${match.metadata?.text?.slice(0, 300)}\n`);
-  });
-}
+queryResponse.matches.forEach((match, i) => {
+  console.log(`--- Match ${i + 1} ---`);
+  console.log(`Score: ${match.score}`);
+  const previewText = match.metadata?.text ? match.metadata.text.slice(0, 300) : "[Missing text in metadata]";
+  console.log(`Preview: ${previewText}`);
+});
+
 
 
 
@@ -50,7 +48,9 @@ if (relevantMatches.length === 0) {
             };
         }
         
-        const context = relevantMatches.map(match => match.metadata.text).join("\n\n---\n\n");
+        const context = relevantMatches
+  .map(match => match.metadata?.text || "[Missing text in metadata]")
+  .join("\n\n---\n\n");
 
         // --- IMPROVEMENT 2: DEBUGGING/LOGGING ---
         // This will print the context to your Netlify function logs
