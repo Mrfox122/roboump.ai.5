@@ -1,7 +1,11 @@
-// netlify/functions/ask-gemini.js (With Your Custom Prompts)
+// netlify/functions/ask-gemini.js (Final Hybrid Version with Ruleset Filtering)
+const { Pinecone } = require("@pinecone-database/pinecone");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 
+const pinecone = new Pinecone(); 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+const pineconeIndex = pinecone.index("umpire-rules");
+const embeddingModel = genAI.getGenerativeModel({ model: "embedding-001" });
 const generativeModel = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
 // --- YOUR CUSTOM EXPERT PERSONAS ---
@@ -31,25 +35,96 @@ const prompts = {
     4. Rules Interpretation: All of your rules will cite the proper rule in the Rulebook format i.e. Rule 1-2`,
     
     'default': `You are a helpful baseball rules assistant.` 
+
 };
 // ------------------------------------
 
 exports.handler = async function (event) {
     const { question, ruleSet } = JSON.parse(event.body);
 
-    const selectedPrompt = prompts[ruleSet] || prompts.default;
-
-    const finalPrompt = `${selectedPrompt}
-
-    ---
-    
-    USER'S QUESTION (Answer according to ${ruleSet} rules):
-    ${question}`;
-
     try {
-        const result = await generativeModel.generateContent(finalPrompt);
-        const response = await result.response;
-        const aiAnswer = response.text();
+        // --- STEP 1: AI-POWERED QUERY ANALYSIS ---
+        const analysisPrompt = `Extract the primary baseball rule or mechanic being asked about in the following question. Respond with only the key phrase. For example, if the question is "what is the infield fly rule?", you should respond with "infield fly rule". Question: "${question}"`;
+        
+        const analysisResult = await generativeModel.generateContent(analysisPrompt);
+const searchTerm = await analysisResult.text(); 
+
+        console.log(`AI identified search term for ${ruleSet}: "${searchTerm.trim()}"`);
+
+        const questionEmbedding = await embeddingModel.embedContent({
+            content: { parts: [{ text: searchTerm.trim() }] },
+            taskType: "RETRIEVAL_QUERY"
+        });
+
+        // --- STEP 2: FILTERED RETRIEVAL ---
+        const queryResponse = await pineconeIndex.query({
+            vector: questionEmbedding.embedding.values,
+            topK: 10,
+            includeMetadata: true,
+            filter: { ruleSet: { "$in": [ruleSet] } } // Filter by the selected ruleset
+        });
+
+        const SIMILARITY_THRESHOLD = 0.70;
+        const relevantMatches = queryResponse.matches.filter(match => match.score > SIMILARITY_THRESHOLD);
+
+
+
+        if (relevantMatches.length === 0) {
+            return {
+                statusCode: 200,
+                body: JSON.stringify({ answer: `I couldn't find a rule in the ${ruleSet} documents that was a close enough match to answer that question. Please try rephrasing it.` }),
+            };
+        }
+        const topMatch = relevantMatches[0]; // top scoring result
+        const cleanSearchTerm = searchTerm.trim();
+
+if (!cleanSearchTerm || cleanSearchTerm.length < 2) {
+  return {
+    statusCode: 400,
+    body: JSON.stringify({ answer: "I couldn't understand your question clearly. Try asking it differently." }),
+  };
+}
+
+//Logging for debugging
+
+console.log("=== DEBUG LOG ===");
+console.log("User Question:", question);
+console.log("Search Term:", cleanSearchTerm);
+console.log("Ruleset:", ruleSet);
+console.log("Top Match Score:", topMatch.score.toFixed(4));
+console.log("Top Match Text (preview):", topMatch.metadata.text.slice(0, 200) + '...');
+console.log("=================");
+
+
+
+        const context = relevantMatches.map(match => match.metadata.text).join("\n\n---\n\n");
+        console.log("Retrieved Context:\n", context);
+
+        // --- STEP 3: FINAL ANSWER GENERATION ---
+        const selectedPrompt = prompts[ruleSet] || prompts.default;
+        
+        const finalPrompt = `${selectedPrompt}
+
+        **Response Structure:**
+        Your response must have two distinct parts:
+        
+        **Part 1: The Explanation**
+        First, provide a clear, conversational, and authoritative answer to the user's question. Synthesize the information from the context into an easy-to-understand explanation. Use bold text for key terms.
+
+        **Part 2: The Rulebook Quotation**
+        Second, add a section titled "**Official Rulebook Text:**". Below this title, provide a direct, word-for-word quotation of the single most relevant rule or section from the "CONTEXT FROM RULEBOOK" that supports your answer.
+
+        ---
+        CONTEXT FROM RULEBOOK:
+        ${context}
+        ---
+        
+        USER'S QUESTION (Answer according to ${ruleSet} rules):
+        ${question}`;
+
+const generationResult = await generativeModel.generateContent(finalPrompt);
+const aiAnswer = await generationResult.text();
+
 
         return {
             statusCode: 200,
