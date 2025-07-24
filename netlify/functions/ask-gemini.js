@@ -123,7 +123,7 @@ console.log("=================");
         ${question}`;
 
 const generationResult = await generativeModel.generateContent(finalPrompt);
-const aiAnswer = await generationResult.text();
+const aiAnswer = await generationResult.response.text();
 
 
         return {
