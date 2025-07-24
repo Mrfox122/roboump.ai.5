@@ -47,7 +47,7 @@ exports.handler = async function (event) {
         const analysisPrompt = `Extract the primary baseball rule or mechanic being asked about in the following question. Respond with only the key phrase. For example, if the question is "what is the infield fly rule?", you should respond with "infield fly rule". Question: "${question}"`;
         
         const analysisResult = await generativeModel.generateContent(analysisPrompt);
-const searchTerm = await analysisResult.text(); 
+const searchTerm = await analysisResult.response.text();
 
         console.log(`AI identified search term for ${ruleSet}: "${searchTerm.trim()}"`);
 
