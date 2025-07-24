@@ -7,9 +7,9 @@ document.getElementById('questionInput').addEventListener('keyup', function(even
 
 async function askQuestion() {
     const questionInput = document.getElementById('questionInput');
-    const ruleSetSelect = document.getElementById('ruleSetSelect'); // Get the dropdown
+    const ruleSetSelect = document.getElementById('ruleSetSelect');
     const question = questionInput.value;
-    const ruleSet = ruleSetSelect.value; // Get the selected value
+    const ruleSet = ruleSetSelect.value;
     const answerEl = document.getElementById('answer');
     const button = document.getElementById('askButton');
 
@@ -18,14 +18,13 @@ async function askQuestion() {
         return;
     }
 
-    answerEl.textContent = 'Searching the rulebook...';
+    answerEl.textContent = 'Consulting the expert...';
     button.disabled = true;
 
     try {
         const response = await fetch('/api/ask-gemini', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            // Send both the question and the selected ruleSet
             body: JSON.stringify({ question: question, ruleSet: ruleSet }) 
         });
 
@@ -34,7 +33,9 @@ async function askQuestion() {
         }
 
         const data = await response.json();
-        answerEl.textContent = data.answer;
+        
+        // Convert the markdown answer to HTML and display it
+        answerEl.innerHTML = marked.parse(data.answer);
 
     } catch (error) {
         console.error("Error asking question:", error);
