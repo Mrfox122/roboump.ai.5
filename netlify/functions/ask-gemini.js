@@ -85,15 +85,7 @@ if (!cleanSearchTerm || cleanSearchTerm.length < 2) {
   };
 }
 
-//Logging for debugging
 
-console.log("=== DEBUG LOG ===");
-console.log("User Question:", question);
-console.log("Search Term:", cleanSearchTerm);
-console.log("Ruleset:", ruleSet);
-console.log("Top Match Score:", topMatch.score.toFixed(4));
-console.log("Top Match Text (preview):", topMatch.metadata.text.slice(0, 200) + '...');
-console.log("=================");
 
 
 
@@ -102,8 +94,20 @@ console.log("=================");
 
         // --- STEP 3: FINAL ANSWER GENERATION ---
         const selectedPrompt = prompts[ruleSet] || prompts.default;
-        
+
+//Logging for debugging
+
+console.log("=== DEBUG LOG ===");
+console.log("User Question:", question);
+console.log("Search Term:", cleanSearchTerm);
+console.log("Ruleset:", ruleSet);
+console.log("Top Match Score:", topMatch.score.toFixed(4));
+console.log("Top Match Text (preview):", topMatch.metadata.text.slice(0, 200) + '...');
+console.log("=================");       
+ 
         const finalPrompt = `${selectedPrompt}
+
+
 
         **Response Structure:**
         Your response must have two distinct parts:
@@ -125,11 +129,21 @@ console.log("=================");
 const generationResult = await generativeModel.generateContent(finalPrompt);
 const aiAnswer = await generationResult.response.text();
 
+console.log("=== FINAL PROMPT SENT TO GEMINI ===");
+console.log(finalPrompt);
+console.log("===================================");
+console.log("=== AI FINAL RESPONSE ===");
+console.log(aiAnswer);
+console.log("=========================");
+
 
         return {
             statusCode: 200,
             body: JSON.stringify({ answer: aiAnswer }),
         };
+
+
+
 
     } catch (error) {
         console.error("Full error:", error);
