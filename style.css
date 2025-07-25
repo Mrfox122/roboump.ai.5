@@ -33,3 +33,10 @@ button { padding: 10px 20px; margin: 5px; cursor: pointer; }
 .sponsorship-banner img {
     animation: pulse 5s infinite ease-in-out; /* Applies the animation */
 }
+
+/* --- Style for the banner IMAGE --- */
+.sponsorship-banner img {
+    height: 50px; /* Controls the height of your banner image */
+    width: auto;  /* Automatically adjusts the width to maintain aspect ratio */
+    margin-right: 15px; /* Adds some space between the image and text */
+}
