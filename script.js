@@ -18,29 +18,45 @@ async function askQuestion() {
         return;
     }
 
+
+// Disable button and show loading state
     answerEl.textContent = 'Consulting the expert...';
     button.disabled = true;
 
+
+ // Execute reCAPTCHA
     try {
-        const response = await fetch('/api/ask-gemini', {
+        // Wait for the reCAPTCHA script to be ready
+        await grecaptcha.ready();
+        // Wait for the token to be generated
+        const token = await grecaptcha.execute('YOUR_SITE_KEY', { action: 'submit' });
+
+        // Wait for the response from your Netlify Function
+        const response = await fetch('/.netlify/functions/submit-form', {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ question: question, ruleSet: ruleSet }) 
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                ruleSet: ruleSetSelect.value,
+                question: question,
+                'recaptcha-token': token
+            })
         });
 
         if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
+            // Throw an error if the server response is not successful
+            throw new Error(`Server error: ${response.statusText}`);
         }
 
         const data = await response.json();
-        
-        // Convert the markdown answer to HTML and display it
         answerEl.innerHTML = marked.parse(data.answer);
 
     } catch (error) {
-        console.error("Error asking question:", error);
-        answerEl.textContent = 'An error occurred. Please check the function logs on Netlify.';
+        console.error('Error:', error);
+        answerEl.textContent = 'Sorry, an error occurred. Please try again.';
     } finally {
+        // This block will run whether the try succeeds or fails
         button.disabled = false;
     }
 }

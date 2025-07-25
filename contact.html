@@ -1,0 +1,28 @@
+//contact.html
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - RoboUmp AI</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://www.google.com/recaptcha/api.js?render=YOUR_SITE_KEY_HERE"></script>
+
+</head>
+<body>
+    <div class="container">
+        <h1>Contact Us for Sponsorship</h1>
+        <p>We'd love to hear from potential sponsors. Please fill out the form below and we'll get back to you shortly.</p>
+        <form id="contactForm">
+            <input type="text" id="name" placeholder="Your Name" required>
+            <input type="email" id="email" placeholder="Your Email" required>
+            <textarea id="message" placeholder="Your Message" required></textarea>
+            <button type="submit">Send Message</button>
+        </form>
+        <div id="formStatus"></div>
+    </div>
+    <script src="contact.js"></script>
+</body>
+</html>

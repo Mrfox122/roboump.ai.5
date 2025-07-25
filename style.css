@@ -16,3 +16,20 @@ button { padding: 10px 20px; margin: 5px; cursor: pointer; }
     border-radius: 4px;
     box-sizing: border-box; /* Important for consistent sizing */
 }
+
+/* --- Add this for a subtle pulsing animation --- */
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.03);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.sponsorship-banner img {
+    animation: pulse 5s infinite ease-in-out; /* Applies the animation */
+}
