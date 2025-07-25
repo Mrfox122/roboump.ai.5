@@ -1,6 +1,7 @@
 // netlify/functions/ask-gemini.js (Final Hybrid Version with Ruleset Filtering)
 const { Pinecone } = require("@pinecone-database/pinecone");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
+const fetch = require("node-fetch");
 
 const pinecone = new Pinecone(); 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
@@ -40,9 +41,29 @@ const prompts = {
 // ------------------------------------
 
 exports.handler = async function (event) {
-    const { question, ruleSet } = JSON.parse(event.body);
+    const { question, ruleSet, token } = JSON.parse(event.body);
 
     try {
+
+// --- VERIFY reCAPTCHA TOKEN ---
+        const recaptchaResponse = await fetch(`https://www.google.com/recaptcha/api/siteverify`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${token}`
+        });
+        
+        const recaptchaData = await recaptchaResponse.json();
+
+        // Check if the user is likely human
+        if (!recaptchaData.success || recaptchaData.score < 0.5) {
+            console.log("reCAPTCHA verification failed:", recaptchaData['error-codes']);
+            return {
+                statusCode: 400,
+                body: JSON.stringify({ answer: 'reCAPTCHA verification failed. You might be a bot!' })
+            };
+        }
+        // --- END reCAPTCHA VERIFICATION ---
+
         // --- STEP 1: AI-POWERED QUERY ANALYSIS ---
         const analysisPrompt = `Extract the primary baseball rule or mechanic being asked about in the following question. Respond with only the key phrase. For example, if the question is "what is the infield fly rule?", you should respond with "infield fly rule". Question: "${question}"`;
         

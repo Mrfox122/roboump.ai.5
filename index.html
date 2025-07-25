@@ -9,17 +9,14 @@
     <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script src="https://www.google.com/recaptcha/api.js?render=6LchII8rAAAAABrbtifib5ALdna7P8h-PItnTsrE"></script>
+    
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-K393VRGP52"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-
       gtag('config', 'G-K393VRGP52');
     </script>
-</head>
-
-</script>
 </head>
 <body>
     <div class="container">
@@ -40,49 +37,12 @@
     </div>
     <script src="script.js"></script>
 
-<div class="sponsorship-banner">
-    <img src="images/sponsor-banner.svg" alt="Sponsor Logo">
-    <span>Support RoboUmp AI! If you're interested in sponsoring this project, please contact us at<a href="mailto:forcfox12@gmail.com">forcfox12@gmail.com</a>.</span>
-</div>
+    <div class="sponsorship-banner">
+        <a href="contact.html" onclick="trackSponsorClick()">
+            <img src="images/sponsor-banner.svg" alt="Sponsor Logo">
+        </a>
+        <span>Support RoboUmp AI! If you're interested in sponsoring this project, please <a href="contact.html" onclick="trackSponsorClick()">contact us</a>.</span>
+    </div>
 
 </body>
 </html>
-
-/* --- Sponsorship Banner Styles --- */
-.sponsorship-banner {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    background-color: #f8f9fa; /* A light grey background */
-    border-top: 1px solid #dee2e6;
-    padding: 10px 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: sans-serif;
-    font-size: 14px;
-    color: #333;
-    z-index: 1000; /* Ensures it stays on top of other content */
-    box-sizing: border-box;
-}
-
-.sponsorship-banner img {
-    height: 40px; /* You can adjust the height of your banner image */
-    margin-right: 15px;
-}
-
-.sponsorship-banner a {
-    color: #007bff;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-.sponsorship-banner a:hover {
-    text-decoration: underline;
-}
-
-/* Make sure the main container has padding at the bottom so the banner doesn't cover it */
-body {
-    padding-bottom: 70px; /* This should be slightly more than the banner's height */
-}

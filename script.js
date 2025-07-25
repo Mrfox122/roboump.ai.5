@@ -25,38 +25,43 @@ async function askQuestion() {
 
 
  // Execute reCAPTCHA
-    try {
-        // Wait for the reCAPTCHA script to be ready
-        await grecaptcha.ready();
-        // Wait for the token to be generated
-        const token = await grecaptcha.execute('YOUR_SITE_KEY', { action: 'submit' });
+    grecaptcha.ready(function() {
+        grecaptcha.execute('6LchII8rAAAAABrbtifib5ALdna7P8h-PItnTsrE', {action: 'submit'}).then(async function(token) {
+            
+            try {
+                const response = await fetch('/api/ask-gemini', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    // Send the token along with the question and ruleSet
+                    body: JSON.stringify({ 
+                        question: question, 
+                        ruleSet: ruleSet,
+                        token: token 
+                    }) 
+                });
 
-        // Wait for the response from your Netlify Function
-        const response = await fetch('/.netlify/functions/submit-form', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                ruleSet: ruleSetSelect.value,
-                question: question,
-                'recaptcha-token': token
-            })
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                answerEl.innerHTML = marked.parse(data.answer);
+
+            } catch (error) {
+                console.error("Error asking question:", error);
+                answerEl.textContent = 'Sorry, an error occurred. Please try again.';
+            } finally {
+                button.disabled = false;
+            }
         });
-
-        if (!response.ok) {
-            // Throw an error if the server response is not successful
-            throw new Error(`Server error: ${response.statusText}`);
-        }
-
-        const data = await response.json();
-        answerEl.innerHTML = marked.parse(data.answer);
-
-    } catch (error) {
-        console.error('Error:', error);
-        answerEl.textContent = 'Sorry, an error occurred. Please try again.';
-    } finally {
-        // This block will run whether the try succeeds or fails
-        button.disabled = false;
-    }
+    });
+}
+// Your tracking function for the sponsorship banner
+function trackSponsorClick() {
+  if (typeof gtag === 'function') {
+    gtag('event', 'click', {
+      'event_category': 'sponsorship',
+      'event_label': 'Contact Banner'
+    });
+  }
 }
