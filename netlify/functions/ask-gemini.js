@@ -64,8 +64,21 @@ const searchTerm = await analysisResult.response.text();
             filter: { ruleSet: { "$in": [ruleSet] } } // Filter by the selected ruleset
         });
 
+console.log("DEBUG: Raw Pinecone response:", JSON.stringify(queryResponse, null, 2));
+
         const SIMILARITY_THRESHOLD = 0.70;
         const relevantMatches = queryResponse.matches.filter(match => match.score > SIMILARITY_THRESHOLD);
+
+
+if (relevantMatches.length > 0) {
+  console.log("DEBUG: Top match score:", relevantMatches[0].score);
+  console.log("DEBUG: Top match metadata snippet:", relevantMatches[0].metadata.text?.slice(0, 200));
+} else {
+  console.log("DEBUG: No relevant matches found above similarity threshold.");
+}
+
+
+
 
 
 
