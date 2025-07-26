@@ -1,33 +1,37 @@
-document.getElementById('contactForm').addEventListener('submit', async function (e) {
+//contact.js
+
+document.getElementById("contactForm").addEventListener("submit", async function (e) {
     e.preventDefault();
 
-    const statusDiv = document.getElementById('formStatus');
-    statusDiv.innerText = 'Verifying...';
+    const name = document.getElementById("name").value;
+    const email = document.getElementById("email").value;
+    const message = document.getElementById("message").value;
+    const formStatus = document.getElementById("formStatus");
 
-    const name = document.getElementById('name').value.trim();
-    const email = document.getElementById('email').value.trim();
-    const message = document.getElementById('message').value.trim();
+    formStatus.textContent = "Verifying...";
 
     try {
         const token = await grecaptcha.execute('6LchII8rAAAAABrbtifib5ALdna7P8h-PItnTsrE', { action: 'submit' });
 
-        const response = await fetch('/.netlify/functions/send-email', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+        console.log("reCAPTCHA token received:", token);
+
+        const res = await fetch("/.netlify/functions/send-email", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ name, email, message, token })
         });
 
-        const result = await response.text();
+        const data = await res.text();
 
-        if (response.ok) {
-            statusDiv.innerText = 'Your message has been sent!';
-            document.getElementById('contactForm').reset();
+        console.log("Response from server:", data);
+
+        if (res.ok) {
+            formStatus.textContent = "Message sent successfully!";
         } else {
-            const { error } = JSON.parse(result);
-            statusDiv.innerText = 'Error: ' + error;
+            formStatus.textContent = "Error: " + data;
         }
-    } catch (err) {
-        console.error('Unexpected error:', err);
-        statusDiv.innerText = 'Something went wrong. Please try again later.';
+    } catch (error) {
+        console.error("Client-side error:", error);
+        formStatus.textContent = "Something went wrong.";
     }
 });

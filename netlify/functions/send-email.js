@@ -1,44 +1,57 @@
-// netlify/functions/send-email.js
-const { Resend } = require('resend');
-const fetch = require('node-fetch'); // You'll need to install this
+//send-email.js
 
 exports.handler = async function(event) {
+    console.log("Received event:", event.body);
+
     if (event.httpMethod !== 'POST') {
         return { statusCode: 405, body: 'Method Not Allowed' };
     }
 
-    const { name, email, message, token } = JSON.parse(event.body);
+    let parsed;
+    try {
+        parsed = JSON.parse(event.body);
+    } catch (err) {
+        console.error("Invalid JSON:", err);
+        return { statusCode: 400, body: 'Invalid JSON' };
+    }
 
-    // 1. Verify the reCAPTCHA token
+    const { name, email, message, token } = parsed;
+
+    // Log fields to verify input
+    console.log("Parsed fields:", { name, email, message, token });
+
+    // 1. Verify reCAPTCHA
     const recaptchaResponse = await fetch(`https://www.google.com/recaptcha/api/siteverify`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
         body: `secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${token}`
     });
-    
-    const recaptchaData = await recaptchaResponse.json();
 
-    // 2. Check the verification score
+    const recaptchaData = await recaptchaResponse.json();
+    console.log("reCAPTCHA result:", recaptchaData);
+
     if (!recaptchaData.success || recaptchaData.score < 0.5) {
-        console.log("reCAPTCHA verification failed:", recaptchaData['error-codes']);
-        return { statusCode: 400, body: JSON.stringify({ error: 'reCAPTCHA verification failed. Please try again.' }) };
+        return { statusCode: 400, body: JSON.stringify({ error: 'reCAPTCHA verification failed' }) };
     }
 
-    // 3. If verification passes, send the email
+    // 2. Send the email
     const resend = new Resend(process.env.RESEND_API_KEY);
     const recipientEmail = process.env.CONTACT_EMAIL;
 
+    console.log("Attempting to send email to:", recipientEmail);
+
     try {
-        await resend.emails.send({
+        const result = await resend.emails.send({
             from: 'contact@roboump.app',
             to: recipientEmail,
             subject: `New Sponsorship Inquiry from ${name}`,
             html: `<p><strong>Name:</strong> ${name}</p><p><strong>Email:</strong> ${email}</p><p><strong>Message:</strong></p><p>${message}</p>`
         });
 
+        console.log("Email sent result:", result);
         return { statusCode: 200, body: 'Email sent' };
     } catch (error) {
-        console.error(error);
+        console.error("Error sending email:", error);
         return { statusCode: 500, body: JSON.stringify({ error: 'Error sending email' }) };
     }
 };
