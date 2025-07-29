@@ -4,7 +4,7 @@
 
 [functions]
   included_files = ["rulebooks/**"]
-  timeout = 25
+
 
 [[redirects]]
   from = "/api/*"
