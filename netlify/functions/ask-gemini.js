@@ -91,12 +91,12 @@ console.log("DEBUG: Raw Pinecone response:", JSON.stringify(queryResponse, null,
         const relevantMatches = queryResponse.matches.filter(match => match.score > SIMILARITY_THRESHOLD);
 
 // comment out debug K value log
-// if (relevantMatches.length > 0) {
-//  console.log("DEBUG: Top match score:", relevantMatches[0].score);
-//  console.log("DEBUG: Top match metadata snippet:", relevantMatches[0].metadata.text?.slice(0, 200));
-// } else {
-//  console.log("DEBUG: No relevant matches found above similarity threshold.");
-// }
+if (relevantMatches.length > 0) {
+console.log("DEBUG: Top match score:", relevantMatches[0].score);
+console.log("DEBUG: Top match metadata snippet:", relevantMatches[0].metadata.text?.slice(0, 200));
+} else {
+console.log("DEBUG: No relevant matches found above similarity threshold.");
+}
 
 
 
