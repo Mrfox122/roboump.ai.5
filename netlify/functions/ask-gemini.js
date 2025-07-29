@@ -1,3 +1,6 @@
+// --- STEP 1: AI-POWERED QUERY ANALYSIS ---
+
+
 // netlify/functions/ask-gemini.js (Final Hybrid Version with Ruleset Filtering)
 const { Pinecone } = require("@pinecone-database/pinecone");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
@@ -65,7 +68,7 @@ exports.handler = async function (event) {
         // --- END reCAPTCHA VERIFICATION ---
 
         // --- STEP 1: AI-POWERED QUERY ANALYSIS ---
-        const analysisPrompt = `Extract the primary baseball rule or mechanic being asked about in the following question. Respond with only the key phrase. For example, if the question is "what is the infield fly rule?", you should respond with "infield fly rule". Question: "${question}"`;
+        const analysisPrompt = `Analyze the following user's question and determine the most common, simple search term an umpire would use to look up the rule. Respond with only that search term. For example, if the question is "what happens when a batted ball hits the batter in the box?", the correct response is "foul ball". Question: "${question}"`;
         
         const analysisResult = await generativeModel.generateContent(analysisPrompt);
 const searchTerm = await analysisResult.response.text();
