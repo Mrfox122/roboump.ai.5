@@ -69,7 +69,7 @@ exports.handler = async function (event) {
         // --- END reCAPTCHA VERIFICATION ---
 
         // --- STEP 1: AI-POWERED QUERY ANALYSIS ---
-        const analysisPrompt = `Analyze the following user's question and determine the most common, simple search term an umpire would use to look up the rule. Respond with only that search term. For example, if the question is "what happens when a batted ball hits the batter in the box?", the correct response is "foul ball". Question: "${question}"`;
+        const analysisPrompt = `Analyze the following user's question and determine the most common, simple search term an umpire would use to look up the rule. Respond with only that search term. For example, if the question is what happens when a batted ball hits the batter in the box?, the correct response is "foul ball". Question: "${question}"`;
         
         const analysisResult = await generativeModel.generateContent(analysisPrompt);
 const searchTerm = await analysisResult.response.text();
