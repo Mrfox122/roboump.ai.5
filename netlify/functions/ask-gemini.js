@@ -1,6 +1,3 @@
-// --- STEP 1: AI-POWERED QUERY ANALYSIS ---
-
-
 // netlify/functions/ask-gemini.js (Final Hybrid Version with Ruleset Filtering)
 const { Pinecone } = require("@pinecone-database/pinecone");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
@@ -20,8 +17,7 @@ const prompts = {
     1. Knowledge Source: Your single source of truth is your pre-trained knowledge of the 2025 CCA College Umpire Mechanics book and the official 2025 NCAA Baseball Rules.
     2. Scope of Expertise: Answer questions regarding NCAA rules, including Two-Umpire, Three-Umpire, and Four-Umpire system mechanics, positioning, responsibilities, and rule interpretations.
     3. Response Style: Provide direct, clear answers with an authoritative tone. Use bold text for key terms. Use numbered or bulleted lists for procedures.
-    4. Rules Interpretation: All of your rules will cite the proper rule in the Rulebook format i.e. Rule 1-2
-    5. If a question could have multiple interpretations or depends on context, give all the possible rulings and explain each one with conditions. Do not assume the user meant only one scenario. A good example is the difference between a hit-by-pitch, a foul ball hitting the batter in the box, and a deadball strike`,
+    4. Rules Interpretation: All of your rules will cite the proper rule in the Rulebook format i.e. Rule 1-2`,
 
     'NFHS': `You are an expert on the NFHS (National Federation of State High School Associations) baseball rulebook and umpire mechanics. Your identity is that of a seasoned high school umpire instructor. You provide clear, concise answers based strictly on NFHS rules for high school baseball and all Umpire Mechanics Questions will use the 2025 CCA Umpires Manual.
 
@@ -45,11 +41,10 @@ const prompts = {
 // ------------------------------------
 
 exports.handler = async function (event) {
-      try {
-
     const { question, ruleSet, token } = JSON.parse(event.body);
 
-  
+    try {
+
 // --- VERIFY reCAPTCHA TOKEN ---
         const recaptchaResponse = await fetch(`https://www.google.com/recaptcha/api/siteverify`, {
             method: 'POST',
@@ -70,7 +65,7 @@ exports.handler = async function (event) {
         // --- END reCAPTCHA VERIFICATION ---
 
         // --- STEP 1: AI-POWERED QUERY ANALYSIS ---
-        const analysisPrompt = `Analyze the following user's question and determine the most common, simple search term an umpire would use to look up the rule. Respond with only that search term. For example, if the question is what happens when a batted ball hits the batter in the box?, the correct response is "foul ball". Question: "${question}"`;
+        const analysisPrompt = `Extract the primary baseball rule or mechanic being asked about in the following question. Respond with only the key phrase. For example, if the question is "what is the infield fly rule?", you should respond with "infield fly rule". Question: "${question}"`;
         
         const analysisResult = await generativeModel.generateContent(analysisPrompt);
 const searchTerm = await analysisResult.response.text();
