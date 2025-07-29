@@ -30,6 +30,15 @@ button { padding: 10px 20px; margin: 5px; cursor: pointer; }
   }
 }
 
+.share-button:disabled {
+    background-color: #c0c0c0; /* A lighter grey for disabled state */
+    cursor: not-allowed;
+}
+
+.share-button:disabled:hover {
+    background-color: #c0c0c0; /* Keep the same color on hover when disabled */
+}
+
 .sponsorship-banner img {
     animation: pulse 5s infinite ease-in-out; /* Applies the animation */
 }
