@@ -48,17 +48,14 @@ async function askQuestion() {
     }
 }
 
-// This function now controls the Share button
 function showShareButton(question, ruleSet) {
     const shareButton = document.getElementById('shareButton');
     const encodedQuestion = encodeURIComponent(question);
     const shareUrl = `${window.location.origin}${window.location.pathname}?ruleset=${ruleSet}&question=${encodedQuestion}`;
     
-    shareButton.style.display = 'inline-block'; // Make the button visible
+    shareButton.style.display = 'inline-block';
 
-    // We add a new event listener each time so it has the correct, current URL
     shareButton.onclick = function() {
-        // Use the modern Web Share API if available (on mobile)
         if (navigator.share) {
             navigator.share({
                 title: 'RoboUmp AI Answer',
@@ -66,12 +63,11 @@ function showShareButton(question, ruleSet) {
                 url: shareUrl,
             });
         } else {
-            // Fallback for desktop: copy link to clipboard
             navigator.clipboard.writeText(shareUrl).then(function() {
                 shareButton.textContent = 'Link Copied!';
                 setTimeout(() => {
                     shareButton.textContent = 'Share';
-                }, 2000); // Reset text after 2 seconds
+                }, 2000);
             });
         }
     };
