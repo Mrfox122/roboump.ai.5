@@ -45,10 +45,11 @@ const prompts = {
 // ------------------------------------
 
 exports.handler = async function (event) {
+      try {
+
     const { question, ruleSet, token } = JSON.parse(event.body);
 
-    try {
-
+  
 // --- VERIFY reCAPTCHA TOKEN ---
         const recaptchaResponse = await fetch(`https://www.google.com/recaptcha/api/siteverify`, {
             method: 'POST',
