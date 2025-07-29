@@ -1,49 +1,93 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>RoboUmp AI - Instant Baseball Rule and Umpire Mechanics Answers</title>
+
     <link rel="icon" type="image/png" href="images/favicon.svg">
+
     <meta name="description" content="Get instant, expert answers to your baseball umpiring questions. RoboUmp AI provides precise rule interpretations and mechanics for NCAA, NFHS, and MLB rulebooks.">
+
     <link rel="stylesheet" href="style.css">
+
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+
     <script src="https://www.google.com/recaptcha/api.js?render=6LchII8rAAAAABrbtifib5ALdna7P8h-PItnTsrE"></script>
-    
+
+   
+
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-K393VRGP52"></script>
+
     <script>
+
       window.dataLayer = window.dataLayer || [];
+
       function gtag(){dataLayer.push(arguments);}
+
       gtag('js', new Date());
+
       gtag('config', 'G-K393VRGP52');
+
     </script>
+
 </head>
+
 <body>
+
     <div class="container">
+
         <h1>Umpire AI Assistant</h1>
+
         <h2>Your expert resource for baseball rules and mechanics.</h2>
+
         <div class="input-area">
+
             <select id="ruleSetSelect">
+
                 <option value="NCAA">NCAA Rules</option>
+
                 <option value="NFHS">NFHS (High School) Rules</option>
+
                 <option value="MLB">MLB (Pro) Rules</option>
+
             </select>
+
             <textarea id="questionInput" placeholder="e.g., What is the infield fly rule?"></textarea>
+
             <button id="askButton">Ask</button>
-            <button id="shareButton" class="share-button" disabled>Share</button>
+
         </div>
+
         <div id="answer-container" class="answer-container">
+
             <p id="answer"></p>
+
         </div>
+
     </div>
+
     <script src="script.js"></script>
 
+
     <div class="sponsorship-banner">
+
         <a href="contact.html" onclick="trackSponsorClick()">
+
             <img src="images/sponsor-banner.svg" alt="Sponsor Logo">
+
         </a>
+
         <span>Support RoboUmp AI! If you're interested in sponsoring this project, please <a href="contact.html" onclick="trackSponsorClick()">contact us</a>.</span>
+
     </div>
 
+
 </body>
-</html>
+
+</html> 
