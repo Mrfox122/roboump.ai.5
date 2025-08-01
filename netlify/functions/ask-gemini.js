@@ -1,15 +1,24 @@
-// netlify/functions/ask-gemini.js (Final Hybrid Version with Ruleset Filtering)
+// --- ask-gemini.js (Netlify Function) ---
+// This is the main serverless function responsible for:
+// 1. Verifying that a real user is asking the question (via reCAPTCHA)
+// 2. Analyzing the question and generating smart search terms
+// 3. Searching Pinecone for relevant rulebook snippets based on AI-generated queries
+// 4. Asking Gemini to generate a full response using the retrieved context
+// 5. Returning the AI-generated answer to the frontend
+
+// --- Required Dependencies ---
 const { Pinecone } = require("@pinecone-database/pinecone");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const fetch = require("node-fetch");
 
+// --- Initialize Pinecone and Gemini Clients ---
 const pinecone = new Pinecone(); 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const pineconeIndex = pinecone.index("umpire-rules");
 const embeddingModel = genAI.getGenerativeModel({ model: "embedding-001" });
 const generativeModel = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
-// --- YOUR CUSTOM EXPERT PERSONAS ---
+// --- Persona Templates (custom AI instructions per ruleset) ---
 const prompts = {
      'NCAA': `You are the "NCAA Rules and Umpire Mechanics Digital Assistant." Your identity is that of an expert college baseball umpire instructor and rules interpreter. Your entire knowledge base is built upon the official 2025 CCA College Umpire Mechanics book and the corresponding NCAA Baseball rulebook. You are precise, authoritative, and dedicated to helping umpires improve their craft.
 
@@ -52,14 +61,15 @@ Note: When citing rules, always follow the official NCAA rulebook structure. Res
     'default': `You are a helpful baseball rules assistant.` 
 
 };
-// ------------------------------------
+// --- Main Lambda Handler ---
 
 exports.handler = async function (event) {
     const { question, ruleSet, token } = JSON.parse(event.body);
 
     try {
 
-// --- VERIFY reCAPTCHA TOKEN ---
+// === STEP 1: VERIFY USER (reCAPTCHA Check) ===
+        // Prevents spam and abuse by ensuring the request is human-generated
         const recaptchaResponse = await fetch(`https://www.google.com/recaptcha/api/siteverify`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -78,7 +88,8 @@ exports.handler = async function (event) {
         }
         // --- END reCAPTCHA VERIFICATION ---
 
-        // --- STEP 1: AI-POWERED QUERY ANALYSIS ---
+        // === STEP 2: QUESTION UNDERSTANDING (AI Query Generator) ===
+        // Generate multiple search queries that reflect different angles of the user's question
         const analysisPrompt = `Based on the user's question, generate 3 different search queries that will help find the most relevant baseball rule or mechanic. The queries should be diverse and cover different aspects of the question.
 User Question: "${question}"
 
@@ -91,6 +102,8 @@ searchQueries.unshift(question);
 
         console.log(`AI identified search terms for ${ruleSet}: ${searchQueries.join(', ')}`);
 
+         // === STEP 3: EMBEDDING + VECTOR SEARCH (via Pinecone) ===
+        // Convert each query into vector embeddings
         const embeddingRequests = searchQueries.map(q => ({
   content: { parts: [{ text: q }] },
   taskType: "RETRIEVAL_QUERY"
@@ -99,7 +112,7 @@ searchQueries.unshift(question);
 const embeddingResult = await embeddingModel.batchEmbedContents({ requests: embeddingRequests });
 const queryVectors = embeddingResult.embeddings.map(e => e.values);
 
-// 🔁 Query Pinecone for each embedding
+// Search Pinecone for each embedded query vector
 const searchPromises = queryVectors.map(vector => 
   pineconeIndex.query({
     vector,
@@ -110,13 +123,15 @@ const searchPromises = queryVectors.map(vector =>
 );
 const searchResponses = await Promise.all(searchPromises);
 
-// 🧼 Combine, deduplicate, and filter
+// === STEP 4: MERGE & FILTER RESULTS ===
+        // Combine results from all searches, remove duplicates, and apply similarity threshold
 const allMatches = searchResponses.flatMap(res => res.matches);
 const uniqueMatches = Array.from(new Map(allMatches.map(m => [m.id, m])).values());
 
 const SIMILARITY_THRESHOLD = 0.70;
 const relevantMatches = uniqueMatches.filter(match => match.score > SIMILARITY_THRESHOLD);
 
+// Log debugging info
 console.log("DEBUG: Raw Pinecone responses:", JSON.stringify(searchResponses, null, 2));
 const topMatch = relevantMatches.sort((a, b) => b.score - a.score)[0];
 
@@ -128,21 +143,19 @@ console.log("DEBUG: Top match metadata snippet:", relevantMatches[0].metadata.te
 console.log("DEBUG: No relevant matches found above similarity threshold.");
 }
 
-
-
-
-
-
+    // If no good matches were found, notify user
         if (relevantMatches.length === 0) {
             return {
                 statusCode: 200,
                 body: JSON.stringify({ answer: `I couldn't find a rule in the ${ruleSet} documents that was a close enough match to answer that question. Please try rephrasing it.` }),
             };
         }
+         // Concatenate all relevant rule snippets into one context block
         const context = relevantMatches.map(match => match.metadata.text).join("\n\n---\n\n");
         console.log("Retrieved Context:\n", context);
 
-        // --- STEP 3: FINAL ANSWER GENERATION ---
+        // === STEP 5: FINAL ANSWER GENERATION (Gemini) ===
+        // Construct the final prompt with persona + rules + question + rulebook context
         const selectedPrompt = prompts[ruleSet] || prompts.default;
 
 //Logging for debugging
@@ -176,9 +189,12 @@ console.log("=================");
         USER'S QUESTION (Answer according to ${ruleSet} rules):
         ${question}`;
 
+
+         // Send to Gemini and retrieve AI-generated response
 const generationResult = await generativeModel.generateContent(finalPrompt);
 const aiAnswer = await generationResult.response.text();
 
+     // Debug log
 console.log("=== FINAL PROMPT SENT TO GEMINI ===");
 console.log(finalPrompt);
 console.log("===================================");
@@ -186,7 +202,7 @@ console.log("=== AI FINAL RESPONSE ===");
 console.log(aiAnswer);
 console.log("=========================");
 
-
+// === STEP 6: Return Final Answer ===
         return {
             statusCode: 200,
             body: JSON.stringify({ answer: aiAnswer }),
