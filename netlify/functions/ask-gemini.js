@@ -89,7 +89,7 @@ const searchTermsRaw = await analysisResult.response.text();
 const searchQueries = searchTermsRaw.split('\n').map(q => q.trim()).filter(q => q.length > 0);
 searchQueries.unshift(question);
 
-        console.log(`AI identified search term for ${ruleSet}: "${searchTerm.trim()}"`);
+        console.log(`AI identified search terms for ${ruleSet}: ${searchQueries.join(', ')}`);
 
         const embeddingRequests = searchQueries.map(q => ({
   content: { parts: [{ text: q }] },
@@ -103,7 +103,7 @@ const queryVectors = embeddingResult.embeddings.map(e => e.values);
 const searchPromises = queryVectors.map(vector => 
   pineconeIndex.query({
     vector,
-    topK: 5,
+    topK: 10,
     includeMetadata: true,
     filter: { ruleSet: { "$in": [ruleSet] } }
   })
@@ -117,10 +117,8 @@ const uniqueMatches = Array.from(new Map(allMatches.map(m => [m.id, m])).values(
 const SIMILARITY_THRESHOLD = 0.70;
 const relevantMatches = uniqueMatches.filter(match => match.score > SIMILARITY_THRESHOLD);
 
-console.log("DEBUG: Raw Pinecone response:", JSON.stringify(queryResponse, null, 2));
-
-        const SIMILARITY_THRESHOLD = 0.66;
-        const relevantMatches = queryResponse.matches.filter(match => match.score > SIMILARITY_THRESHOLD);
+console.log("DEBUG: Raw Pinecone responses:", JSON.stringify(searchResponses, null, 2));
+const topMatch = relevantMatches.sort((a, b) => b.score - a.score)[0];
 
 // comment out debug K value log
 if (relevantMatches.length > 0) {
@@ -141,20 +139,6 @@ console.log("DEBUG: No relevant matches found above similarity threshold.");
                 body: JSON.stringify({ answer: `I couldn't find a rule in the ${ruleSet} documents that was a close enough match to answer that question. Please try rephrasing it.` }),
             };
         }
-        const topMatch = relevantMatches[0]; // top scoring result
-        const cleanSearchTerm = searchTerm.trim();
-
-if (!cleanSearchTerm || cleanSearchTerm.length < 2) {
-  return {
-    statusCode: 400,
-    body: JSON.stringify({ answer: "I couldn't understand your question clearly. Try asking it differently." }),
-  };
-}
-
-
-
-
-
         const context = relevantMatches.map(match => match.metadata.text).join("\n\n---\n\n");
         console.log("Retrieved Context:\n", context);
 
@@ -165,7 +149,7 @@ if (!cleanSearchTerm || cleanSearchTerm.length < 2) {
 
 console.log("=== DEBUG LOG ===");
 console.log("User Question:", question);
-console.log("Search Term:", cleanSearchTerm);
+console.log("Search Term:", searchQueries[0]);
 console.log("Ruleset:", ruleSet);
 console.log("Top Match Score:", topMatch.score.toFixed(4));
 console.log("Top Match Text (preview):", topMatch.metadata.text.slice(0, 200) + '...');
