@@ -40,3 +40,14 @@ button { padding: 10px 20px; margin: 5px; cursor: pointer; }
     width: auto;  /* Automatically adjusts the width to maintain aspect ratio */
     margin-right: 15px; /* Adds some space between the image and text */
 }
+
+/* --- Version Number Styles --- */
+.version {
+    position: fixed;
+    bottom: 5px;
+    left: 10px;
+    font-size: 12px;
+    color: #6c757d; /* A neutral grey color */
+    font-family: sans-serif;
+    z-index: 1001; /* Ensures it's on top of the banner */
+}
