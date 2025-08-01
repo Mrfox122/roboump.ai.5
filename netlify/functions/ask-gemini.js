@@ -79,25 +79,43 @@ exports.handler = async function (event) {
         // --- END reCAPTCHA VERIFICATION ---
 
         // --- STEP 1: AI-POWERED QUERY ANALYSIS ---
-        const analysisPrompt = `Extract the primary baseball rule or mechanic being asked about in the following question. Respond with only the key phrase. For example, if the question is "what is the infield fly rule?", you should respond with "infield fly rule". Question: "${question}"`;
+        const analysisPrompt = `Based on the user's question, generate 3 different search queries that will help find the most relevant baseball rule or mechanic. The queries should be diverse and cover different aspects of the question.
+User Question: "${question}"
+
+Respond with only the 3 search queries, each on a new line.`;
         
         const analysisResult = await generativeModel.generateContent(analysisPrompt);
-const searchTerm = await analysisResult.response.text();
+const searchTermsRaw = await analysisResult.response.text();
+const searchQueries = searchTermsRaw.split('\n').map(q => q.trim()).filter(q => q.length > 0);
+searchQueries.unshift(question);
 
         console.log(`AI identified search term for ${ruleSet}: "${searchTerm.trim()}"`);
 
-        const questionEmbedding = await embeddingModel.embedContent({
-            content: { parts: [{ text: searchTerm.trim() }] },
-            taskType: "RETRIEVAL_QUERY"
-        });
+        const embeddingRequests = searchQueries.map(q => ({
+  content: { parts: [{ text: q }] },
+  taskType: "RETRIEVAL_QUERY"
+}));
 
-        // --- STEP 2: FILTERED RETRIEVAL ---
-        const queryResponse = await pineconeIndex.query({
-            vector: questionEmbedding.embedding.values,
-            topK: 10,
-            includeMetadata: true,
-            filter: { ruleSet: { "$in": [ruleSet] } } // Filter by the selected ruleset
-        });
+const embeddingResult = await embeddingModel.batchEmbedContents({ requests: embeddingRequests });
+const queryVectors = embeddingResult.embeddings.map(e => e.values);
+
+// 🔁 Query Pinecone for each embedding
+const searchPromises = queryVectors.map(vector => 
+  pineconeIndex.query({
+    vector,
+    topK: 5,
+    includeMetadata: true,
+    filter: { ruleSet: { "$in": [ruleSet] } }
+  })
+);
+const searchResponses = await Promise.all(searchPromises);
+
+// 🧼 Combine, deduplicate, and filter
+const allMatches = searchResponses.flatMap(res => res.matches);
+const uniqueMatches = Array.from(new Map(allMatches.map(m => [m.id, m])).values());
+
+const SIMILARITY_THRESHOLD = 0.70;
+const relevantMatches = uniqueMatches.filter(match => match.score > SIMILARITY_THRESHOLD);
 
 console.log("DEBUG: Raw Pinecone response:", JSON.stringify(queryResponse, null, 2));
 
