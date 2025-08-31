@@ -223,3 +223,96 @@ Deep fly ball to right field, no catch; R3 advances toward the plate; R1 advance
 7.10 Runner on second
 Initial Positions and Outfield Coverage, Infield Catch Coverage, and Fair/Foul Coverage are the same as with runners on first and second. Plays Within the Infield and Clean Hit to Outfield are the same as with runners on second and third.
 ---
+
+---
+SECTION 7.10 Runner on second
+---
+Initial Positions and Outfield Coverage
+The coverage is the same as with runners on first and second base. PU: Has the left fielder moving toward the left-field foul line and the right fielder moving toward the right-field foul line. U1: Starts in the “C” position and has outfield coverage from the left fielder straight in or straight back to the right fielder straight in or straight back.
+---
+Infield Catch Coverage
+The coverage is the same as with a runner on first base only, with U1 in position C. PU has catches: 1. By the pitcher moving in, left or right. 2. By the third baseman moving back or toward the foul line. 3. By the first baseman moving back or toward the foul line. U1 has catches: 1. By the pitcher moving back. 2. By the shortstop moving in all directions. 3. By the second baseman moving in all directions. 4. By the third baseman moving in or toward the middle of the field. 5. By the first baseman moving in or toward the middle of the field.
+---
+Fair/Foul Coverage
+The coverage is the same as with a runner on first base only, with U1 in position C. PU: Has responsibility for all balls on the third-base line and first-base line. U1: Has no fair/foul responsibility.
+---
+7.10.1 RUNNER ON SECOND - Plays Within the Infield
+Action on the field: Ground ball to shortstop with a throw to first base; R2 advances toward third base on the throw and draws a throw to third base. Umpire responsibilities: PU: Observes the action at first base to assist on swipe tag or pulled foot by the first baseman and then returns to the plate for any play there. U1: Moves into the best position to rule on all plays at first, second or third base.
+---
+7.10.2 RUNNER ON SECOND - Clean Hit to Outfield
+Action on the field: Clean hit to right field, no catch; R2 advances toward the plate; the batter-runner rounds first and draws a throw back to first base. Umpire responsibilities: PU: Observes R2’s base touch at third and has all plays at the plate. U1: Observes all base touches at first and second base and moves to a position to rule on all plays on the bases.
+---
+7.10.3 RUNNER ON SECOND - Fly Ball to Center Field: Catch
+Action on the field: Fly ball caught by the center fielder; R2 tags up and advances toward third, drawing a throw there. Umpire responsibilities: PU: Moves toward third base and observes the action. PU returns to the plate for all plays there. U1: Moves to the best position possible to view the catch/no catch. U1 observes R2’s tag up. U1 moves to a position to rule on all plays on the bases.
+---
+7.10.4 RUNNER ON SECOND - Fly Ball Down the Left-Field Line: Catch
+Action on the field: Fly ball caught by the left fielder; R2 tags up and advances toward third base. Umpire responsibilities: PU: Moves to the best position possible to view the fair/foul and catch/ no catch. PU returns to the plate for all plays there. PU is responsible for R2’s touch of third base if the ball is not caught. U1: Observes R2’s tag up at second base. U1 moves to a position to rule on all plays on the bases. U1 has all touches at first and second and the batter-runners touch at third base.
+---
+7.10.5 RUNNER ON SECOND - Fly Ball Down the Right-Field Line: Catch
+Action on the field: Fly ball caught by the right fielder; R2 tags up, advances toward third base, drawing a throw there. Umpire responsibilities: PU: Moves to the best position possible to view the catch/no catch. PU returns to the plate for all plays there. PU is responsible for R2’s touch of third base if the ball is not caught. U1: Observes R2’s tag up at second base. U1 moves to a position to rule on all plays on the bases. U1 has all touches at first and second and the batter-runners touch at third base.
+---
+SECTION 7.11 Runners on second and third
+---
+Initial Positions and Outfield Coverage
+The coverage is the same as with runners on first and second base. PU: Has the left fielder moving toward the left-field foul line and the right fielder moving toward the right-field foul line. U1: Starts in the “C” position and has outfield coverage from the left fielder straight in or straight back to the right fielder straight in or straight back.
+---
+Infield Catch Coverage
+The coverage is the same as with a runner on first base only, with U1 in position C. PU has catches: 1. By the pitcher moving in, left or right. 2. By the third baseman moving back or toward the foul line. 3. By the first baseman moving back or toward the foul line. U1 has catches: 1. By the pitcher moving back. 2. By the shortstop moving in all directions. 3. By the second baseman moving in all directions. 4. By the third baseman moving in or toward the middle of the field. 5. By the first baseman moving in or toward the middle of the field.
+---
+Fair/Foul Coverage
+The coverage is the same as with a runner on first base only, with U1 in position C. PU: Has responsibility for all balls on the third-base line and first-base line. U1: Has no fair/foul responsibility.
+---
+7.11.1 RUNNERS ON SECOND AND THIRD - Plays Within the Infield
+Action on the field: Ground ball to third base with a throw to first base; R3 retreats to third base; R2 retreats to second base. Umpire responsibilities: PU: Has secondary responsibility for assisting U1 on swipe tag and pulled foot at first base. PU has all touches and plays at the plate, all overthrow responsibilities at first base and all running-lane interference responsibilities. U1: Moves into the best position to rule on all plays at first, second or third base.
+---
+7.11.2 RUNNERS ON SECOND AND THIRD - Clean Hit to Outfield
+Action on the field: Clean hit to right field, no catch; R3 advances toward the plate; R2 advances toward the plate; the batter-runner rounds first base and draws a throw back to first base. Umpire responsibilities: PU: Observes R2’s touch of third base and all touches at the plate. PU moves into position to rule on all plays at the plate. U1: Observes all base touches of the batter-runner. U1 moves into position to rule on all plays on the bases.
+---
+7.11.3 RUNNERS ON SECOND AND THIRD - Fly Ball to Left-Center Field: Catch
+Action on the field: Fly ball caught by the left fielder; R3 tags up and advances toward the plate, drawing a throw there; R2 tags up and advances toward third base. Umpire responsibilities: PU: Moves to the best position possible to observe R3’s tag up. PU returns to the plate for all plays there. U1: Moves to the best position possible to view the catch/no catch. U1 observes R2 tagging up. U1 moves into position for all plays on the bases.
+---
+7.11.4 RUNNERS ON SECOND AND THIRD - Fly Ball Down the Left-Field Line: Catch
+Action on the field: Fly ball caught by the left fielder; R3 tags up and advances toward the plate, drawing a throw there; R2 retreats toward second base. Umpire responsibilities: PU: Moves to the best position possible to view the fair/foul, catch/no catch and R3’s tag up. PU returns to the plate for all plays there. U1: Moves to the best position to observe R2’s tag up. U1 has all plays on the bases.
+---
+7.11.5 RUNNERS ON SECOND AND THIRD - Fly Ball Down the Right-Field Line: Catch
+Action on the field: Fly ball caught by the right fielder; R3 tags up and advances toward the plate, drawing a throw there; R2 tags up and advances toward third base. Umpire responsibilities: PU: Moves to the best position possible to view the fair/foul, catch/no catch and then R3’s tag up (first-base line extended since the ball is in shallow right field). PU returns to the plate for all plays there. U1: Moves to the best position to observe R2’s tag up. U1 has all plays on the bases.
+---
+SECTION 7.12 Runner on third
+---
+Initial Positions and Outfield Coverage
+The coverage is the same as runners on first and second. PU: Has the left fielder moving toward the left-field foul line and the right fielder moving toward the right-field foul line. U1: Starts in the “C” position and has outfield coverage from the left fielder straight in or straight back to the right fielder straight in or straight back.
+---
+Infield Catch Coverage
+The coverage is the same as with a runner on first base only, with U1 in the “C” position. PU has catches: 1. By the pitcher moving in, left or right. 2. By the third baseman moving back or toward the foul line. 3. By the first baseman moving back or toward the foul line. U1 has catches: 1. By the pitcher moving back. 2. By the shortstop moving in all directions. 3. By the second baseman moving in all directions. 4. By the third baseman moving in or toward the middle of the field. 5. By the first baseman moving in or toward the middle of the field.
+---
+Fair/Foul Coverage
+The coverage is the same as with a runner on first base only, with U1 in the “C” position. PU: Has responsibility for all balls on the third-base line and first-base line. U1: Has no fair/foul responsibility.
+---
+Plays Within the Infield
+The coverage is the same as with runners on second and third, with U1 in the “C” position. PU: Has secondary responsibility for assisting U1 on swipe tag and pulled foot at first base. PU has all touches and plays at the plate, all overthrow responsibilities at first base and all running-lane interference responsibilities. U1: Moves into the best position to rule on all plays on all bases.
+---
+Clean Hit to Outfield
+The coverage is the same as with runners on second and third, with U1 in the “C” position. PU: Moves into position to rule on all plays and touches at the plate. U1: Observes all base touches involving the batter-runner. U1 moves into position to rule on all plays on the bases.
+---
+7.12.1 RUNNER ON THIRD - Fly Ball to Center Field: Catch
+Action on the field: Fly ball caught by the center fielder; R3 tags up and advances toward the plate, drawing a throw there. Umpire responsibilities: PU: Moves to the best position to observe R3’s tag up at third base. PU returns to the plate for all plays there. U1: Moves to the best position possible to view the catch/no catch. U1 moves into the best position to rule on all plays on all bases, including any play back at third base.
+---
+7.12.2 RUNNER ON THIRD - Fly Ball Down the Left-Field Line: Catch
+Action on the field: Foul-fly ball caught by the left fielder; R3 tags up and advances toward the plate, drawing a throw there. Umpire responsibilities: PU: Moves to the best position possible to view the fair/foul, catch/no catch and R3’s tag up. PU returns to the plate for all plays there. U1: Observes the action and has all plays on the bases, including any play back at third base.
+---
+7.12.3 RUNNER ON THIRD - Fly Ball Down the Right-Field Line: Catch
+Action on the field: Deep fly ball caught by the right fielder; R3 tags up and advances toward the plate, drawing a throw there. Umpire responsibilities: PU: Moves to the best position possible to view the fair/foul, catch/no catch and R3’s tag up. PU returns to the plate for all plays there. U1: Observes the action and has all plays on the bases, including any play back at third.
+---
+Section 8 Mechanics for a Crew of Three Umpires
+---
+8.1 Basic Principles:
+1. Box ‘em in. Having the third umpire often allows umpires the luxury of having one umpire in front of a runner and one umpire behind of a runner — but not always! 2. Communication is crucial. You have to know where your partners are — and what they’re doing — in order to function as a unit. 3. Infield umpires may go out. In some situations, an umpire positioned in the middle of the diamond may cross the basepaths and head into the outfield for better coverage. 4. Studying three-umpire mechanics will help you understand four umpire mechanics. If you’re going to work the four-umpire system (say, come tournament time), you better have the three-umpire system down pat!
+---
+8.2 Balk Concentration
+There are some balks that are more obvious from some positions. A. PU should concentrate on: 1. Left-handed pitchers stepping to the plate 2. Left-handed pitchers coming to a complete stop 3. Right-handed pitchers coming to a complete stop 4. Right-handed pitchers gaining ground on the jump turn 5. Right-handed pitchers closing their front shoulder before the jump turn. B. U1 should concentrate on: 1. Left-handed pitcher’s step, or body movement, to the plate 2. Left-handed pitchers coming to a complete stop 3. Left-handed pitchers breaking the back edge of the pitcher’s rubber 4. Right-handed pitchers breaking their front knee before the jump turn. C. U3 should concentrate on: 1. Right-handed pitchers coming to a complete stop 2. Right-handed pitchers stepping to the plate on the third-to-first move 3. Right-handed pitchers breaking the back edge of the pitcher’s rubber 4. Right-handed pitchers stepping to the plate.
+---
+8.3 Line Drive Responsibilities
+A. Umpires will be held accountable to set their initial pre-pitch position with strong consideration given to line drive responsibilities. B. Umpires shall start with their inside foot next to the foul line and shall NOT straddle the line. With a runner on third base, U3 is allowed to straddle the line to have an unobstructed view of the hitting zone and check swing responsibility so long as it does not cause poor positioning for line-drive responsibility. C. U1 and U3 will position themselves no more than 6-8 feet behind the fielder with no runners on base. If the fielder is playing deep near the grass/ dirt line, U1 should cut this distance down to 3-4 feet while maintaining a starting position to handle all responsibilities. The umpire should never put himself in a position where a fielder could step into or dive into him on a line drive. D. U1 and U3 should be well positioned to see line drives hit at the feet of the first or third baseman in their normal positions (with a step or two forward) and to make that call. E. U1 and U3 will now take all line drives hit directly at and immediately in front of the first or third baseman. “Directly in front” refers to the immediate area in front of the fielder and in the immediate vicinity of his starting position. A fielder who moves a signifcant distance straight forward will remain the plate umpire’s call.
+---
+8.4 Basic Outfield Coverage
+A. Umpires will not automatically go out on all fly balls with or without runners on base. Umpires are expected to read fly balls and only go out on a trouble ball. The philosophy adopted by the CCA mechanics committee is “if in doubt, go out.” That philosophy is not meant to replace the reading of fly balls. Pause, read and react techniques should always be utilized. B. Pause, read and react. Then go hard and get a good angle. Be stopped when the play occurs. C. Four conditions that require an umpire to go to the outfield from the “A, B, C or D” positions: 1. The outfielder turns and begins to run toward the outfield fence (possible home run). 2. Multiple players converging on a fly ball. 3. A catch being made below the waist. 4. Outfielder moving toward the foul line and possible fair/foul decision. D. When a base umpire goes out from any position, the crew will revert back to the two-umpire system in most cases. E. In the three-umpire system, it is acceptable for umpires positioned within the infield to cross the basepath and go to the outfield for fly ball coverage. Some basic principles apply: 1. Umpires stationed within the infield must communicate (signal and verbal) with their partners before every situation that might call for them to leave the infield on a batted ball. 2. Umpires should only leave the infield on batted balls in their coverage area that are hit deep into the outfield or when outfielders are moving in and a catch is in doubt. 3. Umpires should not leave the infield on line drives or other situations when partners would not have an opportunity to assume their coverage. F. If in doubt, go out on fly balls in your coverage area.

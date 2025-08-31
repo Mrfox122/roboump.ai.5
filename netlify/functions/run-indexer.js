@@ -13,6 +13,8 @@ const filesToIndex = [
 
     { path: './rulebooks/2025-NCAA.txt', ruleSet: ['NCAA'] },
 
+    { path: './rulebooks/2025-OBR.txt', ruleSet: ['MLB'] },
+
     // Add your other files here when they are ready
 
 ];
