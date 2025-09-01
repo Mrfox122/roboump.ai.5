@@ -116,7 +116,7 @@ const { slang_definition, rephrased_question } = analysis;
 
 
 // === STEP 3: GENERATE MULTIPLE SEARCH QUERIES FROM THE CLEAN QUESTION ===
-const multiQueryPrompt = `Based on the rephrased question, generate 3 diverse search queries that will help find the most relevant baseball rule or mechanic.
+const multiQueryPrompt = `You are a baseball rules expert. Analyze the user's question and generate 3 diverse search queries to find the most relevant rule. Think about keywords, official terminology, and the likely section the rule would be in.
 Rephrased Question: "${rephrased_question}"
 
 Respond with only the 3 queries, each on a new line.`;
