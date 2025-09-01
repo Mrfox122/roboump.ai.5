@@ -87,66 +87,47 @@ exports.handler = async function (event) {
             };
         }
         // --- END reCAPTCHA VERIFICATION ---
-// --- STEP 2: RETRIEVE GLOSSARY & INTERPRET SLANG ---
-        // First, we get the glossary context from Pinecone
-        const glossaryQuery = await pineconeIndex.query({
-            vector: (await embeddingModel.embedContent("baseball slang terms")).embedding.values,
-            topK: 150, // Retrieve a large portion of the glossary
-            includeMetadata: true,
-            filter: { "ruleSet": { "$in": ["Glossary"] } }
-        });
-        const glossaryContext = glossaryQuery.matches.map(match => match.metadata.text).join("\n\n");
+// === STEP 2: INTERPRET SLANG & REPHRASE QUESTION ===
+const glossaryQuery = await pineconeIndex.query({
+    vector: (await embeddingModel.embedContent({ content: { parts: [{ text: "baseball slang terms" }] } })).embedding.values,
+    topK: 150,
+    includeMetadata: true,
+    filter: { "ruleSet": { "$in": ["Glossary"] } }
+});
+const glossaryContext = glossaryQuery.matches.map(match => match.metadata.text).join("\n\n");
 
-        // Now, ask the AI to act as a language expert, using the glossary
+const analysisPrompt = `You are a baseball language expert. Analyze the user's question using the provided glossary of slang terms. Your task is to identify any slang and rephrase the question into clear, official terminology.
+
+Respond in a strict JSON format with two keys: "slang_definition" and "rephrased_question".
+- If slang is found, provide its definition from the glossary.
+- If no slang is found, the value for "slang_definition" must be "None".
+
+GLOSSARY:
+${glossaryContext}
+---
+USER'S QUESTION: "${question}"`;
         
-        const analysisText = (await (await generativeModel.generateContent(`You are a baseball language expert. Analyze the user's question using the provided glossary of slang terms. Your task is to identify any slang and rephrase the question into clear, official terminology suitable for a rulebook search.
-        
-        Respond in a strict JSON format with two keys: "slang_definition" and "rephrased_question".
-        - If slang is found, provide its definition from the glossary.
-        - If no slang is found, the value for "slang_definition" must be "None".
+const analysisResult = await generativeModel.generateContent(analysisPrompt);
+const analysisText = (await analysisResult.response).text();
+const analysis = JSON.parse(analysisText.replace(/```json\n?|\n?```/g, ''));
 
-        GLOSSARY:
-        ${glossaryContext}
-        ---
-        USER'S QUESTION: "${question}"`)).response).text();
-        const analysis = JSON.parse(analysisText.replace(/```json\n?|\n?```/g, ''));
-        
-        console.log("AI Slang Analysis:", analysis);
-        const { slang_definition, rephrased_question } = analysis;
+console.log("AI Slang Analysis:", analysis);
+const { slang_definition, rephrased_question } = analysis;
 
-        // === STEP 3: QUESTION UNDERSTANDING (AI Query Generator) ===
-        // Generate multiple search queries that reflect different angles of the user's question
-        const analysisPrompt = `Based on the user's question, generate 3 different search queries that will help find the most relevant baseball rule or mechanic. The queries should be diverse and cover different aspects of the question.
-User Question: "${question}"
 
-Respond with only the 3 search queries, each on a new line.`;
-        
-        const analysisResult = await generativeModel.generateContent(`You are a baseball language expert. Analyze the user's question using the provided glossary of slang terms. Your task is to identify any slang and rephrase the question into clear, official terminology suitable for a rulebook search.
-        
-        Respond in a strict JSON format with two keys: "slang_definition" and "rephrased_question".
-        - If slang is found, provide its definition from the glossary.
-        - If no slang is found, the value for "slang_definition" must be "None".
+// === STEP 3: GENERATE MULTIPLE SEARCH QUERIES FROM THE CLEAN QUESTION ===
+const multiQueryPrompt = `Based on the rephrased question, generate 3 diverse search queries that will help find the most relevant baseball rule or mechanic.
+Rephrased Question: "${rephrased_question}"
 
-        GLOSSARY:
-        ${glossaryContext}
-        ---
-        USER'S QUESTION: "${question}"`);
-const searchTermsRaw = await (await generativeModel.generateContent(`You are a baseball language expert. Analyze the user's question using the provided glossary of slang terms. Your task is to identify any slang and rephrase the question into clear, official terminology suitable for a rulebook search.
-        
-        Respond in a strict JSON format with two keys: "slang_definition" and "rephrased_question".
-        - If slang is found, provide its definition from the glossary.
-        - If no slang is found, the value for "slang_definition" must be "None".
+Respond with only the 3 queries, each on a new line.`;
 
-        GLOSSARY:
-        ${glossaryContext}
-        ---
-        USER'S QUESTION: "${question}"`)).response.text();
-const searchQueries = searchTermsRaw.split('\n').map(q => q.trim()).filter(q => q.length > 0);
-searchQueries.unshift(question);
+const multiQueryResult = await generativeModel.generateContent(multiQueryPrompt);
+const searchQueries = (await multiQueryResult.response).text().split('\n').map(q => q.trim()).filter(q => q.length > 0);
+searchQueries.unshift(rephrased_question); // Also search for the main rephrased question
 
-        console.log(`AI identified search terms for ${ruleSet}: ${searchQueries.join(', ')}`);
+console.log(`AI identified search terms for ${ruleSet}:`, searchQueries);
 
-         // === STEP 3: EMBEDDING + VECTOR SEARCH (via Pinecone) ===
+         // === STEP 4: EMBEDDING + VECTOR SEARCH (via Pinecone) ===
         // Convert each query into vector embeddings
         const embeddingRequests = searchQueries.map(q => ({
   content: { parts: [{ text: q }] },
@@ -160,14 +141,14 @@ const queryVectors = embeddingResult.embeddings.map(e => e.values);
 const searchPromises = queryVectors.map(vector => 
   pineconeIndex.query({
     vector,
-    topK: 10,
+    topK: 5,
     includeMetadata: true,
     filter: { ruleSet: { "$in": [ruleSet] } }
   })
 );
 const searchResponses = await Promise.all(searchPromises);
 
-// === STEP 4: MERGE & FILTER RESULTS ===
+// === STEP 5: MERGE & FILTER RESULTS ===
         // Combine results from all searches, remove duplicates, and apply similarity threshold
 const allMatches = searchResponses.flatMap(res => res.matches);
 const uniqueMatches = Array.from(new Map(allMatches.map(m => [m.id, m])).values());
@@ -194,11 +175,11 @@ console.log("DEBUG: No relevant matches found above similarity threshold.");
                 body: JSON.stringify({ answer: `I couldn't find a rule in the ${ruleSet} documents that was a close enough match to answer that question. Please try rephrasing it.` }),
             };
         }
-         // Concatenate all relevant rule snippets into one context block
+         // Concentrate all relevant rule snippets into one context block
         const context = relevantMatches.map(match => match.metadata.text).join("\n\n---\n\n");
         console.log("Retrieved Context:\n", context);
 
-        // === STEP 5: FINAL ANSWER GENERATION (Gemini) ===
+        // === STEP 6: FINAL ANSWER GENERATION (Gemini) ===
         // Construct the final prompt with persona + rules + question + rulebook context
         const selectedPrompt = prompts[ruleSet] || prompts.default;
 
@@ -246,7 +227,7 @@ console.log("=== AI FINAL RESPONSE ===");
 console.log(aiAnswer);
 console.log("=========================");
 
-// === STEP 6: Return Final Answer ===
+// === STEP 7: Return Final Answer ===
         return {
             statusCode: 200,
             body: JSON.stringify({ answer: aiAnswer }),
