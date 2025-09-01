@@ -87,16 +87,60 @@ exports.handler = async function (event) {
             };
         }
         // --- END reCAPTCHA VERIFICATION ---
+// --- STEP 2: RETRIEVE GLOSSARY & INTERPRET SLANG ---
+        // First, we get the glossary context from Pinecone
+        const glossaryQuery = await pineconeIndex.query({
+            vector: (await embeddingModel.embedContent("baseball slang terms")).embedding.values,
+            topK: 150, // Retrieve a large portion of the glossary
+            includeMetadata: true,
+            filter: { "ruleSet": { "$in": ["Glossary"] } }
+        });
+        const glossaryContext = glossaryQuery.matches.map(match => match.metadata.text).join("\n\n");
 
-        // === STEP 2: QUESTION UNDERSTANDING (AI Query Generator) ===
+        // Now, ask the AI to act as a language expert, using the glossary
+        
+        const analysisText = (await (await generativeModel.generateContent(`You are a baseball language expert. Analyze the user's question using the provided glossary of slang terms. Your task is to identify any slang and rephrase the question into clear, official terminology suitable for a rulebook search.
+        
+        Respond in a strict JSON format with two keys: "slang_definition" and "rephrased_question".
+        - If slang is found, provide its definition from the glossary.
+        - If no slang is found, the value for "slang_definition" must be "None".
+
+        GLOSSARY:
+        ${glossaryContext}
+        ---
+        USER'S QUESTION: "${question}"`)).response).text();
+        const analysis = JSON.parse(analysisText.replace(/```json\n?|\n?```/g, ''));
+        
+        console.log("AI Slang Analysis:", analysis);
+        const { slang_definition, rephrased_question } = analysis;
+
+        // === STEP 3: QUESTION UNDERSTANDING (AI Query Generator) ===
         // Generate multiple search queries that reflect different angles of the user's question
         const analysisPrompt = `Based on the user's question, generate 3 different search queries that will help find the most relevant baseball rule or mechanic. The queries should be diverse and cover different aspects of the question.
 User Question: "${question}"
 
 Respond with only the 3 search queries, each on a new line.`;
         
-        const analysisResult = await generativeModel.generateContent(analysisPrompt);
-const searchTermsRaw = await analysisResult.response.text();
+        const analysisResult = await generativeModel.generateContent(`You are a baseball language expert. Analyze the user's question using the provided glossary of slang terms. Your task is to identify any slang and rephrase the question into clear, official terminology suitable for a rulebook search.
+        
+        Respond in a strict JSON format with two keys: "slang_definition" and "rephrased_question".
+        - If slang is found, provide its definition from the glossary.
+        - If no slang is found, the value for "slang_definition" must be "None".
+
+        GLOSSARY:
+        ${glossaryContext}
+        ---
+        USER'S QUESTION: "${question}"`);
+const searchTermsRaw = await (await generativeModel.generateContent(`You are a baseball language expert. Analyze the user's question using the provided glossary of slang terms. Your task is to identify any slang and rephrase the question into clear, official terminology suitable for a rulebook search.
+        
+        Respond in a strict JSON format with two keys: "slang_definition" and "rephrased_question".
+        - If slang is found, provide its definition from the glossary.
+        - If no slang is found, the value for "slang_definition" must be "None".
+
+        GLOSSARY:
+        ${glossaryContext}
+        ---
+        USER'S QUESTION: "${question}"`)).response.text();
 const searchQueries = searchTermsRaw.split('\n').map(q => q.trim()).filter(q => q.length > 0);
 searchQueries.unshift(question);
 
