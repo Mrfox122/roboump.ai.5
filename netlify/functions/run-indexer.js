@@ -11,9 +11,15 @@ const path = require("path");
 
 const filesToIndex = [
 
+    // { path: './rulebooks/2025-NFHS.txt', ruleSet: ['NFHS'] },
+
     { path: './rulebooks/2025-NCAA.txt', ruleSet: ['NCAA'] },
 
+    // { path: './rulebooks/2025-CCA.txt', ruleSet: ['CCA'] },
+
     { path: './rulebooks/2025-OBR.txt', ruleSet: ['MLB'] },
+
+    { path: './rulebooks/glossary.txt', ruleSet: ['Glossary'] },
 
     // Add your other files here when they are ready
 
