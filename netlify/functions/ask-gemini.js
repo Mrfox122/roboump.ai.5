@@ -113,6 +113,10 @@ const analysis = JSON.parse(analysisText.replace(/```json\n?|\n?```/g, ''));
 
 console.log("AI Slang Analysis:", analysis);
 const { slang_definition, rephrased_question } = analysis;
+const glossaryMatches = glossaryQuery.matches || [];
+const glossaryDefinitions = glossaryMatches
+    .map(match => `• ${match.metadata.term || "Term"}: ${match.metadata.text}`)
+    .join("\n") || null;
 
 
 // === STEP 3: GENERATE MULTIPLE SEARCH QUERIES FROM THE CLEAN QUESTION ===
@@ -207,8 +211,11 @@ console.log("=================");
  
         const finalPrompt = `${selectedPrompt}
 
-    **Your Task:**
-    You will be given a user's question and a collection of text snippets from a rulebook.
+        **Your Task:**
+        You will be given a user's question and a collection of text snippets from a rulebook.
+
+        **Glossary Definitions (Authoritative):**
+        ${glossaryDefinitions || "None detected."}
 
     **Instructions:**
     1. Review ALL the provided text snippets below.
