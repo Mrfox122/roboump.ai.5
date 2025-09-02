@@ -149,36 +149,44 @@ const searchPromises = queryVectors.map(vector =>
 const searchResponses = await Promise.all(searchPromises);
 
 // === STEP 5: MERGE & FILTER RESULTS ===
-        // Combine results from all searches, remove duplicates, and apply similarity threshold
+// Combine results from all searches, remove duplicates, and apply similarity threshold
 const allMatches = searchResponses.flatMap(res => res.matches);
 const uniqueMatches = Array.from(new Map(allMatches.map(m => [m.id, m])).values());
 
 const SIMILARITY_THRESHOLD = 0.65;
-const relevantMatches = uniqueMatches.filter(match => match.score > SIMILARITY_THRESHOLD);
+
+// Filter only relevant matches
+const relevantMatches = uniqueMatches
+    .filter(match => match.score > SIMILARITY_THRESHOLD)
+    .sort((a, b) => b.score - a.score); // Sort descending by score
 
 // Log debugging info
 console.log("DEBUG: Raw Pinecone responses:", JSON.stringify(searchResponses, null, 2));
-const topMatch = relevantMatches.sort((a, b) => b.score - a.score)[0];
+console.log("DEBUG: Relevant matches found:", relevantMatches.length);
 
-// comment out debug K value log
 if (relevantMatches.length > 0) {
-console.log("DEBUG: Top match score:", relevantMatches[0].score);
-console.log("DEBUG: Top match metadata snippet:", relevantMatches[0].metadata.text?.slice(0, 200));
+    console.log("DEBUG: Top match score:", relevantMatches[0].score);
+    console.log("DEBUG: Top match metadata snippet:", relevantMatches[0].metadata.text?.slice(0, 200));
 } else {
-console.log("DEBUG: No relevant matches found above similarity threshold.");
+    console.log("DEBUG: No relevant matches found above similarity threshold.");
 }
 
-    // If no good matches were found, notify user
-        if (relevantMatches.length === 0) {
-            return {
-                statusCode: 200,
-                body: JSON.stringify({ answer: `I couldn't find a rule in the ${ruleSet} documents that was a close enough match to answer that question. Please try rephrasing it.` }),
-            };
-        }
-         // Concentrate all relevant rule snippets into one context block
-        const context = relevantMatches.map(match => match.metadata.text).join("\n\n---\n\n");
-        console.log("Retrieved Context:\n", context);
+// If no good matches were found, notify user early
+if (relevantMatches.length === 0) {
+    return {
+        statusCode: 200,
+        body: JSON.stringify({
+            answer: `I couldn't find a rule in the ${ruleSet} documents that was a close enough match to answer that question. Please try rephrasing it.`,
+        }),
+    };
+}
 
+// Build the full context block from all relevant matches
+const finalContext = relevantMatches
+    .map((match, i) => `Result ${i + 1} (Score: ${match.score.toFixed(4)}):\n${match.metadata.text}`)
+    .join("\n\n---\n\n");
+
+console.log("Retrieved Context:\n", finalContext);
 
 
         // === STEP 6: FINAL ANSWER GENERATION (Gemini) ===
@@ -197,11 +205,15 @@ console.log("=================");
  
         const finalPrompt = `${selectedPrompt}
 
- **Your Task:**
-        You will be given a user's question and a collection of text snippets from a rulebook. Your task is to perform two steps:
-        1.  **Internal Re-ranking:** First, silently review all the provided text snippets and identify only the ones that are directly relevant to answering the user's question. Disregard any irrelevant snippets.
-        2.  **Generate Answer:** Based *only* on the relevant snippets you identified, construct a two-part answer as described below.
+    **Your Task:**
+    You will be given a user's question and a collection of text snippets from a rulebook.
 
+    **Instructions:**
+    1. Review ALL the provided text snippets below.
+    2. Decide which snippets are directly relevant to answering the user's question.
+    3. Synthesize the relevant information into a clear, conversational answer.
+    4. If multiple snippets are relevant, combine them intelligently.
+    5. At the end, quote the **single most relevant** rule verbatim.
 
         **Response Structure:**
         Your response must have two distinct parts:
