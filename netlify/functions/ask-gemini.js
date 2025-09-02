@@ -160,6 +160,8 @@ const relevantMatches = uniqueMatches
     .filter(match => match.score > SIMILARITY_THRESHOLD)
     .sort((a, b) => b.score - a.score); // Sort descending by score
 
+const topMatch = relevantMatches[0] || null;
+
 // Log debugging info
 console.log("DEBUG: Raw Pinecone responses:", JSON.stringify(searchResponses, null, 2));
 console.log("DEBUG: Relevant matches found:", relevantMatches.length);
