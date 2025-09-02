@@ -266,6 +266,9 @@ A home run hit with the bases loaded, scoring four runs.
 Green Monster
 The popular nickname for the high left field wall at Fenway Park in Boston.
 ---
+Ground-rule Double
+when a fair ball bounces in play and then goes over or under the outfield fence, or gets stuck in the fence, or goes through or under a scoreboard. The result of this is a double due to dead ball base awards.
+
 H
 ---
 hat trick
