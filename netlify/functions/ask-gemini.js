@@ -116,7 +116,7 @@ const { slang_definition, rephrased_question } = analysis;
 
 
 // === STEP 3: GENERATE MULTIPLE SEARCH QUERIES FROM THE CLEAN QUESTION ===
-const multiQueryPrompt = `You are a baseball rules expert. Analyze the user's question and generate 3 diverse search queries to find the most relevant rule. Think about keywords, official terminology, and the likely section the rule would be in.
+const multiQueryPrompt = `You are a baseball rules expert. Analyze the user's question and generate 3 diverse search queries to find the most relevant rule in our baseball rulebook. Think about keywords, official terminology, and the likely section the rule would be in. Keep in mind base awards, definitions and unusual situations.
 Rephrased Question: "${rephrased_question}"
 
 Respond with only the 3 queries, each on a new line.`;
@@ -141,7 +141,7 @@ const queryVectors = embeddingResult.embeddings.map(e => e.values);
 const searchPromises = queryVectors.map(vector => 
   pineconeIndex.query({
     vector,
-    topK: 5,
+    topK: 10,
     includeMetadata: true,
     filter: { ruleSet: { "$in": [ruleSet] } }
   })
@@ -153,7 +153,7 @@ const searchResponses = await Promise.all(searchPromises);
 const allMatches = searchResponses.flatMap(res => res.matches);
 const uniqueMatches = Array.from(new Map(allMatches.map(m => [m.id, m])).values());
 
-const SIMILARITY_THRESHOLD = 0.70;
+const SIMILARITY_THRESHOLD = 0.65;
 const relevantMatches = uniqueMatches.filter(match => match.score > SIMILARITY_THRESHOLD);
 
 // Log debugging info
@@ -179,6 +179,8 @@ console.log("DEBUG: No relevant matches found above similarity threshold.");
         const context = relevantMatches.map(match => match.metadata.text).join("\n\n---\n\n");
         console.log("Retrieved Context:\n", context);
 
+
+
         // === STEP 6: FINAL ANSWER GENERATION (Gemini) ===
         // Construct the final prompt with persona + rules + question + rulebook context
         const selectedPrompt = prompts[ruleSet] || prompts.default;
@@ -195,6 +197,10 @@ console.log("=================");
  
         const finalPrompt = `${selectedPrompt}
 
+ **Your Task:**
+        You will be given a user's question and a collection of text snippets from a rulebook. Your task is to perform two steps:
+        1.  **Internal Re-ranking:** First, silently review all the provided text snippets and identify only the ones that are directly relevant to answering the user's question. Disregard any irrelevant snippets.
+        2.  **Generate Answer:** Based *only* on the relevant snippets you identified, construct a two-part answer as described below.
 
 
         **Response Structure:**
@@ -208,7 +214,7 @@ console.log("=================");
 
         ---
         CONTEXT FROM RULEBOOK:
-        ${context}
+        ${finalContext}
         ---
         
         USER'S QUESTION (Answer according to ${ruleSet} rules):
