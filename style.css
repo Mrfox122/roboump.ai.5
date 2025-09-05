@@ -59,6 +59,7 @@ button { padding: 10px 20px; margin: 5px; cursor: pointer; }
     padding: 20px;
     margin-bottom: 20px;
     border: 1px solid #e0e0e0;
+    
 }
 
 .changelog-entry h2 {
@@ -69,6 +70,8 @@ button { padding: 10px 20px; margin: 5px; cursor: pointer; }
 
 .changelog-entry ul {
     padding-left: 20px;
+     display: inline-block; /* This makes the whole list centerable */
+    text-align: left;    /* This keeps the text aligned with the bullets */
 }
 
 .changelog-entry li {
@@ -147,7 +150,7 @@ button { padding: 10px 20px; margin: 5px; cursor: pointer; }
 }
 
 .completed-task {
-    color: #eec213; /* A readable, darker yellow */
+    color: #a88809; /* A readable, darker yellow */
     text-decoration: line-through; /* Puts a line through the text */
 }
 
