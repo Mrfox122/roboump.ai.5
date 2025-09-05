@@ -16,6 +16,6 @@
     "dotenv": "^17.2.0",
     "node-fetch": "^2.7.0",
     "pdf-parse": "^1.1.1",
-    "resend": "^4.7.0"
+    "resend": "^4.8.0"
   }
 }

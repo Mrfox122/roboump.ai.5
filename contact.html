@@ -3,23 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Contact - RoboUmp AI</title>
+    <title>Contact Us - RoboUmp AI</title>
     <link rel="stylesheet" href="style.css">
-    <script src="https://www.google.com/recaptcha/api.js?render=6LchII8rAAAAABrbtifib5ALdna7P8h-PItnTsrE"></script>
-
 </head>
 <body>
     <div class="container">
-        <h1>Contact Us for Sponsorship</h1>
-        <p>We'd love to hear from potential sponsors. Please fill out the form below and we'll get back to you shortly.</p>
+        <h1>Contact Us</h1>
+        <p>Have a question, feedback, or a sponsorship inquiry? We'd love to hear from you.</p>
+        
         <form id="contactForm">
-            <input type="text" id="name" placeholder="Your Name" required>
-            <input type="email" id="email" placeholder="Your Email" required>
-            <textarea id="message" placeholder="Your Message" required></textarea>
-            <button type="submit">Send Message</button>
+            <div class="form-group">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" rows="6" required></textarea>
+            </div>
+            <button type="submit" id="submitButton">Send Message</button>
         </form>
+        
         <div id="formStatus"></div>
+        <a href="index.html" class="back-link">← Back to Main Page</a>
     </div>
-    <script src="contact.js"></script>
+
+    <script>
+        const contactForm = document.getElementById('contactForm');
+        const submitButton = document.getElementById('submitButton');
+        const formStatus = document.getElementById('formStatus');
+
+        contactForm.addEventListener('submit', async (event) => {
+            event.preventDefault(); // Stop the default form submission
+            
+            submitButton.disabled = true;
+            submitButton.textContent = 'Sending...';
+            formStatus.textContent = '';
+            formStatus.className = '';
+
+            const formData = new FormData(contactForm);
+            const data = Object.fromEntries(formData.entries());
+
+            try {
+                const response = await fetch('/.netlify/functions/send-email', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data),
+                });
+
+                if (!response.ok) {
+                    throw new Error('Server responded with an error.');
+                }
+
+                const result = await response.json();
+                formStatus.textContent = result.message;
+                formStatus.className = 'status-success';
+                contactForm.reset();
+
+            } catch (error) {
+                console.error('Submission error:', error);
+                formStatus.textContent = 'Sorry, there was an error sending your message. Please try again later.';
+                formStatus.className = 'status-error';
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = 'Send Message';
+            }
+        });
+    </script>
 </body>
 </html>
