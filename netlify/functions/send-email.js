@@ -1,57 +1,42 @@
-//send-email.js
+const { Resend } = require('resend');
+const fetch = require('node-fetch');
 
 exports.handler = async function(event) {
-    console.log("Received event:", event.body);
-
     if (event.httpMethod !== 'POST') {
         return { statusCode: 405, body: 'Method Not Allowed' };
     }
 
-    let parsed;
     try {
-        parsed = JSON.parse(event.body);
-    } catch (err) {
-        console.error("Invalid JSON:", err);
-        return { statusCode: 400, body: 'Invalid JSON' };
-    }
+        const { name, email, message, token } = JSON.parse(event.body);
 
-    const { name, email, message, token } = parsed;
+        // 1. Verify the reCAPTCHA token with Google
+        const recaptchaResponse = await fetch(`https://www.google.com/recaptcha/api/siteverify`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: `secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${token}`
+        });
+        const recaptchaData = await recaptchaResponse.json();
 
-    // Log fields to verify input
-    console.log("Parsed fields:", { name, email, message, token });
+        // 2. Check if verification was successful and the score is high enough
+        if (!recaptchaData.success || recaptchaData.score < 0.5) {
+            console.log("reCAPTCHA verification failed:", recaptchaData['error-codes']);
+            return { statusCode: 400, body: JSON.stringify({ message: 'reCAPTCHA verification failed. Please try again.' }) };
+        }
 
-    // 1. Verify reCAPTCHA
-    const recaptchaResponse = await fetch(`https://www.google.com/recaptcha/api/siteverify`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: `secret=${process.env.RECAPTCHA_SECRET_KEY}&response=${token}`
-    });
-
-    const recaptchaData = await recaptchaResponse.json();
-    console.log("reCAPTCHA result:", recaptchaData);
-
-    if (!recaptchaData.success || recaptchaData.score < 0.5) {
-        return { statusCode: 400, body: JSON.stringify({ error: 'reCAPTCHA verification failed' }) };
-    }
-
-    // 2. Send the email
-    const resend = new Resend(process.env.RESEND_API_KEY);
-    const recipientEmail = process.env.CONTACT_EMAIL;
-
-    console.log("Attempting to send email to:", recipientEmail);
-
-    try {
-        const result = await resend.emails.send({
-            from: 'contact@roboump.app',
-            to: recipientEmail,
-            subject: `New Sponsorship Inquiry from ${name}`,
-            html: `<p><strong>Name:</strong> ${name}</p><p><strong>Email:</strong> ${email}</p><p><strong>Message:</strong></p><p>${message}</p>`
+        // 3. If verification passes, send the email
+        const resend = new Resend(process.env.RESEND_API_KEY);
+        await resend.emails.send({
+            from: 'RoboUmp AI Contact <contact@roboump.app>',
+            to: process.env.TO_EMAIL_ADDRESS,
+            subject: `New Message from ${name} via RoboUmp AI`,
+            reply_to: email,
+            html: `<p><strong>Name:</strong> ${name}</p><p><strong>Email:</strong> ${email}</p><hr><p>${message.replace(/\n/g, '<br>')}</p>`,
         });
 
-        console.log("Email sent result:", result);
-        return { statusCode: 200, body: 'Email sent' };
+        return { statusCode: 200, body: JSON.stringify({ message: "Your message has been sent successfully!" }) };
+
     } catch (error) {
-        console.error("Error sending email:", error);
-        return { statusCode: 500, body: JSON.stringify({ error: 'Error sending email' }) };
+        console.error("Error:", error);
+        return { statusCode: 500, body: JSON.stringify({ message: "Sorry, there was an error." }) };
     }
 };
