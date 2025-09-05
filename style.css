@@ -151,7 +151,7 @@ button { padding: 10px 20px; margin: 5px; cursor: pointer; }
     text-decoration: line-through; /* Puts a line through the text */
 }
 
-/* --- Changelog Button Styles --- */
+/* --- homepage Button Styles --- */
 .container {
     position: relative; /* This is needed to position the button inside */
 }
