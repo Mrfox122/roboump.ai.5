@@ -32,54 +32,68 @@
         <a href="index.html" class="back-link">← Back to Main Page</a>
     </div>
 
-    <script>
-        const contactForm = document.getElementById('contactForm');
-        const submitButton = document.getElementById('submitButton');
-        const formStatus = document.getElementById('formStatus');
+<script>
+    const contactForm = document.getElementById('contactForm');
+    const submitButton = document.getElementById('submitButton');
+    const formStatus = document.getElementById('formStatus');
 
-        contactForm.addEventListener('submit', (event) => {
-            event.preventDefault();
-            
-            submitButton.disabled = true;
-            submitButton.textContent = 'Verifying...';
-            formStatus.textContent = '';
-            formStatus.className = '';
+    contactForm.addEventListener('submit', (event) => {
+        event.preventDefault();
+        
+        submitButton.disabled = true;
+        submitButton.textContent = 'Verifying...';
+        formStatus.textContent = '';
+        formStatus.className = '';
 
-            grecaptcha.ready(function() {
-                grecaptcha.execute('YOUR_SITE_KEY_HERE', {action: 'submit'}).then(async function(token) {
-                    
-                    submitButton.textContent = 'Sending...';
-                    const formData = new FormData(contactForm);
-                    const data = Object.fromEntries(formData.entries());
-                    data.token = token; // Add the token to our data
+        // DEBUG: Check if the grecaptcha object exists
+        if (typeof grecaptcha === 'undefined') {
+            console.error("reCAPTCHA script not loaded or initialized.");
+            formStatus.textContent = 'Error: reCAPTCHA script failed to load.';
+            formStatus.className = 'status-error';
+            submitButton.disabled = false;
+            submitButton.textContent = 'Send Message';
+            return;
+        }
+        
+        console.log("reCAPTCHA object found. Calling grecaptcha.ready()...");
 
-                    try {
-                        const response = await fetch('/.netlify/functions/send-email', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify(data),
-                        });
+        grecaptcha.ready(function() {
+            console.log("grecaptcha is ready. Executing...");
+            grecaptcha.execute('YOUR_SITE_KEY_HERE', {action: 'submit'}).then(async function(token) {
+                
+                console.log("reCAPTCHA token received. Sending to function...");
+                submitButton.textContent = 'Sending...';
+                const formData = new FormData(contactForm);
+                const data = Object.fromEntries(formData.entries());
+                data.token = token;
 
-                        if (!response.ok) {
-                            throw new Error('Server responded with an error.');
-                        }
+                try {
+                    const response = await fetch('/.netlify/functions/send-email', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data),
+                    });
 
-                        const result = await response.json();
-                        formStatus.textContent = result.message;
-                        formStatus.className = 'status-success';
-                        contactForm.reset();
-
-                    } catch (error) {
-                        console.error('Submission error:', error);
-                        formStatus.textContent = 'Sorry, there was an error sending your message.';
-                        formStatus.className = 'status-error';
-                    } finally {
-                        submitButton.disabled = false;
-                        submitButton.textContent = 'Send Message';
+                    if (!response.ok) {
+                        throw new Error('Server responded with an error.');
                     }
-                });
+
+                    const result = await response.json();
+                    formStatus.textContent = result.message;
+                    formStatus.className = 'status-success';
+                    contactForm.reset();
+
+                } catch (error) {
+                    console.error('Submission error:', error);
+                    formStatus.textContent = 'Sorry, there was an error sending your message.';
+                    formStatus.className = 'status-error';
+                } finally {
+                    submitButton.disabled = false;
+                    submitButton.textContent = 'Send Message';
+                }
             });
         });
-    </script>
+    });
+</script>
 </body>
 </html>
