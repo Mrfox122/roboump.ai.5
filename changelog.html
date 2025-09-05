@@ -3,12 +3,20 @@
     <ul>
         <li>Rework indexing of the Official Baseball Rules (OBR) for the MLB ruleset to better encompass subsections and comments.</li>
         <li>Migration of the vector database from Pinecone to Netlify DB (Neon) to improve performance and simplify the architecture.</li>
-        <li>Fix contact us page.</li>
+        <li>Fix contact us page. </strong> new error noted due to DNS server settings</li>
         <li>Add additional glossary terms.</li>
-        <li>Reimplementation of sharing ai answers.</li>
+        <li>After migration to vector database we should be able to store questions/answers in Neon for sharing</li>
         <li>Implement a user feedback scoring system. <strong>That the ai can learn from.</strong></li>
         <li>Add NFHS ruleset</li>
     
+    </ul>
+</div>
+
+<div class="changelog-entry">
+    <h2>Version 0.9.2 - September 4, 2025</h2>
+    <ul>
+        <li><strong>Contact Page Fixed:</strong> Resolved an issue with the contact form by adding the necessary reCAPTCHA script and debugging the serverless email function. Error still exists with DNS server.</li>
+        <li><strong>Share Feature Re-enabled:</strong> Re-implemented the "Share" button and sharable link functionality. (Note: This feature currently shares the question, which is then re-run by the AI to generate the answer).</li>
     </ul>
 </div>
 

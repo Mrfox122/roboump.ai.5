@@ -119,3 +119,29 @@ button { padding: 10px 20px; margin: 5px; cursor: pointer; }
 .changelog-button:hover {
     background-color: #5a6268; /* Darker grey on hover */
 }
+
+/* --- Share Button Styles --- */
+.share-button {
+    background-color: #6c757d; /* A neutral grey color */
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-left: 10px; /* Space between Ask and Share buttons */
+    transition: background-color 0.2s ease;
+}
+
+.share-button:hover {
+    background-color: #5a6268;
+}
+
+.share-button:disabled {
+    background-color: #c0c0c0; /* A lighter grey for disabled state */
+    cursor: not-allowed;
+}
+
+.share-button:disabled:hover {
+    background-color: #c0c0c0; /* Keep the same color on hover when disabled */
+}
