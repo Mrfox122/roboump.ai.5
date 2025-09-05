@@ -13,6 +13,9 @@ document.getElementById('questionInput').addEventListener('keyup', function(even
 
 async function askQuestion() {
 
+    const shareButton = document.getElementById('shareButton');
+shareButton.disabled = true;
+
     const questionInput = document.getElementById('questionInput');
 
     const ruleSetSelect = document.getElementById('ruleSetSelect');
@@ -86,6 +89,8 @@ async function askQuestion() {
 
                 answerEl.innerHTML = marked.parse(data.answer);
 
+                activateShareButton(question, ruleSet);
+
 
             } catch (error) {
 
@@ -122,3 +127,49 @@ function trackSponsorClick() {
   }
 
 } 
+
+// --- SHARING FUNCTIONALITY ---
+
+// This event listener runs the check for a shared link when the page first loads
+window.addEventListener('DOMContentLoaded', checkForURLParameters);
+
+// This is the main function that controls the Share button
+function activateShareButton(question, ruleSet) {
+    const shareButton = document.getElementById('shareButton');
+    const encodedQuestion = encodeURIComponent(question);
+    const shareUrl = `${window.location.origin}${window.location.pathname}?ruleset=${ruleSet}&question=${encodedQuestion}`;
+    
+    shareButton.disabled = false; // Make the button clickable
+
+    shareButton.onclick = function() {
+        // Use the modern Web Share API if available (on mobile)
+        if (navigator.share) {
+            navigator.share({
+                title: 'RoboUmp AI Answer',
+                text: `Here's the answer to "${question}":`,
+                url: shareUrl,
+            });
+        } else {
+            // Fallback for desktop: copy link to clipboard
+            navigator.clipboard.writeText(shareUrl).then(function() {
+                shareButton.textContent = 'Link Copied!';
+                setTimeout(() => {
+                    shareButton.textContent = 'Share';
+                }, 2000); // Reset text after 2 seconds
+            });
+        }
+    };
+}
+
+// This function checks for parameters in the URL when the page loads
+function checkForURLParameters() {
+    const params = new URLSearchParams(window.location.search);
+    const question = params.get('question');
+    const ruleSet = params.get('ruleset');
+
+    if (question && ruleSet) {
+        document.getElementById('questionInput').value = decodeURIComponent(question);
+        document.getElementById('ruleSetSelect').value = ruleSet;
+        askQuestion(); // Automatically ask the question from the shared link
+    }
+}
