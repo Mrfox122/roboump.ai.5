@@ -3020,7 +3020,9 @@ player be permitted to apply rosin from the bag to his glove or
 dust any part of his uniform with the rosin bag.
 ---
 6.03 Batter Illegal Action
+---
 (a) A batter is out for illegal action when:
+---
 (1) He hits a ball with one or both feet on the ground entirely
 outside the batter’s box.
 Rule 6.03(a)(1) Comment: If a batter hits a ball fair or foul
@@ -3036,8 +3038,6 @@ stepping out of the batter’s box or making any other
 movement that hinders the catcher’s play at home base.
 (4) He throws his bat into fair or foul territory and hits a
 catcher (including the catcher’s glove) and the catcher
-85
-Rule 6.03(a)(4) to 6.03(a)(5)
 was attempting to catch a pitch with a runner(s) on base
 and/or the pitch was a third strike.
 EXCEPTION to Rules 6.03(a)(3) and (4): Batter is not out if any
@@ -3074,11 +3074,10 @@ out or outs made during a play shall stand. In addition to
 being called out, the player shall be ejected from the game
 and may be subject to additional penalties as determined
 by the Office of the Commissioner.
-86
-Rule 6.03(a)(5) to 6.03(b)(7)
 Rule 6.03(a)(5) Comment: A batter shall be deemed to have
 used or attempted to use an illegal bat if he brings such a bat
 into the batter’s box.
+---
 (b) Batting Out of Turn
 (1) A batter shall be called out, on appeal, when he fails to bat
 in his proper turn, and another batter completes a time at
@@ -3111,8 +3110,6 @@ shall be the batter whose name follows that of such
 legalized improper batter. The instant an improper batter’s
 actions are legalized, the batting order picks up with the
 name following that of the legalized improper batter.
-87
-Rule 6.03(b)(7)
 Rule 6.03(b)(7) Comment: The umpire shall not direct the
 attention of any person to the presence in the batter’s box of
 an improper batter. This rule is designed to require constant
@@ -3150,8 +3147,6 @@ the improper batter batting a ball or advancing to first base.
 Charles must return to second base because his advance
 to third resulted from the improper batter batting a ball.
 Daniel is called out, and Edward is the proper batter; (b)
-88
-Rule 6.03(b)(7)
 Abel’s run counts and Charles stays on third. The proper
 batter is Frank.
 PLAY (4)—With the bases full and two out. Hooker bats in
@@ -3188,9 +3183,9 @@ Who is the proper batter?
 RULING: The proper batter is Edward. When the proper
 batter is on base, he is passed over, and the following batter
 becomes the proper batter.
-89
-Rule 6.04 to 6.04(d)
+---
 6.04 Unsportsmanlike Conduct
+---
 (a) No manager, player, substitute, coach, trainer or batboy shall
 at any time, whether from the bench, the coach’s box or on the
 playing field, or elsewhere:
@@ -3204,34 +3199,37 @@ obvious purpose of trying to make the pitcher commit a
 balk.
 (4) Make intentional contact with the umpire in any
 manner.
+---
 (b) Players in uniform shall not address or mingle with spectator,
 nor sit in the stands before, during, or after a game. No manager,
 coach or player shall address any spectator before or during a
 game. Players of opposing teams shall not fraternize at any time
 while in uniform.
+---
 (c) No fielder shall take a position in the batter’s line of vision,
 and with deliberate unsportsmanlike intent, act in a manner to
 distract the batter.
 PENALTY: The offender shall be removed from the game
 and shall leave the playing field, and, if a balk is made, it
 shall be nullified.
+---
 (d) When a manager, player, coach or trainer is ejected from a
 game, he shall leave the field immediately and take no further
 part in that game. He shall remain in the clubhouse or change
 to street clothes and either leave the park or take a seat in the
 grandstand well removed from the vicinity of his team’s bench
 or bullpen.
+---
 Rule 6.04(d) Comment: If a manager, coach or player is under
 suspension he may be in uniform and may participate in the
 regular pre-game routines of the Club. At game time, however,
-90
-Rule 6.04(d) to 6.04(e)
 suspended personnel must be out of uniform, may not be in
 the dugout, and must be away from areas where players are
 expected to be during a game. Suspended personnel also are
 not permitted in the press box or any broadcast areas during the
 course of a game, but are permitted to watch the game from the
 stands or suite level.
+---
 (e) When the occupants of a player’s bench show violent disapproval
 of an umpire’s decision, the umpire shall first give warning that
 such disapproval shall cease.
@@ -3241,15 +3239,17 @@ to detect the offender, or offenders, he may clear the bench
 of all substitute players. The manager of the offending team
 shall have the privilege of recalling to the playing field only
 those players needed for substitution in the game.
-91
-Rule 7.01 to 7.01(b)(2)
+---
 7.00–ENDING THE GAME
+---
 7.01 Regulation Games
+---
 (a) A regulation game consists of nine innings, unless extended
 because of a tie score, or shortened (1) because the home team
 needs none of its half of the ninth inning or only a fraction
 of it, or (2) because the umpire-in-chief or the Office of the
 Commissioner calls the game.
+---
 (b) Extra Innings
 (1) If the score is tied after nine completed innings, play
 shall continue until (1) the visiting team has scored more
@@ -3277,8 +3277,6 @@ may be the player preceding the pitcher in the batting
 order. Any runner or batter removed from the game
 for a substitute shall be ineligible to return to the
 game in accordance with Rule 5.10.
-92
-Rule 7.01(b)(2) to 7.01(d)(2)
 (C) For purposes of calculating earned runs under Rule
 9.16, the runner who begins an inning on second base
 pursuant to this rule shall be deemed to be a runner
@@ -3301,6 +3299,7 @@ proper runner and all plays made will be legal,
 unless a batting out of order situation nullifies the
 advancement. There is no penalty for an improper
 runner before or after scoring.
+---
 (c) The umpire-in-chief or the Office of the Commissioner may
 postpone or call a game because of weather, field or ballpark
 conditions, malfunction of, or unintentional operator error in
@@ -3310,13 +3309,12 @@ emergencies or disasters, government restrictions, darkness, the
 health and safety of fans, players, team or stadium employees,
 or any extraordinary circumstances that prevent the game from
 being played or continued safely.
+---
 (d) A called game shall be considered a regulation game, if:
 (1) five innings have been completed;
 (2) the home team has scored more runs in four or four and a
 fraction half-innings than the visiting team has scored in
 five completed half-innings;
-93
-Rule 7.01(d)(3) to 7.01(e)(3)
 (3) the home team scores one or more runs in its half of the
 fifth inning to tie the score.
 The score of a called regulation game is the score at the time the
@@ -3331,6 +3329,7 @@ of the Commissioner also may determine that the circumstances
 of a called game are so unique or extraordinary that fairness
 requires that the game be treated as a suspended game or treated
 in a different manner.
+---
 (e) The score of a regulation game is the total number of runs
 scored by each team at the moment the game ends, as follows:
 (1) A completed regulation game ends when the visiting team
@@ -3352,13 +3351,13 @@ or an extra inning, but is called out for passing a preceding
 runner. The game ends immediately when the winning run is
 scored, unless there are two out and the winning run has not
 yet reached home plate when the runner passes another, in
-94
-Rule 7.01(e)(3) to 7.02(d)
 which case the inning is over and only those runs that scored
 before the runner passes another shall count.
 (4) The score of a called regulation game is the total number
 of runs scored by each team at the moment the game ends.
+---
 7.02 Suspended Games
+---
 (a) Any postponed game or game that is called:
 (1) prior to it becoming a regulation game,
 (2) when the game is tied, or
@@ -3369,12 +3368,14 @@ not retied the game or retaken the lead,
 must be immediately scheduled to be resumed and/or played
 to a completed regulation game, as described in Rule 7.02(b)
 below.
+---
 (b) Postponed games or suspended games described in Rule
 7.02(a) above must be immediately scheduled to be resumed
 and/or played to a completed regulation game during a
 scheduled series between the Clubs (i.e., preceding the next
 scheduled game between the two Clubs), preferably on the
 same grounds, or on a mutual off-day.
+---
 (c) If a postponed or suspended game cannot be scheduled to be
 completed during the championship season in accordance
 with Rule 7.02(b) above, or the available options during the
@@ -3384,12 +3385,11 @@ when to play or resume the game, including following the
 completion of the championship season, by considering all
 relevant factors, including whether the failure to resume and/
 or complete the game will materially impact the postseason.
+---
 (d) If a suspended game is not resumed to completion pursuant
 to Rule 7.02(c) above, and it has progressed far enough to
 become a regulation game at the time it was called, it shall
 be scored as follows:
-95
-Rule 7.02(d)(1) to 7.02(h)
 (1) the team ahead at the time the game was called shall be
 declared the winner; or
 (2) if the score was tied at the time the game was called, the
@@ -3401,15 +3401,18 @@ or more runs either to take the lead or tie the game, and the
 home team has not retaken the lead or retied the game, the
 score upon the completion of the last full inning shall stand
 for purposes of this Rule 7.02.
+---
 (e) If a postponed game is not rescheduled or a suspended game
 is not resumed to completion pursuant to Rule 7.02(c) above,
 and it did not progress far enough to become a regulation
 game at the time it was called, it shall be declared a “No
 Game” and will not count as a game for any purpose.
+---
 (f) The Minor Leagues may adopt different rules for
 determining regulation games and how and/or whether to
 postpone, reschedule, call, and/or complete postponed, tied
 or suspended games, in the regular season or postseason.
+---
 (g) The Major Leagues have determined that Rule 7.01(b)
 (2) (runner on second base in Extra Innings) does not
 apply to any Wild Card Series, Division Series, League
@@ -3420,14 +3423,13 @@ adopt different rules for postponing, suspending, calling,
 resuming, and/or completing any games, or otherwise,
 in any Wild Card Series, Division Series, League
 Championship Series, or World Series.
+---
 (h) A suspended game shall be resumed at the exact point
 of suspension of the original game. The completion of a
 suspended game is a continuation of the original game.
 The lineup and batting order of both teams shall be exactly
 the same as the lineup and batting order at the moment of
 suspension, subject to the rules governing substitution. Any
-96
-Rule 7.02(h) to 7.03(a)(5)
 player may be replaced by a player who had not been in the
 game prior to the suspension. No player removed before
 the suspension may be returned to the lineup.
@@ -3436,6 +3438,7 @@ suspended may be used as a substitute, even if he has taken
 the place of a player no longer with the Club who would not
 have been eligible because he had been removed from the
 lineup before the game was suspended.
+---
 Rule 7.02(h) Comment: If immediately prior to the call of a
 suspended game, a pitcher has not pitched to a minimum of
 three consecutive batters in accordance with Rule 5.10(g),
@@ -3447,7 +3450,9 @@ batters in accordance with Rule 5.10(g); and, if he does not
 start upon resumption of the game, he will be considered as
 having been substituted for and may not be used again in that
 game.
+---
 7.03 Forfeited Games
+---
 (a) A game may be forfeited to the opposing team when a team:
 (1) Fails to appear upon the field, or being upon the field,
 refuses to start play within five minutes after the umpire-
@@ -3462,75 +3467,85 @@ has been suspended or terminated by the umpire-in-chief;
 after the umpire-in-chief has called “Play;”
 (5) After warning by the umpire, willfully and persistently
 violates any rules of the game;
-97
-7.03(a)(6) to 7.04
 (6) Fails to obey within a reasonable time the umpire’s order
 for removal of a player from the game;
 (7) Fails to appear for the second game of a doubleheader
 within thirty minutes after the close of the first game
 unless the umpire-in-chief of the first game shall have
 extended the time of the intermission.
+---
 (b) A game shall be forfeited to the opposing team when a team is
 unable or refuses to place nine players on the field.
+---
 (c) A game shall be forfeited to the visiting team if, after it has been
 suspended, the order of the umpire to groundskeepers respecting
 preparation of the field for resumption of play intentionally or
 willfully is not complied with.
+---
 (d) If the umpire-in-chief declares a game forfeited, he shall
 transmit a written report to the Office of the Commissioner
 within 24 hours thereafter, but failure of such transmittal shall
 not affect the forfeiture.
+---
 7.04 Protesting Games
 Protesting a game shall never be permitted, regardless of
 whether such complaint is based on judgment decisions by the
 umpire or an allegation that an umpire misapplied these rules or
 otherwise rendered a decision in violation of these rules.
-98
-Rule 8.01 to 8.02(a)
+---
 8.00–THE UMPIRE
+---
 8.01 Umpire Qualifications and Authority
+---
 (a) The Office of the Commissioner shall appoint one or more
 umpires to officiate at each league championship game. The
 umpires shall be responsible for the conduct of the game
 in accordance with these official rules and for maintaining
 discipline and order on the playing field during the game.
+---
 (b) Each umpire is the representative of the league and of
 professional baseball, and is authorized and required to enforce
 all of these rules. Each umpire has authority to order a player,
 coach, manager or Club officer or employee to do or refrain
 from doing anything which affects the administering of these
 rules, and to enforce the prescribed penalties.
+---
 (c) Each umpire has authority to rule on any point not specifically
 covered in these rules.
+---
 (d) Each umpire has authority to disqualify any player, coach,
 manager or substitute for objecting to decisions or for unsports-
 manlike conduct or language, and to eject such disqualified
 person from the playing field. If an umpire disqualifies a player
 while a play is in progress, the disqualification shall not take
 effect until no further action is possible in that play.
+---
 (e) Each umpire has authority at his discretion to eject from the
 playing field (1) any person whose duties permit his presence on
 the field, such as ground crew members, ushers, photographers,
 newsmen, broadcasting crew members, etc., and (2) any spectator
 or other person not authorized to be on the playing field.
+---
 8.02 Appeal of Umpire Decisions
+---
 (a) Any umpire’s decision which involves judgment, such as, but
 not limited to, whether a batted ball is fair or foul, whether a
 pitch is a strike or a ball, or whether a runner is safe or out, is
 final. No player, manager, coach or substitute shall object to any
 such judgment decisions.
+---
 Rule 8.02(a) Comment: Players leaving their position in the
 field or on base, or managers or coaches leaving the bench or
-99
-Rule 8.02(a) to 8.02(c)
 coaches box, to argue on BALLS AND STRIKES will not be
 permitted. They should be warned if they start for the plate to
 protest the call. If they continue, they will be ejected from the
 game.
+---
 (b) If there is reasonable doubt that any umpire’s decision may be
 in conflict with the rules, the manager may appeal the decision
 and ask that a correct ruling be made. Such appeal shall be
 made only to the umpire who made the protested decision.
+---
 (c) If a decision is appealed, the umpire making the decision may
 ask another umpire for information before making a final
 decision. No umpire shall criticize, seek to reverse or interfere
@@ -3553,6 +3568,7 @@ ball-strike count shall not be permitted after a pitch is thrown
 to a subsequent batter, or in the case of the final batter of an
 inning or game, after all infielders of the defensive team leave
 fair territory.
+---
 Rule 8.02(c) Comment: A manager is permitted to ask the
 umpires for an explanation of the play and how the umpires
 have exercised their discretion to eliminate the results and
@@ -3560,8 +3576,6 @@ consequences of the earlier call that the umpires are reversing.
 Once the umpires explain the result of the play, however, no
 one is permitted to argue that the umpires should have exercised
 their discretion in a different manner.
-100
-Rule 8.02(c) to 8.02(e)
 The manager or the catcher may request the plate umpire to ask
 his partner for help on a half swing when the plate umpire calls
 the pitch a ball, but not when the pitch is called a strike. The
@@ -3589,18 +3603,21 @@ The ball is in play on appeal on a half swing.
 On a half swing, if the manager comes out to argue with first or
 third base umpire and if after being warned he persists in arguing,
 he can be ejected as he is now arguing over a called ball or strike.
+---
 (d) No umpire may be replaced during a game unless he is injured
 or becomes ill.
+---
 (d) If there is only one umpire, he shall have complete jurisdiction
 in administering the rules. He may take any position on the
 playing field which will enable him to discharge his duties
 (usually behind the catcher, but sometimes behind the pitcher
 if there are runners). He shall be considered umpire-in-chief.
+---
 (e) If there are two or more umpires, one shall be designated
 umpire-in-chief and the others field umpires.
-101
-8.03(a) to 8.03(c)
+---
 8.03 Umpire Position
+---
 (a) The umpire-in-chief shall stand behind the catcher. (He usually
 is called the plate umpire.) His duties shall be to:
 (1) Take full charge of, and be responsible for, the proper
@@ -3617,6 +3634,7 @@ set before the game starts;
 (8) Inform the Official Scorer of the official batting order, and
 any changes in the lineups and batting order, on request;
 (9) Announce any special ground rules, at his discretion.
+---
 (b) A field umpire may take any position on the playing field he
 thinks best suited to make impending decisions on the bases.
 His duties shall be to:
@@ -3630,26 +3648,29 @@ the rules, and excepting the power to forfeit the game,
 shall have equal authority with the umpire-in-chief in
 administering and enforcing the rules and maintaining
 discipline.
+---
 (c) If different decisions should be made on one play by different
 umpires, the umpire-in-chief shall call all the umpires into
-102
-Rule 8.03(c) to 8.04
 consultation, with no manager or player present. After
 consultation, the umpire-in-chief (unless another umpire may
 have been designated by the Office of the Commissioner) shall
 determine which decision shall prevail, based on which umpire
 was in best position and which decision was most likely correct.
 Play shall proceed as if only the final decision had been made.
+---
 8.04 Reporting
+---
 (a) The umpire shall report to the Office of the Commissioner after
 the end of a game all violations of rules and other incidents
 worthy of comment, including the disqualification of any
 trainer, manager, coach or player, and the reasons therefor.
+---
 (b) When any trainer, manager, coach or player is disqualified
 for a flagrant offense such as the use of obscene or indecent
 language, or an assault upon an umpire, trainer, manager, coach
 or player, the umpire shall forward full particulars to the Office
 of the Commissioner after the end of the game.
+---
 (c) After receiving the umpire’s report that a trainer, manager, coach
 or player has been disqualified, the Office of the Commissioner
 shall impose such penalty as it deems justified, and shall notify
@@ -3660,7 +3681,7 @@ notice of discipline. Failure to pay such fine as directed shall
 result in the offender being debarred from participation in any
 game and from sitting on the players’ bench during any game,
 until the fine is paid.
-103
+---
 General Instructions to Umpires
 GENERAL INSTRUCTIONS TO UMPIRES
 Umpires, on the field, should not indulge in conversation with
@@ -3695,8 +3716,6 @@ Do not come running with your arm up or down, denoting “out” or
 “safe.” Wait until the play is completed before making any arm motion.
 Each umpire team should work out a simple set of signals, so
 the proper umpire can always right a manifestly wrong decision when
-104
-General Instructions to Umpires
 convinced he has made an error. If sure you got the play correctly, do not
 be stampeded by players’ appeals to “ask the other man.” If not sure, ask
 one of your associates. Do not carry this to extremes, be alert and get your
@@ -3709,55 +3728,11 @@ players still question it if they feel you were not in a spot to see the play
 clearly and definitely.
 Finally, be courteous, impartial and firm, and so compel respect
 from all.
-105
-Rule 9.01
-THE RULES OF SCORING
-Index
-Appeal of scoring decision: 9.01(a)
-Assists: 9.10
-Base hits: 9.05, 9.06
-Bases on balls: 9.14
-Batting out of turn: 9.01(b)(4), 9.03(d)
-Box scores: 9.02, 9.03(b)
-Box scores: how to prove, 9.03(c)
-Called game: 9.03(e)
-Caught stealing: 9.07(h)
-Cumulative performance records
-guidelines: 9.23
-Defensive indifference: 9.07(g)
-Determining value of base hits: 9.06
-Double plays: 9.11
-Earned runs: 9.16
-Errors: 9.12
-Fielder’s choice: Definitions, 9.12(f)(2)
-Forfeited game: 9.03(e)
-Game-ending hits: 9.06(f), 9.06(g)
-Individual championships, how
-determined: 9.22
-Official scorer: 9.01
-Ordinary effort: Definitions of Terms
-Oversliding: Definitions of Terms
-Passed balls: 9.13
-Percentages, how determined: 9.21
-Protested game: 9.01(b)(3)
-Putouts: 9.09
-Report: 9.02, 9.03
-Runs allowed: 9.16
-Runs batted in: 9.04
-Sacrifices: 9.08
-Saves for relief pitchers: 9.19
-Shutouts: 9.18
-Statistics: 9.20
-Stolen bases: 9.07
-Streaks, how determined: 9.22
-Strikeouts: 9.15
-Substitutes: 9.03(b)
-Suspended game: 9.01(b)(3), 9.23(d)
-Triple plays: 9.11
-Wild pitches: 9.13
-Winning and losing pitcher: 9.17
+---
 9.00—THE OFFICIAL SCORER
+---
 9.01 Official Scorer (General Rules)
+---
 (a) The Office of the Commissioner, with respect to Major League
 games, and the Commissioner’s designee, with respect to
 Minor League games, shall appoint an Official Scorer for each
@@ -3768,8 +3743,6 @@ in a seat adjacent to league Official Data Collection staff. The
 Official Scorer shall have sole authority to make all decisions
 concerning application of Rule 9 that involve judgment, such as
 whether a batter’s advance to first base is the result of a hit or
-106
-Rule 9.01(a)
 an error. The Official Scorer shall communicate such decisions
 first to league Official Data Collection staff, and second to staff
 and media personnel in the press box and broadcasting booths
@@ -3778,6 +3751,7 @@ shall advise the public address announcer of such decisions, if
 requested. All persons, including Club officials and players,
 are prohibited from protesting to the Official Scorer or league
 Official Data Collection staff regarding any such decisions.
+---
 (a) The Official Scorer shall make all decisions concerning judgment
 calls. Upon conclusion of an event in the field requiring a scorer’s
 judgment, the Official Scorer will first make a “preliminary”
@@ -3804,12 +3778,11 @@ a warning, impose reasonable sanctions on the Club or player. A
 Minor League player or Club may request that the Office of the
 Commissioner review a judgment call of an Official Scorer in
 accordance with league rules.
+---
 (a) After each game, including forfeited and called games, the
 Official Scorer shall prepare a report, on a form prescribed by
 the Office of the Commissioner, with respect to Major League
 games, and the Commissioner’s designee, with respect to
-107
-Rule 9.01(a) to Rule 9.01(b)(2)
 Minor League games, listing the date of the game, where it was
 played, the names of the competing Clubs and the umpires,
 the full score of the game and all records of individual players
@@ -3821,6 +3794,7 @@ Official Scorer shall forward the report of any suspended game
 as soon as practicable after the game has been completed, or
 after it becomes a called game because it cannot be completed,
 as provided by the Rule 7.02.
+---
 Rule 9.01(a) Comment: The Official Scorer shall forward the
 official score report to the league statistician instead of to
 the league office, if requested to do so by the league. In the
@@ -3829,6 +3803,7 @@ statistician and the rulings by an Official Scorer, the report
 of such Official Scorer shall control. League statisticians and
 Official Scorers should consult cooperatively to resolve any
 discrepancies.
+---
 (b) (1) In all cases, the Official Scorer shall not make a scoring
 decision that is in conflict with Rule 9 or any other Official
 Baseball Rule. The Official Scorer shall conform strictly
@@ -3846,8 +3821,6 @@ scoring decision.
 (2) If the teams change sides before three men are put out, the
 Official Scorer shall immediately inform the umpire-in-
 chief of the mistake.
-108
-Rule 9.01(b)(3) to 9.02(a)
 (3) If the game is suspended, the Official Scorer shall make
 a note of the exact situation at the time of the suspension,
 including the score, the number of outs, the position of
@@ -3860,6 +3833,7 @@ time of suspension.
 (4) The Official Scorer shall not call the attention of any
 umpire or of any member of either team to the fact that a
 player is batting out of turn.
+---
 (c) The Official Scorer for Major League and Minor League games
 is an official representative who is entitled to the respect and
 dignity of his office and shall be accorded full protection by
@@ -3868,9 +3842,11 @@ to the appropriate league official any indignity expressed by
 any manager, player, Club employee, Club officer, or media
 personnel in the course of, or as the result of, the discharge of
 Official Scorer duties.
+---
 9.02 Official Scorer Report
 The official score report prepared by the Official Scorer shall be in
 a form prescribed by the league and shall include:
+---
 (a) The following records for each batter and runner:
 (1) Number of times batted, except that no time at bat shall be
 charged when a player
@@ -3881,8 +3857,6 @@ charged when a player
 obstruction, or shift restriction violation;
 (2) Number of runs scored;
 (3) Number of safe hits;
-109
-Rule 9.02(a) to 9.02(c)
 (4) Number of runs batted in;
 (5) Two-base hits;
 (6) Three-base hits;
@@ -3903,16 +3877,16 @@ Rule 9.02(a)(17) Comment: The Official Scorer should not
 charge a batter with grounding into a double play if the batter-
 runner is called out due to interference by a preceding runner.
 (18) Number of times caught stealing.
+---
 (b) The following records for each fielder:
 (1) Number of putouts;
 (2) Number of assists;
 (3) Number of errors;
 (4) Number of double plays participated in; and
 (5) Number of triple plays participated in.
+---
 (c) The following records for each pitcher:
 (1) Number of innings pitched;
-110
-Rule 9.02(c) to 9.02(d)
 Rule 9.02(c)(1) Comment: In computing innings pitched, the
 Official Scorer shall count each putout as ⅓ of an inning. For
 example, if a starting pitcher is replaced with one out in the
@@ -3942,51 +3916,61 @@ allowed;
 (13) Number of strikeouts;
 (14) Number of wild pitches; and
 (15) Number of balks.
+---
 (d) The following additional data:
 (1) Name of the winning pitcher;
 (2) Name of the losing pitcher;
-111
-Rule 9.02(d) to 9.03(a)
 (3) Names of the starting pitcher and the finishing pitcher for
 each team; and
 (4) Name of pitcher credited with a save, if any.
+---
 (e) Number of passed balls allowed by each catcher.
+---
 (f) Name of players participating in double plays and triple plays.
 Rule 9.02(f) Comment: For example, an Official Scorer would
 note: “Double Plays—Jones, Roberts and Smith (2). Triple
 Play—Jones and Smith.”
+---
 (g) Number of runners left on base by each team. This total shall
 include all runners who get on base by any means and who do
 not score and are not put out. The Official Scorer shall include
 in this total a batter-runner whose batted ball results in another
 runner being retired for the third out.
+---
 (h) Names of batters who hit home runs with the bases full.
+---
 (i) Number of outs when winning run scored, if the game was won
 in the last half-inning.
+---
 (j) The score by innings for each team.
+---
 (k) Names of umpires, listed in this order: plate umpire, first-
 base umpire, second-base umpire, third-base umpire, left-field
 umpire (if any) and right-field umpire (if any).
+---
 (l) Time required to play the game, with delays deducted for
 weather, light failure or technological failure not related to
 game action.
 Rule 9.02(l) Comment: A delay to attend to the injury of a player,
 manager, coach or umpire shall be counted in computing time
 of game.
+---
 (m) Official attendance, as provided by the home Club.
+---
 9.03 Official Score Report (Additional Rules)
+---
 (a) In compiling the official score report, the Official Scorer shall
 list each player’s name and fielding position, or positions, in
 the order in which the player batted, or would have batted if the
 game ended before the player came to bat.
-112
-Rule 9.03(a) to 9.03(c)
+---
 Rule 9.03(a) Comment: When a player does not exchange
 positions with another fielder but is merely placed in a different
 spot for a particular batter (for example, if a second baseman goes
 to the outfield to form a four-man outfield, or if a third baseman
 moves to a position between the shortstop and second baseman),
 the Official Scorer should not list this as a new position.
+---
 (b) The Official Scorer shall identify in the official score report any
 player who enters the game as a substitute batter or substitute
 runner, whether or not such player continues in the game
@@ -3998,6 +3982,7 @@ name of any such substitute whose name is announced, but
 who is removed for another substitute before he actually gets
 into the game. Any such second substitute shall be recorded as
 batting or running for the first announced substitute.
+---
 Rule 9.03(b) Comment: Lower case letters are recommended
 as symbols for substitute batters and numerals are
 recommended as symbols for substitute runners. For example,
@@ -4010,6 +3995,7 @@ is removed for another substitute before he actually gets into
 the game, the Official Scorer report shall record the substitute,
 for example, as follows: “e-Announced as substitute for Frank
 in seventh inning.”
+---
 (c) How to Prove a Box Score
 A box score shall balance (or is proven) when the total of the
 team’s times at bat, bases on balls received, hit batters, sacrifice
@@ -4017,9 +4003,9 @@ bunts, sacrifice flies and batters awarded first base because of
 interference, obstruction, or shift restriction violation equals the
 total of that team’s runs, players left on base and the opposing
 team’s putouts.
-113
-Rule 9.03(d) to 9.03(e)
+---
 (d) When Player Bats Out of Turn
+---
 (d) When a player bats out of turn and is put out, and the proper
 batter is called out before the ball is pitched to the next batter,
 the Official Scorer shall charge the proper batter with a time at
@@ -4033,6 +4019,7 @@ base. If more than one batter bats out of turn in succession, the
 Official Scorer shall score all plays just as they occur, skipping
 the turn at bat of the player or players who first missed batting
 in the proper order.
+---
 (e) Called and Forfeited Games
 (1) If a regulation game is called, the Official Scorer shall
 include the record of all individual and team actions up
@@ -4051,15 +4038,16 @@ forfeit, the Official Scorer shall not enter a winning or
 losing pitcher. If a game is forfeited before it becomes
 a regulation game, the Official Scorer shall include no
 records and shall report only the fact of the forfeit.
+---
 Rule 9.03(e) Comment: The Official Scorer shall not consider
 that, by rule, the score of a forfeited game is 9 to 0 (see Definition
 of Terms (Forfeited Game)), notwithstanding the results on the
 field at the point the game is forfeited.
-114
-Rule 9.04 to 9.05(a)(1)
+---
 9.04 Runs Batted In
 A run batted in is a statistic credited to a batter whose action at bat
 causes one or more runs to score, as set forth in this Rule 9.04.
+---
 (a) The Official Scorer shall credit the batter with a run batted in for
 every run that scores
 (1) unaided by an error and as part of a play begun by the
@@ -4072,12 +4060,14 @@ for being touched by a pitched ball or for interference,
 obstruction, or shift restriction violation); or
 (3) when, before two are out, an error is made on a play on
 which a runner from third base ordinarily would score.
+---
 (b) The Official Scorer shall not credit a run batted in
 (1) when the batter grounds into a force double play or a
 reverse-force double play; or
 (2) when a fielder is charged with an error because the fielder
 muffs a throw at first base that would have completed a
 force double play.
+---
 (c) The Official Scorer’s judgment must determine whether a run
 batted in shall be credited for a run that scores when a fielder
 holds the ball or throws to a wrong base. Ordinarily, if the runner
@@ -4085,9 +4075,11 @@ keeps going, the Official Scorer should credit a run batted in; if
 the runner stops and takes off again when the runner notices the
 misplay, the Official Scorer should credit the run as scored on
 a fielder’s choice.
+---
 9.05 Base Hits
 A base hit is a statistic credited to a batter when such batter reaches
 base safely, as set forth in this Rule 9.05.
+---
 (a) The Official Scorer shall credit a batter with a base hit when:
 (1) the batter reaches first base (or any succeeding base)
 115
@@ -4121,13 +4113,13 @@ Official Scorer shall not score a hit; or
 runner and, in the Official Scorer’s judgment, the batter-
 runner would not have been put out at first base by
 ordinary effort.
+---
 Rule 9.05(a) Comment: In applying Rule 9.05(a), the Official
 Scorer shall always give the batter the benefit of the doubt. A
 safe course for the Official Scorer to follow is to score a hit when
 exceptionally good fielding of a ball fails to result in a putout.
+---
 (b) The Official Scorer shall not credit a base hit when a:
-116
-Rule 9.05(b)(1) to 9.06(b)
 (1) runner is forced out by a batted ball, or would have been
 forced out except for a fielding error;
 (2) batter apparently hits safely and a runner who is forced to
@@ -4151,23 +4143,25 @@ before attempting to make the putout at first base.
 to field a batted ball, unless in the scorer’s judgment the
 batter-runner would have been safe had the interference
 not occurred.
+---
 9.06 Determining Value of Base Hits
 The Official Scorer shall score a base hit as a one-base hit, two-base
 hit, three-base hit or home run when no error or putout results, as
 follows:
+---
 (a) Subject to the provisions of Rule 9.06(b) and 9.06(c), it is a
 one-base hit if the batter stops at first base; it is a two-base hit
 if the batter stops at second base; it a three-base hit if the batter
 stops at third base; and it is a home run if the batter touches all
 bases and scores.
+---
 (b) When, with one or more runners on base, the batter advances
 more than one base on a safe hit and the defensive team makes
-117
-Rule 9.06(b) to 9.06(c)
 an attempt to put out a preceding runner, the scorer shall
 determine whether the batter made a legitimate two-base hit or
 three-base hit, or whether the batter-runner advanced beyond
 first base on the fielder’s choice.
+---
 Rule 9.06 Comment: The Official Scorer shall not credit the
 batter with a three-base hit when a preceding runner is put out
 at home plate, or would have been out but for an error. The
@@ -4194,16 +4188,16 @@ a lead, then runs back to tag up, thinking the ball will
 be caught. The ball falls safe, but runner cannot score,
 although batter has reached second. The Official
 Scorer shall credit batter with a two-base hit.
+---
 (c) When the batter attempts to make a two-base hit or a three-base
 hit by sliding, he must hold the last base to which he advances.
 If a batter-runner overslides and is tagged out before getting back
 to the base safely, he shall credit with only as many bases as he
 attained safely. If a batter-runner overslides second base and is
 tagged out, the Official Scorer shall credit him with a one-base
-118
-Rule 9.06(c) to 9.06(f)
 hit; if the batter-runner overslides third base and is tagged out, the
 Official Scorer shall credit him with a two-base hit.
+---
 Rule 9.06(c) Comment: If the batter-runner overruns second or
 third base and is tagged out trying to return, the Official Scorer
 shall credit the batter-runner with the last base he touched. If
@@ -4213,6 +4207,7 @@ Scorer shall credit the batter with a two-base hit. If a batter-
 runner runs past third base after reaching that base on his feet,
 attempts to return and is tagged out, the Official Scorer shall
 credit the batter with a three-base hit.
+---
 (d) When the batter, after making a safe hit, is called out for having
 failed to touch a base, the last base the batter reached safely
 shall determine if the Official Scorer shall credit him with a
@@ -4225,10 +4220,12 @@ for missing second base, the Official Scorer shall credit him
 with a one-base hit. If a batter-runner is called out for missing
 first base, the Official Scorer shall charge him with a time at
 bat, but no hit.
+---
 (e) When a batter-runner is awarded two bases, three bases or a
 home run under the provisions of Rules 5.06(b)(4) or 6.01(h),
 the Official Scorer shall credit the batter-runner with a two-base
 hit, a three-base hit or a home run, as the case may be.
+---
 (f) Subject to the provisions of Rule 9.06(g), when a batter ends a
 game with a safe hit that drives in as many runs as are necessary
 to put his team in the lead, the Official Scorer shall credit such
@@ -4236,10 +4233,9 @@ batter with only as many bases on his hit as are advanced by the
 runner who scores the winning run, and then only if the batter
 runs out his hit for as many bases as are advanced by the runner
 who scores the winning run.
+---
 Rule 9.06(f) Comment: The Official Scorer shall apply this rule
 even when the batter is theoretically entitled to more bases
-119
-Rule 9.06(f) to 9.07(b)
 because of being awarded an “automatic” extra-base hit under
 various provisions of Rules 5.05 and 5.06(b)(4).
 The Official Scorer shall credit the batter with a base touched
@@ -4251,14 +4247,17 @@ hit. The runner scores after the batter has touched first base and
 continued on to second base but shortly before the batter-runner
 reaches second base. If the batter-runner reaches second base,
 the Official Scorer shall credit the batter with a two-base hit.
+---
 (g) When the batter ends a game with a home run hit out of the
 playing field, the batter and any runners on base are entitled to
 score.
+---
 9.07 Stolen Bases and Caught Stealing
 The Official Scorer shall credit a stolen base to a runner whenever
 the runner advances one base unaided by a hit, a putout, an error,
 a force-out, a fielder’s choice, a passed ball, a wild pitch or a balk,
 subject to the following:
+---
 (a) When a runner starts for the next base before the pitcher delivers
 the ball and the pitch results in what ordinarily is scored a wild
 pitch or passed ball, the Official Scorer shall credit the runner
@@ -4267,6 +4266,7 @@ a result of the misplay, the stealing runner advances an extra
 base, or another runner also advances, in which case the Official
 Scorer shall score the wild pitch or passed ball as well as the
 stolen base.
+---
 (b) When a runner is attempting to steal, and the catcher, after
 receiving the pitch, makes a wild throw trying to prevent the
 stolen base, the Official Scorer shall credit the runner with a
@@ -4275,8 +4275,7 @@ the wild throw permits the stealing runner to advance one or
 more extra bases, or permits another runner to advance, in
 which case the Official Scorer shall credit the runner with the
 stolen base and charge one error to the catcher.
-120
-Rule 9.07(c) to 9.07(g)
+---
 (c) When a runner, attempting to steal, or after being picked off
 base, evades being put out in a run-down play and advances
 to the next base without the aid of an error, the Official Scorer
@@ -4287,23 +4286,28 @@ runner, attempting to steal, evades being put out in a run-down
 play and returns safely, without the aid of an error, to the base
 he originally occupied, the Official Scorer shall credit a stolen
 base to the runner who advances.
+---
 (d) When a double- or triple-steal is attempted and one runner is
 thrown out before reaching and holding the base such runner
 is attempting to steal, no other runner shall be credited with a
 stolen base.
+---
 (e) When a runner is tagged out after oversliding a base, while
 attempting either to return to that base or to advance to the next
 base, the Official Scorer shall not credit such runner with a
 stolen base.
+---
 (f) When in the scorer’s judgment a runner attempting to steal is safe
 because of a muffed throw, the Official Scorer shall not credit a
 stolen base. The Official Scorer shall credit an assist to the fielder
 who made the throw, charge an error to the fielder who muffed
 the throw and charge the runner with “caught stealing.”
+---
 (g) The Official Scorer shall not score a stolen base when a runner
 advances solely because of the defensive team’s indifference
 to the runner’s advance. The Official Scorer shall score such a
 play as a fielder’s choice.
+---
 Rule 9.07(g) Comment: The scorer shall consider, in judging
 whether the defensive team has been indifferent to a runner’s
 advance, the totality of the circumstances, including the inning
@@ -4313,8 +4317,6 @@ on that runner before the runner’s advance, whether the fielder
 ordinarily expected to cover the base to which the runner advanced
 made a move to cover such base, whether the defensive team had
 a legitimate strategic motive to not contest the runner’s advance
-121
-Rule 9.07(g) to 9.08(a)
 or whether the defensive team might be trying impermissibly to
 deny the runner credit for a stolen base. For example, with runners
 on first and third bases, the Official Scorer should ordinarily credit
@@ -4327,6 +4329,7 @@ the defensive team is impermissibly trying to deny a runner credit
 for a stolen base if, for example, the defensive team fails to defend
 the advance of a runner approaching a league or career record or
 a league statistical title.
+---
 (h) The Official Scorer shall charge a runner as “caught stealing” if
 such runner is put out, or would have been put out by errorless
 play, when such runner
@@ -4345,24 +4348,26 @@ would not have been credited with a stolen base had such runner
 been safe (for example, when a catcher throws the runner out
 after such runner tries to advance after a ball that had eluded the
 catcher on a pitch).
+---
 9.08 Sacrifices
 The Official Scorer shall:
+---
 (a) Score a sacrifice bunt when, before two are out, the batter
 advances one or more runners with a bunt and is put out at first
-122
-Rule 9.08(a) to 9.08(d)
 base, or would have been put out except for a fielding error,
 unless, in the judgment of the Official Scorer, the batter was
 bunting exclusively for a base hit and not sacrificing his own
 chance of reaching first base for the purpose of advancing a
 runner or runners, in which case the Official Scorer shall charge
 the batter with a time at bat;
+---
 Rule 9.08(a) Comment: In determining whether the batter had
 been sacrificing his own chance of reaching first base for the
 purpose of advancing a runner, the Official Scorer shall give the
 batter the benefit of the doubt. The Official Scorer shall consider
 the totality of the circumstances of the at-bat, including the
 inning, the number of outs and the score.
+---
 (b) Score a sacrifice bunt when, before two are out, the fielders
 handle a bunted ball without error in an unsuccessful attempt
 to put out a preceding runner advancing one base, unless, an
@@ -4370,10 +4375,12 @@ attempt to turn a bunt into a putout of a preceding runner fails,
 and in the judgment of the Official Scorer ordinary effort would
 not have put out the batter at first base, in which case the batter
 shall be credited with a one-base hit and not a sacrifice;
+---
 (c) Not score a sacrifice bunt when any runner is put out attempting
 to advance one base on a bunt, or would have been put out,
 except for a fielding error, in which case the Official Scorer
 shall charge the batter with a time at bat; and
+---
 (d) Score a sacrifice fly when, before two are out, the batter hits a
 ball in flight handled by an outfielder or an infielder running in
 the outfield in fair or foul territory that
@@ -4381,15 +4388,16 @@ the outfield in fair or foul territory that
 (2) is dropped, and a runner scores, if in the scorer’s judgment
 the runner could have scored after the catch had the fly
 been caught.
+---
 Rule 9.08(d) Comment: The Official Scorer shall score a
 sacrifice fly in accordance with Rule 9.08(d)(2) even though
 another runner is forced out by reason of the batter becoming
 a runner.
-123
-Rule 9.09 to 9.09(b)(8)
+---
 9.09 Putouts
 A putout is a statistic credited to a fielder whose action causes the
 out of a batter-runner or runner, as set forth in this Rule 9.09.
+---
 (a) The Official Scorer shall credit a putout to each fielder who
 (1) catches a ball that is in flight, whether fair or foul;
 (2) catches a batted or thrown ball and tags a base to put out
@@ -4399,6 +4407,7 @@ fielder with a putout if such fielder catches a thrown ball and
 tags a base to record an out on an appeal play.
 (3) tags a runner when the runner is off the base to which the
 runner is entitled.
+---
 (b) The Official Scorer shall credit an automatic putout to the
 catcher when a:
 (1) batter is called out on strikes;
@@ -4416,8 +4425,7 @@ receiving a base on balls, after being hit by a pitch or after
 a catcher’s interference; or
 (8) runner is called out for refusing to advance from third base
 to home plate.
-124
-Rule 9.09(c)(1) to 9.09(c)(7)
+---
 (c) The Official Scorer shall credit automatic putouts as follows
 (and shall credit no assists on these plays except as specified):
 (1) When the batter is called out on an Infield Fly that is
@@ -4453,12 +4461,12 @@ act of throwing the ball, the Official Scorer shall credit
 such fielder with an assist but shall credit only one assist
 on any one play under the provisions of Rules 9.09(c)(6)
 and 9.09(c)(7).
-125
-Rule 9.10 to 9.10(b)(3)
+---
 9.10 Assists
 An assist is a statistic credited to a fielder whose action contributes
 to a batter-runner or runner being put out, as set forth in this Rule
 9.10.
+---
 (a) The Official Scorer shall credit an assist to each fielder who
 (1) throws or deflects a batted or thrown ball in such a way
 that a putout results, or would have resulted except for a
@@ -4479,6 +4487,7 @@ pitcher, and only the pitcher, with an assist.
 (2) throws or deflects the ball during a play that results in a
 runner being called out for interference or for running out
 of line.
+---
 (b) The Official Scorer shall not credit an assist to
 (1) the pitcher on a strikeout, unless the pitcher fields an
 uncaught third strike and makes a throw that results in a
@@ -4489,12 +4498,11 @@ runner off base, throws out a runner trying to steal or tags
 a runner trying to score; or
 (3) a fielder whose wild throw permits a runner to advance,
 even though the runner subsequently is put out as a result
-126
-Rule 9.10(b)(3) to 9.12(a)(1)
 of continuous play. A play that follows a misplay (whether
 or not the misplay is an error) is a new play, and the fielder
 making any misplay shall not be credited with an assist
 unless such fielder takes part in the new play.
+---
 9.11 Double and Triple Plays
 The Official Scorer shall credit participation in a double play or
 triple play to each fielder who earns a putout or an assist when two
@@ -4502,12 +4510,15 @@ or three players are put out between the time a pitch is delivered and
 the time the ball next becomes dead or is next in possession of the
 pitcher in a pitching position, unless an error or misplay intervenes
 between putouts.
+---
 Rule 9.11 Comment: The Official Scorer shall credit a double
 play or triple play also if an appeal play after the ball is in
 possession of the pitcher results in an additional putout.
+---
 9.12 Errors
 An error is a statistic charged against a fielder whose action has
 assisted the team on offense, as set forth in this Rule 9.12.
+---
 (a) The Official Scorer shall charge an error against any fielder:
 (1) whose misplay (fumble, muff or wild throw) prolongs the
 time at bat of a batter, prolongs the presence on the bases of
@@ -4525,8 +4536,6 @@ necessary that the fielder touch the ball to be charged with an
 error. If a ground ball goes through a fielder’s legs or a fly ball
 falls untouched and, in the scorer’s judgment, the fielder could
 have handled the ball with ordinary effort, the Official Scorer
-127
-Rule 9.12(a)(1) to 9.12(a)(3)
 shall charge such fielder with an error. For example, the Official
 Scorer shall charge an infielder with an error when a ground ball
 passes to either side of such infielder if, in the Official Scorer’s
@@ -4564,8 +4573,6 @@ first base or is put out;
 (3) when such fielder catches a thrown ball or a ground ball in
 time to put out the batter-runner and fails to tag first base
 or the batter-runner;
-128
-Rule 9.12(a)(4) to 9.12(b)
 (4) when such fielder catches a thrown ball or a ground ball in
 time to put out any runner on a force play and fails to tag
 the base or the runner;
@@ -4597,20 +4604,22 @@ the negligent fielder.
 Rule 9.12(a)(8) Comment: If, in the Official Scorer’s judgment,
 there was no occasion for the throw, the Official Scorer shall
 charge an error to the fielder who threw the ball.
+---
 (b) The Official Scorer shall charge only one error on any wild
 throw, regardless of the number of bases advanced by one or
 more runners.
-129
-Rule 9.12(c) to 9.12(e)
+---
 (c) When an umpire awards the batter or any runner or runners
 one or more bases because of interference, obstruction, or
 shift restriction violation, the Official Scorer shall charge the
 fielder who committed the interference, obstruction, or shift
 restriction violation with one error, no matter how many
 bases the batter, or runner or runners, may advance.
+---
 Rule 9.12(c) Comment: The Official Scorer shall not charge an
 error if obstruction does not change the play, in the opinion of
 the scorer.
+---
 (d) The Official Scorer shall not charge an error against:
 (1) the catcher when the catcher, after receiving the pitch, makes
 a wild throw attempting to prevent a stolen base, unless the
@@ -4634,14 +4643,14 @@ the ball and credit an assist to the fielder who made the throw.
 ball that is in flight or a thrown ball, the fielder recovers
 the ball in time to force out a runner at any base; or
 (5) any fielder when a wild pitch or passed ball is scored.
+---
 (e) The Official Scorer shall not charge an error when the batter is
 awarded first base on four called balls, when the batter is awarded
-130
-Rule 9.12(e) to 9.13(a)
 first base when touched by a pitched ball, or when the batter
 reaches first base as the result of a wild pitch or passed ball.
 Rule 9.12(e) Comment: See Rule 9.13 for additional scoring
 rules relating to wild pitches and passed balls.
+---
 (f) The Official Scorer shall not charge an error when a runner or
 runners advance as the result of a passed ball, a wild pitch or a
 balk.
@@ -4661,24 +4670,26 @@ another runner or runners advance, the Official Scorer
 shall score the strikeout, the putout and assists, if any, and
 credit the advance of the other runner or runners on the
 play as a fielder’s choice.
+---
 Rule 9.12(f) Comment: See Rule 9.13 for additional scoring
 rules relating to wild pitches and passed balls.
+---
 9.13 Wild Pitches and Passed Balls
 A wild pitch is defined in the Definition of Terms (Wild Pitch). A
 passed ball is a statistic charged against a catcher whose action has
 caused a runner or runners to advance, as set forth in this Rule 9.13.
+---
 (a) The Official Scorer shall charge a pitcher with a wild pitch
 when a legally delivered ball is so high, so wide or so low that
 the catcher does not stop and control the ball by ordinary effort,
 thereby permitting a runner or runners to advance. The Official
-131
-Rule 9.13(a) to 9.14(a)
 Scorer shall charge a pitcher with a wild pitch when a legally
 delivered ball touches the ground or home plate before reaching
 the catcher and is not handled by the catcher, thereby permitting
 a runner or runners to advance. When the third strike is a wild
 pitch, permitting the batter to reach first base, the Official Scorer
 shall score a strikeout and a wild pitch.
+---
 (b) The Official Scorer shall charge a catcher with a passed ball
 when the catcher fails to hold or to control a legally pitched
 ball that should have been held or controlled with ordinary
@@ -4686,6 +4697,7 @@ effort, thereby permitting a runner or runners to advance.
 When the third strike is a passed ball, permitting the batter to
 reach first base, the Official Scorer shall score a strikeout and
 a passed ball.
+---
 Rule 9.13 Comment: The Official Scorer shall not charge a wild
 pitch or passed ball if the defensive team makes an out before
 any runners advance. For example, if a pitch touches the ground
@@ -4701,33 +4713,39 @@ passed ball. The Official Scorer shall credit the advancement of
 any other runner on the play as a fielder’s choice.
 See Rules 9.07(a), 9.12(e) and 9.12(f) for additional scoring
 rules relating to wild pitches and passed balls.
+---
 9.14 Base on Balls
 A base on balls is defined in the Definition of Terms (Base on Balls).
+---
 (a) The Official Scorer shall score a base on balls whenever a batter
 is awarded first base because of four balls having been pitched
 outside the strike zone, but when the fourth such ball touches
 the batter it shall be scored as a “hit batter.”
-132
-Rule 9.14(a) to 9.15(b)
+---
 Rule 9.14(a) Comment: See Rule 9.16(h) for the procedure
 when more than one pitcher is involved in giving a base on
 balls. See also Rule 9.15, which addresses situations in which a
 substitute batter receives a base on balls.
+---
 (b) The Official Scorer shall score an intentional base on balls
 when the pitcher makes no attempt to throw the last pitch to the
 batter into the strike zone, but purposely throws the ball wide to
 the catcher outside the catcher’s box.
+---
 (c) If a batter awarded a base on balls is called out for refusing to
 advance to first base, the Official Scorer shall not credit the base
 on balls and shall charge a time at bat.
+---
 (d) The Official Scorer shall score an intentional base on balls
 when a batter is awarded first base because the defensive team’s
 manager informs the umpire of the team’s intention to walk the
 batter.
+---
 9.15 Strikeouts
 A strikeout is a statistic credited to a pitcher and charged to a batter
 when the umpire calls three strikes on a batter, as set forth in this
 Rule 9.15.
+---
 (a) The Official Scorer shall score a strikeout whenever a batter:
 (1) is put out by a third strike caught by the catcher;
 (2) is put out by a third strike not caught when there is a
@@ -4737,14 +4755,14 @@ runner on first before two are out;
 results in a foul fly caught by any fielder, in which case the
 Official Scorer shall not score a strikeout and shall credit
 the fielder who catches such foul fly with a putout.
+---
 (b) When a batter leaves the game with two strikes against him, and
 the substitute batter completes a strikeout, the Official Scorer
 shall charge the strikeout and the time at bat to the first batter.
 If the substitute batter completes the turn at bat in any other
 manner, including a base on balls, the Official Scorer shall
 score the action as having been that of the substitute batter.
-133
-Rule 9.16 to 9.16(a)
+---
 9.16 Earned Runs and Runs Allowed
 An earned run is a run for which a pitcher is held accountable. In
 determining earned runs, the Official Scorer shall reconstruct the
@@ -4754,6 +4772,7 @@ determining which bases would have been reached by runners had
 there been errorless play. For the purpose of determining earned runs,
 an intentional base on balls, regardless of the circumstances, shall be
 construed in exactly the same manner as any other base on balls.
+---
 (a) The Official Scorer shall charge an earned run against a pitcher
 every time a runner reaches home base by the aid of safe hits,
 sacrifice bunts, a sacrifice fly, stolen bases, putouts, fielder’s
@@ -4764,6 +4783,7 @@ out the offensive team. For the purpose of this rule, a defensive
 interference penalty shall be construed as a fielding chance. A
 wild pitch is solely the pitcher’s fault and shall contribute to an
 earned run just as a base on balls or a balk.
+---
 Rule 9.16(a) Comment: The following are examples of earned
 runs charged to a pitcher:
 (1) Peter pitches and retires Abel and Baker, the first two
@@ -4781,8 +4801,6 @@ because the wild pitch contributes to an earned run.
 In an inning in which a batter-runner reaches first base
 on a catcher’s interference, such batter-runner shall not
 count as an earned run should he subsequently score.
-134
-Rule 9.16(a) to 9.16(d)
 The Official Scorer shall not assume, however, that
 such batter would have made an out absent the catcher’s
 interference (unlike, for example, situations in which
@@ -4803,6 +4821,7 @@ Baker hits a home run. Charlie strikes out. Two runs have
 scored, but one (Baker’s) is earned, because the Official
 Scorer cannot assume that Abel would have made an out
 to end the inning, absent the catcher’s interference.
+---
 (b) No run shall be earned when scored by a runner who reaches
 first base
 (1) on a hit or otherwise after his time at bat is prolonged by
@@ -4810,28 +4829,31 @@ a muffed foul fly;
 (2) because of interference, obstruction, or shift restriction
 violation; or
 (3) because of any fielding error.
+---
 (c) No run shall be earned when scored by a runner whose presence
 on the bases is prolonged by an error, if such runner would have
 been put out by errorless play.
+---
 (d) No run shall be earned when the scoring runner’s advance has
 been aided by an error, a passed ball or defensive interference,
 obstruction, or shift restriction violation, if in the Official
 Scorer’s judgment the run would not have scored without the
 aid of such misplay.
-135
-Rule 9.16(e) to 9.16(g)
 (e) An error by a pitcher is treated exactly the same as an error by
 any other fielder in computing earned runs.
+---
 (f) Whenever a fielding error occurs, the pitcher shall be given the
 benefit of the doubt in determining to which bases any runners
 would have advanced had the fielding of the defensive team
 been errorless.
+---
 (g) When pitchers are changed during an inning, the Official
 Scorer shall not charge the relief pitcher with any run (earned
 or unearned) scored by a runner who was on base at the time
 such relief pitcher entered the game, nor for runs scored by any
 runner who reaches base on a fielder’s choice that puts out a
 runner left on base by any preceding pitcher.
+---
 Rule 9.16(g) Comment: It is the intent of Rule 9.16(g) to charge
 each pitcher with the number of runners he put on base, rather
 than with the individual runners. When a pitcher puts runners on
@@ -4856,8 +4878,6 @@ Abel to third base. Charlie grounds to short, with Abel
 out at home plate and Baker advancing to second
 base. Daniel flies out. Edward singles, scoring Baker.
 Baker’s run is charged to Peter.
-136
-Rule 9.16(g) to 9.16(h)
 (4) Peter is pitching. Abel reaches first base on a base on
 balls. Roger relieves Peter. Baker reaches on a base on
 balls. Charlie flies out. Abel is picked off second base.
@@ -4881,6 +4901,7 @@ balls. Roger relieves Peter. Baker singles, but Abel
 is out trying to reach third base and Baker advances
 to second base on the throw. Charlie singles, scoring
 Baker. Baker’s run is charged to Roger.
+---
 (h) A relief pitcher shall not be held accountable when the first
 batter to whom he pitches reaches first base on four called balls
 if such batter has a decided advantage in the ball and strike
@@ -4891,8 +4912,6 @@ count when pitchers are changed.
 3 balls, no strike,
 3 balls, 1 strike,
 3 balls, 2 strikes,
-137
-Rule 9.16(h) to 9.16(i)
 and the batter gets a base on balls, the Official Scorer shall
 charge that batter and the base on balls to the preceding
 pitcher, not to the relief pitcher.
@@ -4912,6 +4931,7 @@ no ball, 2 strikes,
 no ball, 1 strike,
 the Official Scorer shall charge that batter and the actions
 of that batter to the relief pitcher.
+---
 (i) When pitchers are changed during an inning, the relief pitcher
 shall not have the benefit of previous chances for outs not
 accepted in determining earned runs.
@@ -4925,8 +4945,6 @@ base on a base on balls. Baker reaches first base on
 an error. Roger relieves Peter. Charlie hits a home
 run, scoring three runs. The Official Scorer shall
 charge two unearned runs to Peter, one earned run to
-138
-Rule 9.16(i) to 9.17(a)
 Roger and three unearned runs to the team (because
 the inning should have ended with the third out when
 Baker batted and an error was committed).
@@ -4949,23 +4967,25 @@ runs, one of them earned, to Roger and five runs, two
 of them earned, to the team (because only Abel and
 Charlie would have scored in an inning reconstructed
 without the errors).
+---
 9.17 Winning and Losing Pitcher
+---
 (a) The Official Scorer shall credit as the winning pitcher that pitcher
 whose team assumes a lead while such pitcher is in the game, or
 during the inning on offense in which such pitcher is removed
 from the game, and does not relinquish such lead, unless
 (1) such pitcher is a starting pitcher and Rule 9.17(b) applies;
 or (2) Rule 9.17(c) applies.
+---
 Rule 9.17(a) Comment: Whenever the score is tied, the game
 becomes a new contest insofar as the winning pitcher is concerned.
 Once the opposing team assumes the lead, all pitchers who have
 pitched up to that point and have been replaced are excluded
 from being credited with the victory. If the pitcher against whose
 pitching the opposing team gained the lead continues to pitch
-139
-Rule 9.17(a) to 9.17(c)
 until his team regains the lead, which it holds to the finish of the
 game, that pitcher shall be the winning pitcher.
+---
 (b) If the pitcher whose team assumes a lead while such pitcher
 is in the game, or during the inning on offense in which such
 pitcher is removed from the game, and does not relinquish such
@@ -4977,6 +4997,7 @@ then the Official Scorer shall credit as the winning pitcher
 the relief pitcher, if there is only one relief pitcher, or the
 relief pitcher who, in the Official Scorer’s judgment was
 the most effective, if there is more than one relief pitcher.
+---
 Rule 9.17(b) Comment: It is the intent of Rule 9.17(b) that a
 relief pitcher pitch at least one complete inning or pitch when a
 crucial out is made, within the context of the game (including
@@ -4992,26 +5013,29 @@ each relief pitcher and the context of the game at the time of
 each relief pitcher’s appearance. If two or more relief pitchers
 were similarly effective, the Official Scorer should give the
 presumption to the earlier pitcher as the winning pitcher.
+---
 (c) The Official Scorer shall not credit as the winning pitcher a
 relief pitcher who is ineffective in a brief appearance, when at
 least one succeeding relief pitcher pitches effectively in helping
 his team maintain its lead. In such a case, the Official Scorer
 shall credit as the winning pitcher the succeeding relief pitcher
 who was most effective, in the judgment of the Official Scorer.
+---
 Rule 9.17(c) Comment: The Official Scorer generally should,
 but is not required to, consider the appearance of a relief pitcher
-140
-Rule 9.17(c) to 9.19
 to be ineffective and brief if such relief pitcher pitches less than
 one inning and allows two or more earned runs to score (even
 if such runs are charged to a previous pitcher). Rule 9.17(b)
 Comment provides guidance on choosing the winning pitcher
 from among several succeeding relief pitchers.
+---
 (d) A losing pitcher is a pitcher who is responsible for the run that
 gives the winning team a lead that the winning team does not
 relinquish.
+---
 Rule 9.17(d) Comment: Whenever the score is tied, the game
 becomes a new contest insofar as the losing pitcher is concerned.
+---
 (e) A league may designate a non-championship game (for
 example, the Major League All-Star Game) for which Rules
 9.17(a)(1) and 9.17(b) do not apply. In such games, the Official
@@ -5022,6 +5046,7 @@ game, and does not relinquish such lead, unless such pitcher is
 knocked out after the winning team has attained a commanding
 lead and the Official Scorer concludes that a subsequent pitcher
 is entitled to credit as the winning pitcher.
+---
 9.18 Shutouts
 A shutout is a statistic credited to a pitcher who allows no runs in
 a game. No pitcher shall be credited with pitching a shutout unless
@@ -5031,16 +5056,18 @@ puts out the side without a run scoring and pitches the rest of the
 game without allowing a run. When two or more pitchers combine
 to pitch a shutout, the league statistician shall make a notation to
 that effect in the league’s official pitching records.
+---
 9.19 Saves for Relief Pitchers
 A save is a statistic credited to a relief pitcher, as set forth in this
 Rule 9.19.
 The Official Scorer shall credit a pitcher with a save when such
 pitcher meets all four of the following conditions:
-141
-Rule 9.19(a) to 9.20
 (a) He is the finishing pitcher in a game won by his team;
+---
 (b) He is not the winning pitcher;
+---
 (c) He is credited with at least 1/3 of an inning pitched; and
+---
 (d) He satisfies one of the following conditions:
 (1) He enters the game with a lead of no more than three runs
 and pitches for at least one inning;
@@ -5049,6 +5076,7 @@ potential tying run either on base, or at bat or on deck
 (that is, the potential tying run is either already on base or
 is one of the first two batters he faces); or
 (3) He pitches for at least three innings.
+---
 9.20 Statistics
 The Office of the Commissioner shall appoint an official statistician.
 The statistician shall maintain an accumulative record of all the
@@ -5068,12 +5096,11 @@ statistics (fielding) unless he actually plays that position during the
 game. All such players, however, shall be credited with one game
 played (in batting statistics) so long as they are announced into the
 game or listed on the official lineup card.
+---
 Rule 9.20 Comment: The Official Scorer shall credit a player
 with having played on defense if such player is on the field for at
 least one pitch or play. If a game is called (for example, because
 of rain) after a substitute player enters the field but before a
-142
-Rule 9.20 to 9.21(f)
 pitch is thrown or a play is made, the Official Scorer shall credit
 such player with a game played in the batting statistics but shall
 not credit such player in any defensive statistics. If a game is
@@ -5084,6 +5111,7 @@ in the batting statistics but shall not credit such pitcher in any
 defensive statistics or with a game pitched.
 Any games played to break a divisional tie shall be included in the
 statistics for that championship season.
+---
 9.21 Determining Percentage Records
 To compute:
 (a) Percentage of games won and lost, divide the number of games
@@ -5107,8 +5135,7 @@ on balls, times hit by pitch and sacrifice flies.
 Rule 9.21(f) Comment: For the purpose of computing on-base
 percentage, ignore instances of a batter being awarded first base
 on interference, obstruction, or shift restriction violation.
-143
-Rule 9.22 to 9.22(a)
+---
 9.22 Minimum Standards for Individual Championships
 To assure uniformity in establishing the batting, pitching and
 fielding championships of professional leagues, such champions
@@ -5146,8 +5173,6 @@ batting average (181 hits in 500 at-bats), and Baker has 490
 plate appearances, 440 at-bats and 165 hits for a .375 batting
 average, Baker shall be the batting champion, because adding
 12 more at-bats to Baker’s record would still give Baker a
-144
-Rule 9.22(a) to 9.22(c)
 higher batting average than Abel: .365 (165 hits in 452 at-bats)
 to Abel’s .362.
 (b) The individual pitching champion in a Major League shall
@@ -5183,11 +5208,10 @@ scheduled for each Club in his league that season; and
 (3) A pitcher must have pitched at least as many innings as the
 number of games scheduled for each Club in his league
 that season, unless another pitcher has a fielding average
-145
-Rule 9.22(c) to 9.23
 as high or higher and has handled more total chances in
 fewer innings, in which case such other pitcher shall be
 the fielding champion.
+---
 9.23 Guidelines for Cumulative Performance Records
 (a) Consecutive Hitting Streaks
 (a) A consecutive hitting streak shall not be terminated if a
@@ -5216,8 +5240,7 @@ appears and is not determined by his Club’s games.
 (d) For the purpose of this Rule 9.23 all performances in the
 completion of a suspended game shall be considered as
 occurring on the original date of the game.
-146
-Definitions of Terms
+---
 DEFINITIONS OF TERMS
 (All definitions are listed alphabetically)
 ADJUDGED is a judgment decision by the umpire.
@@ -5287,8 +5310,6 @@ The CATCHER is the fielder who takes his position back of the
 home base.
 The CATCHER’S BOX is that area within which the catcher shall
 stand until the pitcher delivers the ball.
-148
-Definitions of Terms
 THE CLUB is a person or group of persons responsible for
 assembling the team personnel, providing the playing field and required
 facilities, and representing the team in relations with the league.
@@ -5323,8 +5344,6 @@ touches first, second or third base, or that first falls on fair territory on
 or beyond first base or third base, or that, while on or over fair territory
 touches the person of an umpire or player, or that, while over fair territory,
 passes out of the playing field in flight.
-149
-Definitions of Terms
 A fair fly shall be judged according to the relative position of the
 ball and the foul line, including the foul pole, and not as to whether the
 fielder is on fair or foul territory at the time he touches the ball.
@@ -5360,8 +5379,6 @@ of a runner made solely because of the defensive team’s indifference
 A FLY BALL is a batted ball that goes high in the air in flight.
 A FORCE PLAY is a play in which a runner legally loses his right
 to occupy a base by reason of the batter becoming a runner.
-150
-Definitions of Terms
 (Force Play) Comment: Confusion regarding this play is
 removed by remembering that frequently the “force” situation is
 removed during the play. Example: Man on first, one out, ball hit
@@ -5398,8 +5415,6 @@ between home and first, or between home and third base is a
 foul ball.
 If a fly ball lands in the infield between home and first base, or
 home and third base, and then bounces to foul territory without
-151
-Definitions of Terms
 touching a player or umpire and before passing first or third
 base, it is a foul ball; or if the ball settles on foul territory or is
 touched by a player on foul territory, it is a foul ball. If a fly ball
@@ -5434,8 +5449,6 @@ The ball is alive and runners may advance at the risk of the ball
 being caught, or retouch and advance after the ball is touched, the same
 as on any fly ball. If the hit becomes a foul ball, it is treated the same as
 any foul.
-152
-Definitions of Terms
 If a declared Infield Fly is allowed to fall untouched to the
 ground, and bounces foul before passing first or third base, it is a foul
 ball. If a declared Infield Fly falls untouched to the ground outside the
@@ -5505,8 +5518,6 @@ OFFENSE is the team, or any player of the team, at bat.
 OFFICIAL SCORER. See Rule 9.00.
 ORDINARY EFFORT is the effort that a fielder of average skill
 at a position in that league or classification of leagues should exhibit
-154
-Definitions of Terms
 on a play, with due consideration given to the condition of the field and
 weather conditions.
 (Ordinary Effort) Comment: This standard, called for several
@@ -5539,8 +5550,6 @@ The pitcher’s PIVOT FOOT is that foot which is in contact with the
 pitcher’s plate as he delivers the pitch.
 “PLAY” is the umpire’s order to start the game or to resume action
 following any dead ball.
-155
-Definitions of Terms
 A POSTPONED GAME is one in which, for any reason, the game
 is not commenced on the day it was scheduled.
 A QUICK RETURN pitch is one made with obvious intent to catch
@@ -5572,8 +5581,6 @@ the strike zone;
 The STRIKE ZONE is that area over home plate the upper limit of
 which is a horizontal line at the midpoint between the top of the shoulders
 and the top of the uniform pants, and the lower level is a line at the hollow
-156
-Definitions of Terms
 beneath the kneecap. The Strike Zone shall be determined from the
 batter’s stance as the batter is prepared to swing at a pitched ball. (For
 diagram of STRIKE ZONE, see Appendix 5.)
@@ -5607,8 +5614,6 @@ his person.
 A TRIPLE PLAY is a play by the defense in which three offensive
 players are put out as a result of continuous action, providing there is no
 error between putouts.
-157
-Definitions of Terms
 WILD PITCH is one so high, so low, or so wide of the plate that it
 cannot be handled with ordinary effort by the catcher.
 WIND-UP POSITION is one of the two legal pitching positions.
@@ -5616,735 +5621,3 @@ NOTE: Any reference in these Official Baseball Rules to
 “he,” “him” or “his” shall be deemed to be a reference to
 “she,” “her” or “hers,” as the case may be,
 when the person is a female.
-
-APPENDICES
-160
-Appendix 1
-Diagram No. 1
-Diagram of the Playing Field
-GRASS LINE
-BACKSTOP
-5' CIRCLE5' CIRCLE
-RADIUS FROM
-HOME BASE
-60'
-37'37'
-60'6"
-1' MIN
-10' MAX
-13' 13'
-6'
-13'
-20'
-15'
-45'-0" 45'-0"
-6'
-90' 0"
-90' 0"
-FOUL LINE
-FOUL LINE
-95' RADIUS
-NEXT BATTER'S BOX
-NEXT BATTER'S BOX
-LEGEND
-BATTER'S BOX,
-CATCHER'S BOX, FOUL LINE,
-PITCHER'S PLATE, COACH'S BOX
-BASE LINES
-26' CIRCLE
-127-3 3/8"
-127-3 3/8"
-18' CIRCLE
-NEXT BATTER'S BOX
-COACH'S
-BOX
-COACH'S
-BOX
-GRANDSTAND OR FENCE 60' FROM BASE
-OR FOUL LINE
-3'
-DIAGRAM NO. 1
-GRASS LINES
-3' 3'
-1' MIN
-10' MAX
-3'
-Rev2018TL
-161
-Appendix 2
-Diagram No. 2
-Layout at Home Plate, 1st, 2nd, and 3rd Bases
-LAYOUT AT
-SECOND BASE
-LAYOUT AT
-THIRD BASE
-FOUL LINE
-DIAGRAM NO. 2
-LEGEND
-1st, 2nd, 3rd BASES
-BATTER'S BOX
-CATCHER'S BOX
-HOME BASE
-PITCHER'S PLATE
-A
-A
-90
-90
-LAYOUT AT
-FIRST BASE
-FOUL LINE
-A
-90
-90
-17"6" 6"B
-D
-C
-B
-4'0"
-43"
-3'0"
-8'0"
-4'0"
-LAYOUT AT HOME BASE
-FOR LAYOUT AT PITCHER'S PLATE
-SEE DIAGRAM NO. 3
-"
-812
-"
-812
-3'0"
-A
-B
-C
-D
-E
-E
-Rev2023RW
-18"
-18"
-162
-Appendix 3
-Diagram No. 3
-Layout of Pitching Mound
-DIAGRAM NO. 3
-Suggested Layout of Pitching Mound
-Pitching Mound: An 18' diameter circle,
-center of which is 59' from back of home plate.
-Locate front edge of rubber 18" behind
-center of mound.
-Front edge of rubber to back point
-of home plate, 60'6".
-Slope starts 6" from front edge of rubber.
-The degree of slope from a starting
-point 6" in front of the pitcher's plate to
-a point 6' toward home plate shall
-be 1" to 1', and such degree of slope
-shall be uniform.
-Level area surrounding rubber should be 6"
-in front of rubber, 18" to each side and 22"
-to rear of rubber. Total level area 5' x 34".
-This Diagram No. 3 supplements and, in cases of difference, supersedes Diagram No. 2.
-9'
-6'
-5'
-4'
-3'
-2'
-9'
-1'1"
-1"
-1"
-1"
-1"
-1"
-34" 2'
-18"
-6"
-18"
-10'
-REAR SLOPE
-GRADUAL TO CIRCLE EDGE
-(5' x 34 " )
-Rev2018TL
-6"
-2 2"
-Slope
-LEVEL AREA
-SHADED
-LEVEL AREA
-SHADED
-5'
-163
-Appendix 4
-Dimensions of Fielder’s Glove
-H
-H
-Palm width—7
-Palm width—8"
-Top opening of web—4
-(webbing not to be wider
-than 4 at any point)
-Bottom opening of web—3
-Web top to bottom—5
-1st finger crotch seam—5
-Thumb crotch seam—5
-G
-F
-E
-C
-H
-H
-I
-B
-A
-J K L M
-H
-3 4/ "
-1 2/ "
-1 2/ " 1 2/ "
-1 2/ "
-1 2/ "
-(A)
-(B)
-(C)
-(D)
-(E)
-(F)
-(G)
-Crotch seam—13
-Thumb top to bottom edge—7
-1st finger top to bottom edge—13"
-2nd finger top to bottom edge—11
-3rd finger top to bottom edge—10
-4th finger to bottom edge—9"
-(H)
-(I)
-(J)
-(K)
-(L)
-(M)
-D
-3 4/ "
-3 4/ "
-3 4/ "
-3 4/ "
-3 4/ "
-DIAGRAM NO. 4
-164
-Appendix 5
-The Strike Zone
-STRIKE
-ZONE
-Hollow beneath kneecap
-Top of shoulders
-Midpoint
-Top of pants
-165
-Index
-Rules 1.00 through 8.00
-Note: For any items not listed and for additional information,
-see alphabetized entries in Definitions of Terms.
-Abandoning Effort to Run Bases—5.05(a)(2) Comment, 5.05(b),
-5.09(b)(2), 5.09(b)(11), 5.09(c)(3).
-Accident to Player or Umpire—5.12(b)(3,8).
-Ambidextrous Pitcher—5.07(f).
-Apparent Fourth Out—5.09(c).
-Appeals—5.06(b)(3)(D) Note, 5.06(b)(4)(I) Comment, 5.09(b)(5,11-12),
-5.09(c), 6.03(b), 8.02(c);
-Check-swing appeal to end inning 8.02(c) Comment;
-Limitation on requesting check-swing appeals 8.02(c) Comment.
-Apparent Fourth Out—5.09(c)(4).
-Awarded Bases—
-Appeal 5.09(c);
-Balk 5.06(c)(3), 6.01(g);
-Catcher interference 6.01(c);
-Ground rules 4.05;
-Obstruction 6.01(a)(10) Comment, 6.01(h)(1) Comment;
-Overthrown ball, by infielder 5.06(b)(4)(G);
-Overthrown ball, by pitcher from pitcher’s plate 5.06(b)(4)(G-I),
-5.07(e);
-Spectator interference 6.01(e) Comment.
-“Backswing” (Follow-Through) Interference—6.03(a)(3) Comment.
-Balk—5.02(a), 6.01(g), and various violations in Rule 5.07;
-When making an appeal 5.09(c) Comment;
-Penalty 5.06(b)(3)(A), 5.06(c)(3), 6.02.
-Ball/Strike Count, Limits on Being Corrected—8.02(c).
-Base—2.01, 2.02, 2.03, Definitions of Terms (“Base”);
-Dislodged 5.09(b)(4) Approved Rulings A, B.
-Baseball—3.01;
-Defaced 3.01, 6.02(c-d);
-Official game balls 4.01(c-e).
-166
-Index
-Base on Balls (Automatic by Manager’s Signal)—
-Definitions of Terms (“Base on Balls”), 5.05(b)(1) Comment.
-Base Coaches—5.03;
-Helmets 3.08(e);
-Interference 6.01(a)(8-9), 6.01(b), 6.01(d), 6.01(f);
-Restrictions 5.03(a-c), 5.03 PENALTY, 5.10(k), 6.04(a).
-Bat—3.02;
-Altered 6.03(a)(4).
-Bat Boy/Girl—3.08(f), 4.07(a), 5.10(k).
-Batter/Batter-Runner—
-Backswing strikes catcher 6.03(a)(3);
-Batter becomes a runner 5.05
-Fails to advance to first base 5.05(a)(2), 5.05(b);
-Hit by pitch 5.05(b)(2), 5.06(c)(1), 5.09(a)(6), Definitions of
-Terms (“Ball,” “Strike”);
-Illegal action 6.03;
-Interference by 5.09(a)(7-9,11), 5.09(b)(8), 6.01(a), 6.03(a)(3-4);
-6.03(a)(3 and 4) EXCEPTION and Comment.
-Interference with 5.05(b)(3), 5.06(b)(3)(D);
-Interferes with catcher after dropped third strike 6.01(a)(1),
-6.01(a)(1) Comment;
-Position in batter’s box Definitions of Terms, 5.04(b), 5.04(b)(4-5),
-6.03(a)(1-3);
-Struck by batted ball 5.05(b)(2) Comment, 5.06(c)(6)(1),
-5.09(a)(7), 6.01(a)(11).
-Batter’s Box—2.01, Definitions of Terms, 5.04(b), 6.03(a), Appendix 2.
-Batter’s Box Rule—5.04(b).
-NAPBL Regulations—5.04(b)(2) Comment, 5.04(b)(4).
-Batting Order—4.03, 5.04(a), 5.10(a-f,j), 8.03(a)(8).
-Batting Out of Order—6.03(b).
-Bench/Dugout—2.05, Definitions of Terms.
-Catch/Play attempts Definitions of Terms (“Catch” Comment),
-5.06(b)(3)(C), 5.09(a)(1) Comment, 5.12(b)(6), 6.01(b);
-Equipment 3.10;
-167
-Index
-Live ball deflected into 5.06(b)(4)(H);
-Occupants 5.10(b) Comment, 5.10(k), 6.04(a,c-e), 8.04(c).
-Bounced Pitch—Definitions of Terms (“Ball”).
-Catch—Definitions of Terms, 5.09(1-2).
-Catcher—
-Interference by: Definitions of Terms (Interference (b)), 5.05(b)(3),
-5.06(b)(3)(D), 6.01(c,g);
-Interference with: Definitions of Terms (Interference (c)),
-5.06(c)(2), 5.09(b)(8), 6.03(a)(3);
-Pitch lodges in equipment 5.06(b)(4)(I), 5.06(c)(7);
-Position, 5.02(a,c), 6.01(a)(12).
-Catcher’s Box—2.01 (Appendix 2), Definitions of Terms, 5.02(a),
-6.02(a)(12).
-Checked Swing—8.02(c) Comment.
-Coach—Definitions of Terms, 4.02(b), 5.03, 6.01(a)(8-9), 6.01(b),
-6.01(d), 6.01(d) Comment, 6.01(f).
-Collision Rule—6.01(i).
-Curfew—7.02(a) Note, 7.02(a)(1).
-Darkness/Field Lights—4.01(g), 5.12(b)(1-2), 7.02(a) Note, 7.02(a)(4).
-Dead Ball (“Time”) and Resuming Play—Definitions of Terms,
-5.01(b), 5.04(b)(2) Comment, 5.06(c), 5.12.
-Defacing, Discoloring Baseball—3.01, 6.02(c).
-Delay of Game—
-By batter 5.04(b)(3-4);
-By pitcher 5.04(b)(2) Comment, 5.07, 6.02(a)(8), 6.02(d)(3);
-Forfeit for delay 7.03(a).
-Designated Hitter—5.11;
-Pinch-hitting or pinch-running for game pitcher 5.11(a)(10).
-Detached Equipment—5.06(b)(3)(E), 5.06(b)(4)(A-E).
-Disabled List Players—5.10(k) Comment.
-Dislodged Base—5.09(b)(4) Approved Rulings A and B.
-Doubleheaders—4.04(a-b), 4.08, 7.02(a)(1), 7.02(b);
-Length of time between 4.08(c);
-NAPBL rule: 4.08(a)(1), 7.02(a) Exception, 7.02(b) Comment.
-168
-Index
-Double-Switches—5.10(b);
-Manager/coach limitations regarding double-switches 5.10(b)
-Comment.
-Dropped Third Strike—Definitions of Terms (“Ball”), 5.05(a)(2),
-5.06(c)(7) Comment, 5.09(a)(2) Comment, 5.09(a)(3-4, 6, 10,
-14), 6.01(a)(1).
-Doubleheaders, Length Between—4.08(c)
-Dugout—see Bench.
-Ejection—6.04(a,c-e), 8.01, 8.02, 8.04.
-Equipment—
-Base 2.03;
-Baseball 3.01;
-Bat 3.02;
-Bench 2.05;
-Commercialization 3.09;
-Glove/Mitt 3.04, 3.05, 3.06, 3.07;
-Helmet 3.08
-Home base 2.02;
-Pitcher’s plate 2.01, 2.04;
-Uniforms 3.03.
-Equipment Illegally Touches Live Ball—5.06(b)(3)(E), 5.06(b)(4)(A-E).
-Electronic Equipment on Field—3.10(b)
-Fair Ball—Definitions of Terms;
-Bounces out of play 5.05(a)(6-8), 5.06(b)(4)(F);
-Deflected out of play 5.05(a)(8-9), 5.06(b)(4)(A,F);
-Intentionally dropped 5.09(a)(12);
-Touches runner or umpire, 5.05(a)(4), 5.05(b)(4), 5.06(b)(3)(B),
-5.06(c)(6) Comment, 5.09(b)(7), 6.01(a)(11).
-Field Markers—3.10(b).
-Fielder—
-Glove specifications 3.04, 3.05, 3.06, 3.07, Appendix 4.
-Stepping or falling into out-of-play area 5.06(b)(3)(C), 5.09(a)(1)
-Comment, 5.12(b)(6);
-Positioning on field of play 5.02;
-169
-Index
-Sleeves 3.03(e);
-Throws glove at ball (detached equipment) 5.06(b)(3)(E),
-5.06(b)(4)(A-E).
-Fielder’s Choice—Definitions of Terms, 9.12(f)(2).
-“Flying Start” by Runner—5.09(c)(1) Comment.
-Force Play/Force Out—Definitions of Terms, 5.09(b)(6);
-Reinstated 5.09(b)(6).
-Forfeit—4.07(b), 4.08(g), 4.07(b), 7.03, 8.03(a)(6), 9.03(e).
-Foul Ball—Definitions of Terms, 5.06(c)(5), 5.09(a)(7-8).
-Foul Tip—Definitions of Terms, 5.06(c)(7) Comment, 5.09(a)(2)
-Comment, 5.09(b)(5) Comment.
-Fraternization—4.06.
-Game-Ending Runs—5.08(b), 5.09(b)(1,2) Comment, 5.09(c)
-Comment, 7.01(g)(3).
-Glove/Mitt—3.04, 3.05, 3.06, 3.07;
-Illegally touches live ball 5.06(b)(4)(A,C,E).
-Ground Rules—4.05, 8.03(a)(9).
-Groundskeepers—4.03(e), 4.08(g), 7.03(c).
-Helmet—3.08, 5.09(a)(8) Comment.
-Hidden Ball Trick—6.02(a)(9).
-Home Run—5.05(a)(5,9), 5.06(b)(4)(A).
-Illegal Bat—3.02, 6.03(a)(5), 6.03(a)(5) Comment.
-Illegal Pitch—Definitions of Terms (Illegal Pitch and Quick Return),
-5.07(a)(2) Comment, 6.02(a)(5), 6.02(b).
-Illegally Batted Ball—5.06(c)(4), 6.03(a)(1).
-Infield Fly—Definitions of Terms, 5.09(a)(5,12), 5.09(b)(7) Exception;
-Strikes runner (on or off base) 5.09(b)(7), 5.09(b)(7) Exception.
-Intentional Walk (Automatic by Manager’s Signal)—Definitions of
-Terms (“Base on Balls”), 5.05(b)(1) Comment;
-How Official Scorer Notates 9.14(d).
-Intentionally Dropped Ball—5.09(a)(12).
-Intentional Pitch at Batter—6.02(c)(9).
-Interference—
-Authorized on-field personnel 4.07(a);
-170
-Index
-“Backswing” (Follow-Through) 6.03(a)(3) Comment;
-Batter’s 5.09(a)(8), 5.09(b)(8), 6.01(a)(3);
-By batter after dropped third strike 6.01(a)(1), 6.01(a)(1)
-Comment;
-Catcher’s 5.05(b)(3), 5.06(b)(3)(D,E), 6.01(g);
-Coach’s 6.01(a)(8), 6.01(d) Comment, 6.01(f);
-Defensive Definitions of Terms, 5.05(b)(3), 5.06(b)(3), 6.01(d,g);
-Intentional (Double Play) 5.09(a)(13), 5.09(a)(13) Comment,
-5.09(b)(3), 6.01(a)(6-7), 6.01(j);
-Offensive Definitions of Terms, 5.05(b)(4), 5.06(c)(6-7),
-5.09(a)(8-9,13-15), 5.09(b)(3,7-8,13), 6.01(a-b,d), 6.03(a)(3);
-Runner struck by batted ball 5.05(a)(4), 5.05(b)(4), 5.06(c)(6),
-5.09(b)(7), 6.01(a)(11);
-Spectator Definitions of Terms (Interference(d)), 6.01(e);
-Umpire Definitions of Terms, 5.05(b)(4), 5.06(c)(2-6);
-While in contact with base 6.01(a)(1) Comment;
-see also Base Coaches, Batter and Catcher.
-Jewelry—5.05(b)(2) Comment, Definition of Terms (“Tag,” “Touch.”)
-Length Between Doubleheaders—4.08(c).
-Limitations on Visits to the Mound Per Game—5.10(m).
-Light Failure—5.12(b), 7.02(a).
-Lineup Cards—4.03, 5.11(a)(1,11).
-Lodged Ball—5.05(a)(7), 5.06(b)(4)(F-G,I), 5.06(c)(7), 5.09(a)(2)
-Comment.
-Missed Base or Home Plate—5.06(b)(4)(I) Comment, 5.09(b)(12),
-5.09(c)(2-4);
-see also Appeals and Runner (Touch requirements).
-“No Game”—4.04(c), 7.01(e).
-Obstruction—Definitions of Terms, 6.01(a)(10) Comment, 6.01(h);
-By spectators 5.08(b) Comment.
-Official Scorer—5.10(d), 8.03(a)(8);
-Demeanor towards 9.01(a), 9.01(c);
-Notating intentional walk by manager’s signal 9.14(d);
-see also Definitions of Terms and Rule 9.00.
-171
-Index
-Overrunning/Oversliding—
-First base, 5.09(b)(4,6,11), 5.09(c)(3);
-Home plate 5.09(b)(12), 5.09(c)(4).
-“Overzealous Runner”—5.06(b)(3)(B) Comment.
-Pinch-Hitter/Runner—see Substitutions.
-Pitch—
-Ball Definitions of Terms;
-Pitcher delivery time limit 5.07(c);
-Goes out of play 5.06(b)(4)(H);
-Intentionally thrown at batter 6.02(c)(9);
-Lodges in catcher’s or umpire’s equipment 5.06(b)(4)(I),
-5.06(c)(7);
-Strike Definitions of Terms;
-Touches batter 5.05(b)(2), 5.06(c)(1), 5.09(a)(6), Definitions of
-Terms (Ball, Strike);
-Touches runner attempting to score 5.06(c)(8), 5.09(a)(14).
-Pitcher—
-Altered baseball 3.01, 6.02(c)(2-7);
-Ambidextrous 5.07(f);
-Becomes infielder 5.07(e);
-Changes to defensive position 5.10(d) Comment;
-Delivery restrictions 5.07(a);
-Delivery time limit 5.07(c);
-Injured 5.07(b,f), 5.10(d) Comment, 5.10(f-g);
-Intentionally pitches at batter 6.02(c)(9);
-Legal position 5.07(a)(1-2);
-Length of time for warm-up pitches between innings 5.07(b);
-Limitations on warm-up pitches 5.07(b);
-Minimum number of batters to face (NAPBL rule only) 5.10(g);
-Mouth, goes to on mound 6.02(c)(1);
-Pitcher delays 5.07(c);
-Pitcher visits by manager or coach 5.10(l);
-Pivot foot Definitions of Terms, 5.07(a)(1-2); 5.07(a)(2)
-Comment, 5.07(e);
-172
-Index
-Possesses foreign object or substance 6.02(c)(7);
-Preparatory pitches 5.07(b), 5.10(l) Comment;
-Sleeves 3.03(e);
-Throws out of play from pitcher’s plate 5.06(b)(4)(H);
-Warm-up pitches 5.07(b), 5.10(l) Comment.
-Pitcher’s Plate—2.01, 2.04.
-Player or Umpire Incapacitated—5.10(f-g,i), 5.12(b)(3,8).
-Player Restrictions—
-Barred from stands 4.06;
-Confined to bench 5.10(k);
-Fraternizing 4.06;
-General conduct 5.10(b) Comment, 6.04(a,d-e);
-Placing ball inside uniform 5.06(c)(7) Comment.
-Playing Field—2.01.
-Police Protection—4.07(b).
-Postponed Game—Definition of Terms
-Postponement Responsibility—4.04.
-Pregame Conference—4.03.
-Protested Game—7.04, 8.02(b).
-Quick Pitch—Definitions of Terms (Illegal Pitch, Quick Return),
-5.07(a)(3), 6.02(a)(2) Comment, 6.02(b).
-Rain Delays—4.03(e), 4.03 Comment.
-Regulation Game—1.06, 7.01, 7.01(g), 7.02;
-7-inning Game 7.01(a) Exception.
-Rosin Bag—4.01(f), 6.02(d) Comment.
-Runner—
-Abandons effort to run bases 5.05(a)(2) Comment, 5.05(b),
-5.09(b)(2, 11), 5.09(c)(3);
-Advancing or returning after being put out—6.01(a)(5) Comment.
-Entitled to base 5.06(a)(1-2), 6.01(a) Comment;
-“Flying Start” when tagging up 5.09(c)(1) Comment;
-Injured 5.12(b)(3)(A);
-Intentionally crashing into catcher 6.01(i)(1);
-173
-Index
-Intentionally interferes with fielder—5.09(a)(13) Comment,
-5.09(b)(3), 6.01(a)(5-7), 6.01(j);
-Interferes after scoring 6.01(a)(5);
-Interferes while in contact with base 6.01(a) Comment;
-Interferes with potential double play 6.01(j);
-Leaves basepath to avoid tag 5.09(b)(1)
-“Overzealous Runner” 5.06(b)(3)(B) Comment;
-Passes lead runner 5.09(b)(9);
-Retouch (tag up) requirements Definitions of Terms, Definitions
-of Terms (Infield Fly), 5.06(b)(4)(I) Comment, 5.06(c)(5),
-5.09(b)(5), 5.09(c)(1);
-Return prohibited 5.06(a)/5.06(c) Comment, 5.08(a) Comment,
-5.09(c)(2) Approved Ruling and Comment;
-Reverse base-running prohibited 5.09(b)(10);
-Struck by batted ball 5.05(b)(4), 5.06(c)(6), 5.09(b)(7), 5.09(b)(7)
-Comment, 6.01(a)(11);
-Struck by batted ball (before or after passing fielder) 5.06(c)(6),
-5.09(b)(7), 5.09(b)(7) Comment, 6.01(a)(11);
-Struck by Infield Fly (on or off base) 5.09(b)(7);
-Touch requirements 5.06(b)(1), 5.09(b)(4) Approved Ruling (B);
-Touched by pitched ball 5.06(c)(8), 5.09(a)(14);
-Two runners struck by same batted ball 5.09(b)(7) Comment.
-see also Batter-Runner.
-Score of Game—7.01(g).
-Scoring Rules (Official Scorer)—Rule 9.00.
-Scoring Runs—1.04, 5.06(b)(3)(B) Comment, 5.08, 5.09(a)(14),
-5.09(b)(8), 5.09(c) Comment, 5.09(d), 6.01(g);
-“Fourth Out” Appeal 5.09(c).
-Set Position—5.07(a)(2);
-Shift Restriction Violations—5.02(c)
-Slide/Sliding Rule—5.05(b)(1) Comment, 5.09(a)(11) Comment,
-6.01(i,j), 6.01(i)(1) Comment, 6.01(i)(2) Comment.
-Spectators—4.05, 4.07, 5.06(b)(3)(C), 5.12(b)(6), 6.04(a)(1-2), 6.04(b),
-8.01(e);
-Interference Definitions of Terms (Interference (d)), 6.01(e).
-174
-Index
-Stepping or Falling Into Out-of-Play Area—5.06(b)(3)(C), 5.09(a)(1),
-5.12(b)(6);
-Strike/Strike Zone—Definitions of Terms, 5.05(b)(2), Appendix 5.
-Substitutions—5.10(a-k), 5.04(a)(2);
-Double-Switches 5.10(b), 5.10(b) Comment.
-Suspended Game—7.01(d), 7.02;
-NAPBL rule 4.08(a)(1), 7.02(a)(1), 7.02(b);
-NAPBL rule (optional) 7.02(a)(7-9).
-Tag—Definitions of Terms (TAG, TOUCH), 5.09(b)(4-5);
-After awarded base (live ball) 5.05(b)(1) Comment,
-5.06(b)(3)(B) Comment;
-After missed home plate 5.09(b)(12) Comment, 5.09(c) Comment;
-After overrunning first base 5.09(b)(4, 11), 5.09(c)(3);
-While two runners touch same base 5.06(a)(2).
-Tagging Up (Retouch)—Definitions of Terms (Infield Fly, Retouch),
-5.06(b)(4)(I), 5.06(c)(5), Comment, 5.09(b)(5), 5.09(c)(1).
-Third Strike Situations—Definitions of Terms (Ball), 5.05(a)(2),
-5.06(c)(7) Comment, 5.09(a)(2-4,6,10,14), 6.01(a)(1), 6.03(a)(4).
-“Third-to-First” Move—6.02(a)(3) Comment.
-Three-Batter Minimum—5.10(g), 5.10(g) Comment, 5.10(i) Note,
-5.10(m)(4), 7.02(c) Comment
-Three-Foot Lane—2.01, 5.09(a)(11).
-Throw—Definitions of Terms (Pitch–Comment and Throw);
-Pitcher 5.07(a)(1-2), 6.02(a)(2-4), 6.02(a) Approved Ruling,
-6.02(a) Comment (B), 6.02(c)(8);
-Interference with 5.06(b)(4)(E), 5.06(c)(2), 5.09(a)(8, 11, 13),
-5.09(b)(3), 6.01(a)(10), 6.01(b,f), 6.03(a)(3).
-Thrown Ball Out of Play—4.01(e) Comment, 5.06(b)(4)(G-I), 5.07(e);
-Appeal, during 5.09(c);
-Ground rules 4.05;
-Obstruction, during 6.01(h)(1) Comment;
-Spectator interference Rule 6.01(e) Comment.
-Tie Game—Definitions of Terms, 7.01(d), 7.02.
-Time Limits—7.02(a)(2), 7.02(a) Note, 8.03(a)(7).
-175
-Index
-Trips to the Mound—5.10(l), 5.10(l) Comment; 5.10(m);
-Exceptions to trips 5.10(m)(2)(A-G), 5.10(m)(3);
-Enforcement of mound visits 5.10(m)(4);
-Limitation on number per game 5.10(m)(1).
-Two-Way Player—4.03(c)
-Umpire—8.00;
-Changing call after consultation 8.02(c), 8.02(c) Comment;
-Controls ground crew 4.08(g);
-Field lights 4.01(g), 5.12(b)(1-2);
-Incapacitated 5.12(b)(3, 8);
-Judge of playing conditions 4.03(d), 4.04(b-c), 5.12(b)(1);
-Pitched ball lodges in or against body or paraphernalia 5.06(c)(7),
-5.06(c)(7) Comment;
-Pregame duties 4.01;
-Struck by batted ball 5.05(a)(4), 5.05(b)(4), 5.06(b)(3)(B);
-5.06(c)(6);
-Touched by pitch or throw 5.06(b)(4)(I), 5.06(c)(7),
-5.09(a)(2) Comment, 6.01(f);
-Written reports to the Office of the Commissioner 7.03(d), 8.04.
-Uniforms—3.03, 3.09.
-Visit of Manager to Pitcher—5.10(l), 5.10(l) Comment, 5.10(m).
-Warm-Up Throws/Pitches—5.07(b), 5.10(d) Comment, 5.10(l)
-Comment.
-Fielders other than pitchers 5.10(d) Comment;
-Pitchers 5.07(b), 5.10(l) Comment.
-Weather and Playing Conditions—4.03(e), 4.03 Comment, 4.04,
-4.08(d,g), 5.12(b)(1), 5.04(b)(2) Comment, 6.02(c)(1) Exception,
-7.02(a)(5), 7.02 Exception, 7.02(a) Note;
-Club responsibilities 4.03(e), 4.04(a);
-Weather takes precedence 7.02(a) Note.
-Wild Card/Division Series Eligibility (Completing Games For)—
-7.02(b)(5).
-Windup Position—5.07(a)(1).
-176
-Notes
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-177
-Notes
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-178
-Notes
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-179
-Notes
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-180
-Notes
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
-______________________________________
