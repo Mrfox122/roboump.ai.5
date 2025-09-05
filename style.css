@@ -145,3 +145,31 @@ button { padding: 10px 20px; margin: 5px; cursor: pointer; }
 .share-button:disabled:hover {
     background-color: #c0c0c0; /* Keep the same color on hover when disabled */
 }
+
+.completed-task {
+    color: #eec213; /* A readable, darker yellow */
+    text-decoration: line-through; /* Puts a line through the text */
+}
+
+/* --- Changelog Button Styles --- */
+.container {
+    position: relative; /* This is needed to position the button inside */
+}
+
+.homepage-button {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+    padding: 8px 16px;
+    background-color: #6c757d; /* A neutral grey */
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 14px;
+    font-family: sans-serif;
+    transition: background-color 0.2s ease;
+}
+
+.homepage-button:hover {
+    background-color: #5a6268; /* Darker grey on hover */
+}
