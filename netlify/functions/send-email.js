@@ -27,7 +27,7 @@ exports.handler = async function(event) {
         const resend = new Resend(process.env.RESEND_API_KEY);
         await resend.emails.send({
             from: 'RoboUmp AI Contact <contact@roboump.app>',
-            to: process.env.TO_EMAIL_ADDRESS,
+            to: process.env.CONTACT_EMAIL,
             subject: `New Message from ${name} via RoboUmp AI`,
             reply_to: email,
             html: `<p><strong>Name:</strong> ${name}</p><p><strong>Email:</strong> ${email}</p><hr><p>${message.replace(/\n/g, '<br>')}</p>`,
