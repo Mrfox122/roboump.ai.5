@@ -10,7 +10,7 @@ import prompts from "./prompts.js";
 const pool = new Pool({ connectionString: process.env.NETLIFY_DATABASE_URL });
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const generativeModel = genAI.getGenerativeModel({ model: "gemini-pro" });
+const generativeModel = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 const embeddingModel = genAI.getGenerativeModel({ model: "embedding-001" });
 
 // === UTILITY: COSINE SIMILARITY ===
