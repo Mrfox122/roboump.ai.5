@@ -27,27 +27,24 @@ export async function handler(event) {
         });
         const queryEmbedding = embeddingResponse.embedding.values;
 
-        // === STEP 4: PERFORM RULEBOOK VECTOR SEARCH ===
-        console.log("=== Performing Rulebook Vector Search ===");
-        const { rows: rulebookMatches } = await pool.query(
-            `SELECT id, text, rule_set, 1 - (embedding <=> $1) AS score
-             FROM rulebook_snippets
-             WHERE rule_set = $2
-             ORDER BY embedding <=> $1
-             LIMIT 10;`,
-            [queryEmbedding, ruleSet]
-        );
+        // === STEP 4: PERFORM RULEBOOK AND GLOSSARY VECTOR SEARCH ===
+       const { rows: rulebookMatches } = await pool.query(
+  `SELECT id, content, ruleset, 1 - (embedding <=> $1) AS score
+   FROM rulebooks
+   WHERE ruleset = $2
+   ORDER BY embedding <=> $1
+   LIMIT 10;`,
+  [queryEmbedding, ruleSet]
+);
 
-        // === STEP 5: PERFORM GLOSSARY VECTOR SEARCH ===
-        console.log("=== Performing Glossary Vector Search ===");
-        const { rows: glossaryMatches } = await pool.query(
-            `SELECT term, text, 1 - (embedding <=> $1) AS score
-             FROM rulebook_snippets
-             WHERE rule_set = 'Glossary'
-             ORDER BY embedding <=> $1
-             LIMIT 150;`,
-            [queryEmbedding]
-        );
+const { rows: glossaryMatches } = await pool.query(
+  `SELECT content AS text
+   FROM rulebooks
+   WHERE ruleset = 'Glossary'
+   ORDER BY embedding <=> $1
+   LIMIT 150;`,
+  [queryEmbedding]
+);
 
         // Build glossary context for AI
         const glossaryDefinitions = glossaryMatches
