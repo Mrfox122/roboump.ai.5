@@ -136,6 +136,11 @@ Respond with 3 queries, one per line.
     const selectedPrompt = prompts[ruleSet] || prompts.default;
     const finalPrompt = `${selectedPrompt}
 
+    Your task is to provide a clear, two-part answer based on the user's ORIGINAL question, using ONLY the provided "CONTEXT FROM RULEBOOK" as your source of truth.
+
+**User's Original Question:** "${question}"
+**Internally Rephrased Search Query:** "${rephrased_question}"
+
 **Glossary Definitions (Authoritative):**
 ${glossaryDefinitions}
 
@@ -165,7 +170,7 @@ ${finalContext}
 ---
 
 USER'S QUESTION (Answer according to ${ruleSet} rules):
-${rephrased_question}`;
+${question}`;
 
 
     // === STEP 7: GENERATE AI ANSWER ===
