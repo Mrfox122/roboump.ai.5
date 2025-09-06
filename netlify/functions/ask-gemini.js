@@ -7,7 +7,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import prompts from "./prompts.js";
 
 // === STEP 1: INITIALIZE DATABASE + GEMINI MODELS ===
-const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+const pool = new Pool({ connectionString: process.env.NETLIFY_DATABASE_URL });
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const generativeModel = genAI.getGenerativeModel({ model: "gemini-pro" });
