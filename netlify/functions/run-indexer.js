@@ -1,18 +1,13 @@
-console.log("DATABASE_URL:", process.env.DATABASE_URL);
-
-
-// netlify/functions/run-indexer.js
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { Pool } from "pg";
 import fs from "fs/promises";
 import path from "path";
 
-// === STEP 1: INITIALIZE ===
+// === INITIALIZE ===
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const embeddingModel = genAI.getGenerativeModel({ model: "embedding-001" });
 const pool = new Pool({ connectionString: process.env.NETLIFY_DATABASE_URL });
 
-// Files to index
 const filesToIndex = [
   { path: './rulebooks/2025-NCAA.txt', ruleSet: 'NCAA' },
   { path: './rulebooks/2025-CCA.txt',  ruleSet: 'CCA' },
@@ -20,7 +15,7 @@ const filesToIndex = [
   { path: './rulebooks/glossary.txt', ruleSet: 'Glossary' }
 ];
 
-// === STEP 2: DATABASE SETUP ===
+// === DATABASE SETUP ===
 async function setupDatabase() {
   console.log("Setting up database schema...");
   const client = await pool.connect();
@@ -40,12 +35,11 @@ async function setupDatabase() {
   }
 }
 
-// === STEP 3: INDEX A FILE ===
+// === INDEX A FILE ===
 async function indexFile(filePath, ruleSet) {
-  const absolutePath = path.resolve(filePath);
+  const absolutePath = path.resolve(process.cwd(), filePath);
   const text = await fs.readFile(absolutePath, 'utf-8');
 
-  // Split by "---" to create chunks
   const textChunks = text
     .split('---')
     .map(chunk => chunk.trim())
@@ -53,7 +47,9 @@ async function indexFile(filePath, ruleSet) {
 
   console.log(`Split ${filePath} into ${textChunks.length} chunks.`);
 
+  let chunkIndex = 0;
   for (const chunk of textChunks) {
+    chunkIndex++;
     const result = await embeddingModel.embedContent({
       content: { parts: [{ text: chunk }] },
       taskType: "RETRIEVAL_DOCUMENT"
@@ -61,30 +57,28 @@ async function indexFile(filePath, ruleSet) {
 
     const embedding = result.embedding.values;
 
-    // Insert into database
     await pool.query(
       'INSERT INTO rulebooks (content, ruleset, embedding) VALUES ($1, $2, $3)',
-      [chunk, ruleSet, embedding]
+      [chunk, ruleSet, embedding]  // <-- raw array, not stringified
     );
+
+    console.log(`Indexed chunk ${chunkIndex}/${textChunks.length} for ${ruleSet}`);
   }
+
   console.log(`Finished indexing ${filePath}`);
 }
 
-// === STEP 4: EXPORT HANDLER ===
+// === HANDLER ===
 export async function handler(event) {
   try {
-    // === Secret Key Verification ===
     const secret = event.headers['x-secret-key'];
     if (secret !== process.env.RUN_INDEXER_SECRET) {
       return { statusCode: 401, body: 'Unauthorized: Invalid secret key' };
     }
 
     console.log("Starting indexing process...");
-
-    // === Setup DB ===
     await setupDatabase();
 
-    // === Index each file ===
     for (const file of filesToIndex) {
       await indexFile(file.path, file.ruleSet);
     }
@@ -94,7 +88,6 @@ export async function handler(event) {
       statusCode: 200,
       body: "Indexing complete. All files processed successfully."
     };
-
   } catch (error) {
     console.error("Error during indexing:", error);
     return {
