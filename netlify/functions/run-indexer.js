@@ -36,10 +36,12 @@ async function setupDatabase() {
 }
 
 // === BATCH INDEX A FILE ===
+// === BATCH INDEX A FILE (pgvector-compatible) ===
 async function indexFile(filePath, ruleSet) {
   const absolutePath = path.join(process.cwd(), filePath);
   const text = await fs.readFile(absolutePath, 'utf-8');
 
+  // Split text into chunks
   const textChunks = text
     .split('---')
     .map(chunk => chunk.trim())
@@ -60,20 +62,24 @@ async function indexFile(filePath, ruleSet) {
         taskType: "RETRIEVAL_DOCUMENT"
       }))
     });
-    const embeddings = embeddingResult.embeddings.map(e => e.values);
 
-    // 2. Insert the entire batch into the database at once
-    const values = [];
-    const placeholders = [];
-    batchChunks.forEach((chunk, j) => {
-    placeholders.push(`($${values.length + 1}, $${values.length + 2}, $${values.length + 3})`);
-    values.push(chunk, ruleSet, embeddings[j]); // ✅ pass array directly
-});
+    const embeddings = embeddingResult.embeddings.map(e => e.values); // numeric arrays
 
+    // 2. Insert batch into PostgreSQL using pgvector
+    const client = await pool.connect();
+    try {
+      const placeholders = [];
+      const values = [];
+      batchChunks.forEach((chunk, j) => {
+        placeholders.push(`($${values.length + 1}, $${values.length + 2}, $${values.length + 3})`);
+        values.push(chunk, ruleSet, embeddings[j]); // <-- embed as numeric array
+      });
 
-
-    const queryText = `INSERT INTO rulebooks (content, ruleset, embedding) VALUES ${placeholders.join(', ')}`;
-    await pool.query(queryText, values);
+      const queryText = `INSERT INTO rulebooks (content, ruleset, embedding) VALUES ${placeholders.join(', ')}`;
+      await client.query(queryText, values);
+    } finally {
+      client.release();
+    }
   }
 
   console.log(`Finished indexing ${filePath}`);
