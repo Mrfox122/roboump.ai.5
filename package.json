@@ -4,18 +4,27 @@
   "description": "",
   "main": "script.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "netlify dev:exec drizzle-kit migrate",
+    "db:studio": "netlify dev:exec drizzle-kit studio"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@google/generative-ai": "^0.24.1",
+    "@netlify/neon": "^0.1.0",
     "@pinecone-database/pinecone": "^6.1.1",
     "axios": "^1.11.0",
     "dotenv": "^17.2.0",
+    "drizzle-orm": "^0.44.5",
     "node-fetch": "^2.7.0",
     "pdf-parse": "^1.1.1",
+    "pg": "^8.16.3",
     "resend": "^4.8.0"
+  },
+  "devDependencies": {
+    "drizzle-kit": "^0.31.4"
   }
 }

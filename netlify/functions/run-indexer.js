@@ -1,153 +1,93 @@
-// netlify/functions/run-indexer.js (Updated for Semantic Chunking)
-
-const { Pinecone } = require("@pinecone-database/pinecone");
+// netlify/functions/run-indexer.js
+// Purpose: Index rulebooks + glossary into Neon pgvector for Gemini retrieval
 
 const { GoogleGenerativeAI } = require("@google/generative-ai");
-
+const { Pool } = require("pg");
 const fs = require("fs").promises;
-
 const path = require("path");
 
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+const embeddingModel = genAI.getGenerativeModel({ model: "embedding-001" });
+const pool = new Pool({ connectionString: process.env.DATABASE_URL });
 
 const filesToIndex = [
-
-    // { path: './rulebooks/2025-NFHS.txt', ruleSet: ['NFHS'] },
-
-    { path: './rulebooks/2025-NCAA.txt', ruleSet: ['NCAA'] },
-
-    // { path: './rulebooks/2025-CCA.txt', ruleSet: ['CCA'] },
-
-    { path: './rulebooks/2025-OBR.txt', ruleSet: ['MLB'] },
-
-    { path: './rulebooks/glossary.txt', ruleSet: ['Glossary'] },
-
-    // Add your other files here when they are ready
-
+    { path: "./rulebooks/2025-NCAA.txt", ruleSet: "NCAA" },
+    { path: "./rulebooks/2025-CCA.txt", ruleSet: "CCA" },
+    { path: "./rulebooks/OBR-rules.txt", ruleSet: "MLB" },
+    { path: "./rulebooks/glossary.txt", ruleSet: "Glossary" }
 ];
 
-
-const pinecone = new Pinecone(); 
-
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-
-const pineconeIndex = pinecone.index("umpire-rules");
-
-const embeddingModel = genAI.getGenerativeModel({ model: "embedding-001" });
-
-
-async function indexFile(filePath, ruleSetArray) {
-
-    console.log(`Processing ${filePath}...`);
-
-    const absolutePath = path.resolve(__dirname, `../../${filePath}`);
-
-    const text = await fs.readFile(absolutePath, 'utf-8');
-
-
-    // This now splits the file by your "---" separator
-
-    const textChunks = text.split('---').map(chunk => chunk.trim()).filter(chunk => chunk.length > 10);
-
-
-    console.log(`Split into ${textChunks.length} semantic chunks.`);
-
-
-    const batchSize = 50;
-
-    for (let i = 0; i < textChunks.length; i += batchSize) {
-
-        let batch = textChunks.slice(i, i + batchSize);
-
-        console.log(`Processing batch ${Math.floor(i / batchSize) + 1} of ${Math.ceil(textChunks.length / batchSize)}...`);
-
-
-        const result = await embeddingModel.batchEmbedContents({
-
-            requests: batch.map(chunk => ({
-
-                content: { parts: [{ text: chunk }] },
-
-                taskType: "RETRIEVAL_DOCUMENT"
-
-            }))
-
-        });
-
-
-// Before upsert:
-const vectors = result.embeddings.map((embedding, j) => ({
-  id: `${path.basename(filePath)}-${i + j}`,
-  values: embedding.values,
-  metadata: {
-    text: batch[j], // Ensure this is the exact text chunk
-    ruleSet: ruleSetArray
-  }
-}));
-
-// Add logging to confirm text length exists
-vectors.forEach((vector) => {
-  if (!vector.metadata.text || vector.metadata.text.length < 10) {
-    console.warn(`Warning: Vector id=${vector.id} has missing or too short metadata.text!`);
-  } else {
-    console.log(`Upserting vector id=${vector.id} with metadata text length=${vector.metadata.text.length}`);
-  }
-});
-
-
-        await pineconeIndex.upsert(vectors);
-
-        console.log(`Successfully indexed batch of ${vectors.length} vectors for ${filePath}.`);
-
+async function setupDatabase() {
+    console.log("Setting up database schema...");
+    const client = await pool.connect();
+    try {
+        await client.query("CREATE EXTENSION IF NOT EXISTS vector;");
+        await client.query(`
+            CREATE TABLE IF NOT EXISTS rulebook_snippets (
+                id SERIAL PRIMARY KEY,
+                text TEXT,
+                term TEXT,
+                rule_set TEXT,
+                embedding VECTOR(768)
+            );
+        `);
+        console.log("Database schema is ready.");
+    } finally {
+        client.release();
     }
-
 }
 
+async function indexFile(filePath, ruleSet) {
+    const absolutePath = path.resolve(__dirname, `../../${filePath}`);
+    const text = await fs.readFile(absolutePath, "utf-8");
 
-exports.handler = async function (event) {
-
-    if (event.headers['x-secret-key'] !== '1234') { // Use your secret key
-
-        return { statusCode: 401, body: 'Unauthorized' };
-
+    // Handle glossary vs. rulebook differently
+    let textChunks;
+    if (ruleSet === "Glossary") {
+        textChunks = text
+            .split("---")
+            .map(chunk => chunk.trim())
+            .filter(chunk => chunk.includes("-"))
+            .map(entry => {
+                const [term, definition] = entry.split("-").map(s => s.trim());
+                return { term, text: definition };
+            });
+    } else {
+        textChunks = text
+            .split("---")
+            .map(chunk => ({ term: null, text: chunk.trim() }))
+            .filter(chunk => chunk.text.length > 10);
     }
 
-    try {
+    console.log(`Split ${filePath} into ${textChunks.length} chunks.`);
 
-        console.log("Starting semantic indexing process...");
+    for (const chunk of textChunks) {
+        const result = await embeddingModel.embedContent({
+            content: { parts: [{ text: chunk.text }] },
+            taskType: "RETRIEVAL_DOCUMENT"
+        });
+        const embedding = result.embedding.values;
 
-        await pineconeIndex.deleteAll();
-
-        console.log("Cleared old data from Pinecone index.");
-
-        
-
-        for (const file of filesToIndex) {
-
-            await indexFile(file.path, file.ruleSet);
-
-        }
-
-
-        return {
-
-            statusCode: 200,
-
-            body: `Indexing complete! Processed ${filesToIndex.length} file(s).`,
-
-        };
-
-    } catch (error) {
-
-        console.error("Indexing failed:", error);
-
-        return {
-
-            statusCode: 500,
-
-            body: JSON.stringify({ error: error.message }),
-
-        };
-
+        await pool.query(
+            `INSERT INTO rulebook_snippets (text, term, rule_set, embedding)
+             VALUES ($1, $2, $3, $4)`,
+            [chunk.text, chunk.term, ruleSet, `[${embedding.join(",")}]`]
+        );
     }
 
-}; 
+    console.log(`Indexed ${textChunks.length} entries from ${filePath}`);
+}
+
+async function main() {
+    await setupDatabase();
+    for (const file of filesToIndex) {
+        await indexFile(file.path, file.ruleSet);
+    }
+    console.log("✅ Indexing complete!");
+    process.exit(0);
+}
+
+main().catch(err => {
+    console.error("❌ Indexing failed:", err);
+    process.exit(1);
+});
