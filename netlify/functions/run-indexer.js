@@ -3,12 +3,11 @@ import { Pool } from "pg";
 import fs from "fs/promises";
 import path from "path";
 
-// === STEP 1: INITIALIZE ===
+// === INITIALIZE ===
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const embeddingModel = genAI.getGenerativeModel({ model: "embedding-001" });
 const pool = new Pool({ connectionString: process.env.NETLIFY_DATABASE_URL });
 
-// Map file keys to paths
 const filesToIndex = {
   "NCAA": './rulebooks/2025-NCAA.txt',
   "CCA": './rulebooks/2025-CCA.txt',
@@ -16,7 +15,7 @@ const filesToIndex = {
   "Glossary": './rulebooks/glossary.txt'
 };
 
-// === STEP 2: DATABASE SETUP ===
+// === DATABASE SETUP ===
 async function setupDatabase() {
   console.log("Setting up database schema...");
   const client = await pool.connect();
@@ -36,14 +35,7 @@ async function setupDatabase() {
   }
 }
 
-// === STEP 3: Validate embedding ===
-function validateEmbedding(embedding) {
-  if (!Array.isArray(embedding)) throw new Error("Embedding is not an array");
-  if (embedding.length !== 768) throw new Error(`Embedding length is ${embedding.length}, expected 768`);
-  if (!embedding.every(num => typeof num === "number")) throw new Error("Embedding contains non-number elements");
-}
-
-// === STEP 4: INDEX A SINGLE FILE ===
+// === BATCH INDEX A FILE ===
 async function indexFile(filePath, ruleSet) {
   const absolutePath = path.join(process.cwd(), filePath);
   const text = await fs.readFile(absolutePath, 'utf-8');
@@ -55,29 +47,38 @@ async function indexFile(filePath, ruleSet) {
 
   console.log(`Split ${filePath} into ${textChunks.length} chunks.`);
 
-  for (const [i, chunk] of textChunks.entries()) {
-    const result = await embeddingModel.embedContent({
-      content: { parts: [{ text: chunk }] },
-      taskType: "RETRIEVAL_DOCUMENT"
+  const batchSize = 50; // Process 50 chunks at a time
+
+  for (let i = 0; i < textChunks.length; i += batchSize) {
+    const batchChunks = textChunks.slice(i, i + batchSize);
+    console.log(`Processing batch ${Math.floor(i / batchSize) + 1} of ${Math.ceil(textChunks.length / batchSize)}...`);
+
+    // 1. Create embeddings for the entire batch at once
+    const embeddingResult = await embeddingModel.batchEmbedContents({
+      requests: batchChunks.map(chunk => ({
+        content: { parts: [{ text: chunk }] },
+        taskType: "RETRIEVAL_DOCUMENT"
+      }))
+    });
+    const embeddings = embeddingResult.embeddings.map(e => e.values);
+
+    // 2. Insert the entire batch into the database at once
+    const values = [];
+    const placeholders = [];
+    batchChunks.forEach((chunk, j) => {
+        placeholders.push(`($${values.length + 1}, $${values.length + 2}, $${values.length + 3})`);
+        values.push(chunk, ruleSet, `[${embeddings[j].join(',')}]`);
     });
 
-    const embedding = result.embedding.values;
-
-    validateEmbedding(embedding);
-
-    await pool.query(
-      'INSERT INTO rulebooks (content, ruleset, embedding) VALUES ($1, $2, $3)',
-      [chunk, ruleSet, `[${embedding.join(',')}]`]
-    );
-
-    console.log(`Indexed chunk ${i + 1} of ${textChunks.length}`);
+    const queryText = `INSERT INTO rulebooks (content, ruleset, embedding) VALUES ${placeholders.join(', ')}`;
+    await pool.query(queryText, values);
   }
 
   console.log(`Finished indexing ${filePath}`);
   return `Finished indexing ${ruleSet} with ${textChunks.length} chunks.\n`;
 }
 
-// === STEP 5: EXPORT HANDLER ===
+// === HANDLER ===
 export async function handler(event) {
   try {
     const secret = event.headers['x-secret-key'];
@@ -91,9 +92,18 @@ export async function handler(event) {
     }
 
     await setupDatabase();
+
+    // Clear old data for the specific ruleset before indexing
+    console.log(`Clearing old data for ruleset: ${fileKey}`);
+    await pool.query('DELETE FROM rulebooks WHERE ruleset = $1', [fileKey]);
+
     const resultMsg = await indexFile(filesToIndex[fileKey], fileKey);
 
-    return { statusCode: 200, body: resultMsg };
+    console.log("Indexing complete.");
+    return {
+      statusCode: 200,
+      body: resultMsg
+    };
   } catch (error) {
     console.error("Error during indexing:", error);
     return {
