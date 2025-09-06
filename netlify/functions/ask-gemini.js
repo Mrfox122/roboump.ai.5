@@ -144,10 +144,20 @@ ${glossaryDefinitions}
 2. Decide which snippets are directly relevant to answering the user's question.
 3. Synthesize the relevant information into a clear, conversational answer.
 4. If multiple snippets are relevant, combine intelligently.
-5. Quote the **single most relevant** rule verbatim (highlighted below).
+5. Quote the **single most relevant** rule verbatim (use the top match).
 
-**Top Match for Quotation:**
-${topMatch.content}
+**Response Structure:**
+Your response must have **two distinct parts**:
+
+**Part 1: The Explanation**
+Provide a clear, conversational, and authoritative answer to the user's question.
+Use **bold text** for key terms.
+Integrate the glossary definitions where appropriate.
+
+**Part 2: The Rulebook Quotation**
+Provide a section titled "**Official Rulebook Text:**"
+Quote word-for-word the **single most relevant rule** from the top match.
+Do not combine it with your explanation.
 
 ---
 CONTEXT FROM RULEBOOK:
@@ -156,6 +166,7 @@ ${finalContext}
 
 USER'S QUESTION (Answer according to ${ruleSet} rules):
 ${rephrased_question}`;
+
 
     // === STEP 7: GENERATE AI ANSWER ===
     const generationResult = await generativeModel.generateContent(finalPrompt);
