@@ -1,5 +1,5 @@
 // === ask-gemini.js ===
-// Description: Handles incoming rulebook + glossary queries using Gemini + Neon JSONB
+// Handles incoming rulebook + glossary queries using Gemini + Neon JSONB
 // Optimized: Weighted snippet selection using cosine similarity + semantic context
 
 import { Pool } from "pg";
@@ -15,10 +15,11 @@ const embeddingModel = genAI.getGenerativeModel({ model: "embedding-001" });
 
 // === UTILITY: COSINE SIMILARITY ===
 function cosineSimilarity(vecA, vecB) {
+    if (!Array.isArray(vecA) || !Array.isArray(vecB)) return 0;
     const dot = vecA.reduce((sum, a, i) => sum + a * vecB[i], 0);
     const magA = Math.sqrt(vecA.reduce((sum, a) => sum + a * a, 0));
     const magB = Math.sqrt(vecB.reduce((sum, b) => sum + b * b, 0));
-    return dot / (magA * magB);
+    return dot / (magA * magB || 1);
 }
 
 // === STEP 2: MAIN HANDLER ===
@@ -41,7 +42,7 @@ export async function handler(event) {
         );
 
         const { rows: glossaryRows } = await pool.query(
-            "SELECT content AS text, term FROM rulebooks WHERE ruleset = 'Glossary' LIMIT 150"
+            "SELECT content AS text FROM rulebooks WHERE ruleset = 'Glossary' LIMIT 150"
         );
 
         // Parse JSONB embeddings
@@ -56,10 +57,9 @@ export async function handler(event) {
         });
 
         // Build glossary context
-        const glossaryDefinitions = glossaryMatches
-        .map(row => `• ${row.content}`)  // only use the content field
-        .join("\n") || "No glossary terms available.";
-
+        const glossaryDefinitions = glossaryRows
+            .map(row => `• ${row.text}`)
+            .join("\n") || "No glossary terms available.";
 
         // Filter low-similarity matches
         const SIMILARITY_THRESHOLD = 0.65;
