@@ -66,9 +66,11 @@ async function indexFile(filePath, ruleSet) {
     const values = [];
     const placeholders = [];
     batchChunks.forEach((chunk, j) => {
-        placeholders.push(`($${values.length + 1}, $${values.length + 2}, $${values.length + 3})`);
-        values.push(chunk, ruleSet, `[${embeddings[j].join(',')}]`);
-    });
+    placeholders.push(`($${values.length + 1}, $${values.length + 2}, $${values.length + 3})`);
+    values.push(chunk, ruleSet, embeddings[j]); // ✅ pass array directly
+});
+
+
 
     const queryText = `INSERT INTO rulebooks (content, ruleset, embedding) VALUES ${placeholders.join(', ')}`;
     await pool.query(queryText, values);
