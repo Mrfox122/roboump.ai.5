@@ -59,7 +59,7 @@ async function indexFile(filePath, ruleSet) {
 
     await pool.query(
       'INSERT INTO rulebooks (content, ruleset, embedding) VALUES ($1, $2, $3)',
-      [chunk, ruleSet, embedding]  // <-- raw array, not stringified
+      [chunk, ruleSet, `[${embedding.join(',')}]`] // <-- raw array, not stringified
     );
 
     console.log(`Indexed chunk ${chunkIndex}/${textChunks.length} for ${ruleSet}`);
