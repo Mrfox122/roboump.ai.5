@@ -56,9 +56,10 @@ export async function handler(event) {
         });
 
         // Build glossary context
-        const glossaryDefinitions = glossaryRows
-            .map(row => `• ${row.content}`)
-            .join("\n") || "No glossary terms available.";
+        const glossaryDefinitions = glossaryMatches
+        .map(row => `• ${row.content}`)  // only use the content field
+        .join("\n") || "No glossary terms available.";
+
 
         // Filter low-similarity matches
         const SIMILARITY_THRESHOLD = 0.65;
