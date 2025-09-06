@@ -6,23 +6,41 @@
 </head>
 <body>
     <h1>Run Indexer</h1>
+
     <input type="password" id="secretKey" placeholder="Enter Secret Key">
+
+    <select id="fileSelect">
+        <option value="NCAA">2025-NCAA.txt</option>
+        <option value="CCA">2025-CCA.txt</option>
+        <option value="MLB">OBR-rules.txt</option>
+        <option value="Glossary">glossary.txt</option>
+    </select>
+
     <button onclick="runIndexer()">Run Indexing Script</button>
+
     <pre id="response"></pre>
 
     <script>
         async function runIndexer() {
             const secret = document.getElementById('secretKey').value;
+            const fileKey = document.getElementById('fileSelect').value;
             const responseEl = document.getElementById('response');
-            responseEl.textContent = 'Starting indexing... please wait.';
+            responseEl.textContent = `Starting indexing for ${fileKey}... please wait.\n`;
 
-            const response = await fetch('/api/run-indexer', {
-                method: 'POST',
-                headers: { 'x-secret-key': secret }
-            });
+            try {
+                const response = await fetch('/api/run-indexer', {
+                    method: 'POST',
+                    headers: {
+                        'x-secret-key': secret,
+                        'x-file-key': fileKey
+                    }
+                });
 
-            const result = await response.text();
-            responseEl.textContent = result;
+                const result = await response.text();
+                responseEl.textContent += result;
+            } catch (err) {
+                responseEl.textContent += `Error: ${err.message}`;
+            }
         }
     </script>
 </body>

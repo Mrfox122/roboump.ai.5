@@ -3,19 +3,20 @@ import { Pool } from "pg";
 import fs from "fs/promises";
 import path from "path";
 
-// === INITIALIZE ===
+// === STEP 1: INITIALIZE ===
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const embeddingModel = genAI.getGenerativeModel({ model: "embedding-001" });
 const pool = new Pool({ connectionString: process.env.NETLIFY_DATABASE_URL });
 
-const filesToIndex = [
-  { path: './rulebooks/2025-NCAA.txt', ruleSet: 'NCAA' },
-  { path: './rulebooks/2025-CCA.txt',  ruleSet: 'CCA' },
-  { path: './rulebooks/OBR-rules.txt', ruleSet: 'MLB' },
-  { path: './rulebooks/glossary.txt', ruleSet: 'Glossary' }
-];
+// Map file keys to paths
+const filesToIndex = {
+  "NCAA": './rulebooks/2025-NCAA.txt',
+  "CCA": './rulebooks/2025-CCA.txt',
+  "MLB": './rulebooks/OBR-rules.txt',
+  "Glossary": './rulebooks/glossary.txt'
+};
 
-// === DATABASE SETUP ===
+// === STEP 2: DATABASE SETUP ===
 async function setupDatabase() {
   console.log("Setting up database schema...");
   const client = await pool.connect();
@@ -35,9 +36,16 @@ async function setupDatabase() {
   }
 }
 
-// === INDEX A FILE ===
+// === STEP 3: Validate embedding ===
+function validateEmbedding(embedding) {
+  if (!Array.isArray(embedding)) throw new Error("Embedding is not an array");
+  if (embedding.length !== 768) throw new Error(`Embedding length is ${embedding.length}, expected 768`);
+  if (!embedding.every(num => typeof num === "number")) throw new Error("Embedding contains non-number elements");
+}
+
+// === STEP 4: INDEX A SINGLE FILE ===
 async function indexFile(filePath, ruleSet) {
-  const absolutePath = path.resolve(process.cwd(), filePath);
+  const absolutePath = path.join(process.cwd(), filePath);
   const text = await fs.readFile(absolutePath, 'utf-8');
 
   const textChunks = text
@@ -47,9 +55,7 @@ async function indexFile(filePath, ruleSet) {
 
   console.log(`Split ${filePath} into ${textChunks.length} chunks.`);
 
-  let chunkIndex = 0;
-  for (const chunk of textChunks) {
-    chunkIndex++;
+  for (const [i, chunk] of textChunks.entries()) {
     const result = await embeddingModel.embedContent({
       content: { parts: [{ text: chunk }] },
       taskType: "RETRIEVAL_DOCUMENT"
@@ -57,18 +63,21 @@ async function indexFile(filePath, ruleSet) {
 
     const embedding = result.embedding.values;
 
+    validateEmbedding(embedding);
+
     await pool.query(
       'INSERT INTO rulebooks (content, ruleset, embedding) VALUES ($1, $2, $3)',
-      [chunk, ruleSet, `[${embedding.join(',')}]`] // <-- raw array, not stringified
+      [chunk, ruleSet, embedding]
     );
 
-    console.log(`Indexed chunk ${chunkIndex}/${textChunks.length} for ${ruleSet}`);
+    console.log(`Indexed chunk ${i + 1} of ${textChunks.length}`);
   }
 
   console.log(`Finished indexing ${filePath}`);
+  return `Finished indexing ${ruleSet} with ${textChunks.length} chunks.\n`;
 }
 
-// === HANDLER ===
+// === STEP 5: EXPORT HANDLER ===
 export async function handler(event) {
   try {
     const secret = event.headers['x-secret-key'];
@@ -76,18 +85,15 @@ export async function handler(event) {
       return { statusCode: 401, body: 'Unauthorized: Invalid secret key' };
     }
 
-    console.log("Starting indexing process...");
-    await setupDatabase();
-
-    for (const file of filesToIndex) {
-      await indexFile(file.path, file.ruleSet);
+    const fileKey = event.headers['x-file-key'];
+    if (!fileKey || !filesToIndex[fileKey]) {
+      return { statusCode: 400, body: 'Bad Request: Invalid or missing file key' };
     }
 
-    console.log("Indexing complete.");
-    return {
-      statusCode: 200,
-      body: "Indexing complete. All files processed successfully."
-    };
+    await setupDatabase();
+    const resultMsg = await indexFile(filesToIndex[fileKey], fileKey);
+
+    return { statusCode: 200, body: resultMsg };
   } catch (error) {
     console.error("Error during indexing:", error);
     return {
