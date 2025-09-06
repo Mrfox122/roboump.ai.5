@@ -1,3 +1,6 @@
+console.log("DATABASE_URL:", process.env.DATABASE_URL);
+
+
 // netlify/functions/run-indexer.js
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { Pool } from "pg";
@@ -7,7 +10,7 @@ import path from "path";
 // === STEP 1: INITIALIZE ===
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const embeddingModel = genAI.getGenerativeModel({ model: "embedding-001" });
-const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+const pool = new Pool({ connectionString: process.env.NETLIFY_DATABASE_URL });
 
 // Files to index
 const filesToIndex = [
