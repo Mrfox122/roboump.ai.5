@@ -103,18 +103,24 @@ ${relevantMatches
 
         const finalPrompt = `${selectedPrompt}
 
-**Your Task:**
-You will be given a user's question and the **3 most relevant rulebook snippets**, plus glossary definitions.
-Follow these steps:
-1. Review the provided snippets carefully.
-2. Use them to produce a conversational, authoritative answer.
-3. Do NOT invent rules; only use what is in the snippets.
+**Instructions:**
+1. Review ALL the provided text snippets below.
+2. Decide which snippets are directly relevant to answering the user's question.
+3. Synthesize the relevant information into a clear, conversational answer.
+4. If multiple snippets are relevant, combine them intelligently.
+5. At the end, quote the **single most relevant** rule verbatim.
 
-**Glossary Definitions:**
-${glossaryDefinitions}
+**Response Structure:**
+Your response must have two distinct parts:
+
+**Part 1: The Explanation**
+First, provide a clear, conversational, and authoritative answer to the user's question. Synthesize the information from the context into an easy-to-understand explanation. Use bold text for key terms.
+
+**Part 2: The Rulebook Quotation**
+Second, add a section titled "**Official Rulebook Text:**". Below this title, provide a direct, word-for-word quotation of the single most relevant rule or section from the "CONTEXT FROM RULEBOOK" that supports your answer.
 
 ---
-CONTEXT FROM RULEBOOK (Top 3 Snippets, Weighted by Score):
+CONTEXT FROM RULEBOOK:
 ${selectedSnippets}
 ---
 
