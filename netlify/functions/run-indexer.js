@@ -11,7 +11,7 @@ const pool = new Pool({ connectionString: process.env.NETLIFY_DATABASE_URL });
 const filesToIndex = {
   "NCAA": './rulebooks/2025-NCAA.txt',
   "CCA": './rulebooks/2025-CCA.txt',
-  "MLB": './rulebooks/OBR-rules.txt',
+  "MLB": './rulebooks/2025-OBR.txt',
   "Glossary": './rulebooks/glossary.txt'
 };
 
