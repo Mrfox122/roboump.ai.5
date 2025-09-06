@@ -1,3 +1,6 @@
+// === run-indexer.js ===
+// Index rulebooks and glossary into Neon (Postgres + pgvector) for Gemini
+
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { Pool } from "pg";
 import fs from "fs/promises";
@@ -8,6 +11,7 @@ const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const embeddingModel = genAI.getGenerativeModel({ model: "embedding-001" });
 const pool = new Pool({ connectionString: process.env.NETLIFY_DATABASE_URL });
 
+// === FILES TO INDEX ===
 const filesToIndex = {
   "NCAA": './rulebooks/2025-NCAA.txt',
   "CCA": './rulebooks/2025-CCA.txt',
@@ -15,18 +19,21 @@ const filesToIndex = {
   "Glossary": './rulebooks/glossary.txt'
 };
 
-// === DATABASE SETUP ===
+// === SETUP DATABASE ===
 async function setupDatabase() {
   console.log("Setting up database schema...");
   const client = await pool.connect();
   try {
+    // Make sure vector extension exists
     await client.query('CREATE EXTENSION IF NOT EXISTS vector;');
+    
+    // Create table if it doesn't exist
     await client.query(`
       CREATE TABLE IF NOT EXISTS rulebooks (
         id SERIAL PRIMARY KEY,
-        content TEXT,
-        ruleset TEXT,
-        embedding VECTOR(768)
+        content TEXT NOT NULL,
+        ruleset TEXT NOT NULL,
+        embedding VECTOR(768) NOT NULL
       );
     `);
     console.log("Database schema ready.");
@@ -35,88 +42,71 @@ async function setupDatabase() {
   }
 }
 
-// === BATCH INDEX A FILE ===
-// === BATCH INDEX A FILE (pgvector-compatible) ===
+// === INDEX A SINGLE FILE ===
 async function indexFile(filePath, ruleSet) {
   const absolutePath = path.join(process.cwd(), filePath);
   const text = await fs.readFile(absolutePath, 'utf-8');
 
-  // Split text into chunks
-  const textChunks = text
+  // Split text into chunks by ---
+  const chunks = text
     .split('---')
-    .map(chunk => chunk.trim())
-    .filter(chunk => chunk.length > 10);
+    .map(c => c.trim())
+    .filter(c => c.length > 10);
 
-  console.log(`Split ${filePath} into ${textChunks.length} chunks.`);
+  console.log(`Split ${filePath} into ${chunks.length} chunks.`);
 
-  const batchSize = 50; // Process 50 chunks at a time
+  const batchSize = 50;
+  for (let i = 0; i < chunks.length; i += batchSize) {
+    const batch = chunks.slice(i, i + batchSize);
+    console.log(`Processing batch ${Math.floor(i / batchSize) + 1} of ${Math.ceil(chunks.length / batchSize)}...`);
 
-  for (let i = 0; i < textChunks.length; i += batchSize) {
-    const batchChunks = textChunks.slice(i, i + batchSize);
-    console.log(`Processing batch ${Math.floor(i / batchSize) + 1} of ${Math.ceil(textChunks.length / batchSize)}...`);
-
-    // 1. Create embeddings for the entire batch at once
+    // 1. Get embeddings for batch
     const embeddingResult = await embeddingModel.batchEmbedContents({
-      requests: batchChunks.map(chunk => ({
+      requests: batch.map(chunk => ({
         content: { parts: [{ text: chunk }] },
         taskType: "RETRIEVAL_DOCUMENT"
       }))
     });
 
-    const embeddings = embeddingResult.embeddings.map(e => e.values); // numeric arrays
-
-    // 2. Insert batch into PostgreSQL using pgvector
+    // 2. Insert batch into DB
     const client = await pool.connect();
     try {
-      const placeholders = [];
-      const values = [];
-      batchChunks.forEach((chunk, j) => {
-        placeholders.push(`($${values.length + 1}, $${values.length + 2}, $${values.length + 3})`);
-        values.push(chunk, ruleSet, embeddings[j]); // <-- embed as numeric array
-      });
-
-      const queryText = `INSERT INTO rulebooks (content, ruleset, embedding) VALUES ${placeholders.join(', ')}`;
-      await client.query(queryText, values);
+      for (let j = 0; j < batch.length; j++) {
+        const embeddingArray = embeddingResult.embeddings[j].values; // numeric array!
+        await client.query(
+          `INSERT INTO rulebooks (content, ruleset, embedding) VALUES ($1, $2, $3)`,
+          [batch[j], ruleSet, embeddingArray]
+        );
+      }
     } finally {
       client.release();
     }
   }
 
-  console.log(`Finished indexing ${filePath}`);
-  return `Finished indexing ${ruleSet} with ${textChunks.length} chunks.\n`;
+  console.log(`Finished indexing ${ruleSet} with ${chunks.length} chunks.`);
+  return `Finished indexing ${ruleSet}.\n`;
 }
 
-// === HANDLER ===
-export async function handler(event) {
+// === MAIN ===
+async function main() {
   try {
-    const secret = event.headers['x-secret-key'];
-    if (secret !== process.env.RUN_INDEXER_SECRET) {
-      return { statusCode: 401, body: 'Unauthorized: Invalid secret key' };
-    }
-
-    const fileKey = event.headers['x-file-key'];
-    if (!fileKey || !filesToIndex[fileKey]) {
-      return { statusCode: 400, body: 'Bad Request: Invalid or missing file key' };
-    }
-
     await setupDatabase();
 
-    // Clear old data for the specific ruleset before indexing
-    console.log(`Clearing old data for ruleset: ${fileKey}`);
-    await pool.query('DELETE FROM rulebooks WHERE ruleset = $1', [fileKey]);
+    for (const [ruleSet, filePath] of Object.entries(filesToIndex)) {
+      console.log(`\nStarting indexing for ${ruleSet}...`);
+      
+      // Clear old data for this ruleset
+      await pool.query('DELETE FROM rulebooks WHERE ruleset = $1', [ruleSet]);
+      
+      await indexFile(filePath, ruleSet);
+    }
 
-    const resultMsg = await indexFile(filesToIndex[fileKey], fileKey);
-
-    console.log("Indexing complete.");
-    return {
-      statusCode: 200,
-      body: resultMsg
-    };
+    console.log("\nAll rulebooks and glossary indexed successfully!");
+    process.exit(0);
   } catch (error) {
-    console.error("Error during indexing:", error);
-    return {
-      statusCode: 500,
-      body: JSON.stringify({ error: "Internal Server Error", details: error.message })
-    };
+    console.error("Indexing failed:", error);
+    process.exit(1);
   }
 }
+
+main();
