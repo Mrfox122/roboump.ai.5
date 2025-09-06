@@ -1,146 +1,179 @@
-// === ask-gemini.js ===
-// Handles incoming rulebook + glossary queries using Gemini + Neon JSONB
-// Optimized: Weighted snippet selection using cosine similarity + semantic context
+// === ask-gemini.js (Netlify Function with Neon JSONB) ===
+// Handles rulebook + glossary queries using Gemini + Neon JSONB embeddings
 
 import { Pool } from "pg";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import prompts from "./prompts.js";
 
-// === STEP 1: INITIALIZE DATABASE + GEMINI MODELS ===
+// === STEP 1: INIT DATABASE + GEMINI ===
 const pool = new Pool({ connectionString: process.env.NETLIFY_DATABASE_URL });
-
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
-const generativeModel = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 const embeddingModel = genAI.getGenerativeModel({ model: "embedding-001" });
+const generativeModel = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
 // === UTILITY: COSINE SIMILARITY ===
 function cosineSimilarity(vecA, vecB) {
-    if (!Array.isArray(vecA) || !Array.isArray(vecB)) return 0;
-    const dot = vecA.reduce((sum, a, i) => sum + a * vecB[i], 0);
-    const magA = Math.sqrt(vecA.reduce((sum, a) => sum + a * a, 0));
-    const magB = Math.sqrt(vecB.reduce((sum, b) => sum + b * b, 0));
-    return dot / (magA * magB || 1);
+  const dot = vecA.reduce((sum, a, i) => sum + a * vecB[i], 0);
+  const magA = Math.sqrt(vecA.reduce((sum, a) => sum + a * a, 0));
+  const magB = Math.sqrt(vecB.reduce((sum, b) => sum + b * b, 0));
+  return dot / (magA * magB);
 }
 
-// === STEP 2: MAIN HANDLER ===
+// === MAIN HANDLER ===
 export async function handler(event) {
+  try {
+    const { question, ruleSet } = JSON.parse(event.body);
+    console.log("=== Incoming Question ===", question);
+    console.log("Using Rule Set:", ruleSet);
+
+    // === STEP 2: FETCH GLOSSARY ===
+    const { rows: glossaryRows } = await pool.query(`
+      SELECT content, ruleset, embedding, id
+      FROM rulebooks
+      WHERE ruleset = 'Glossary'
+      LIMIT 150
+    `);
+
+    // Build glossary context for AI
+    const glossaryDefinitions = glossaryRows
+      .map(row => `• ${row.content}`)
+      .join("\n") || "No glossary terms available.";
+
+    // === STEP 3: DETECT SLANG + REPHRASE QUESTION ===
+    const slangPrompt = `
+You are a baseball language expert. Analyze the user's question using the provided glossary of slang terms.
+- Identify slang and provide its definition.
+- Rephrase the user's question using official baseball terminology.
+
+Respond in JSON: { "slang_definition": "...", "rephrased_question": "..." }
+
+GLOSSARY:
+${glossaryDefinitions}
+
+USER QUESTION: "${question}"
+`;
+    const slangResult = await generativeModel.generateContent(slangPrompt);
+    const slangText = await slangResult.response.text();
+    let slangData = { slang_definition: "None", rephrased_question: question };
     try {
-        const { question, ruleSet } = JSON.parse(event.body);
-        console.log("=== Incoming Question ===", question);
-        console.log("Using Rule Set:", ruleSet);
+      slangData = JSON.parse(slangText.replace(/```json\n?|\n?```/g, ''));
+    } catch (e) {
+      console.warn("Failed to parse slang analysis, using original question.");
+    }
+    const { slang_definition, rephrased_question } = slangData;
 
-        // === STEP 3: CREATE EMBEDDING FOR USER QUESTION ===
-        const embeddingResponse = await embeddingModel.embedContent({
-            content: { parts: [{ text: question }] }
-        });
-        const queryEmbedding = embeddingResponse.embedding.values;
+    console.log("Slang analysis:", slang_definition);
+    console.log("Rephrased question:", rephrased_question);
 
-        // === STEP 4: FETCH RULEBOOK AND GLOSSARY ENTRIES ===
-        const { rows: rulebookRows } = await pool.query(
-            "SELECT id, content, ruleset, embedding FROM rulebooks WHERE ruleset = $1",
-            [ruleSet]
-        );
+    // === STEP 4: GENERATE MULTIPLE SEARCH QUERIES ===
+    const multiQueryPrompt = `
+You are a baseball rules expert. Generate 3 alternative search queries for the user's question.
+Rephrased Question: "${rephrased_question}"
+Respond with 3 queries, one per line.
+`;
+    const multiQueryResult = await generativeModel.generateContent(multiQueryPrompt);
+    const searchQueries = (await multiQueryResult.response.text())
+      .split("\n").map(q => q.trim()).filter(Boolean);
+    searchQueries.unshift(rephrased_question); // Include main question
 
-        const { rows: glossaryRows } = await pool.query(
-            "SELECT content AS text FROM rulebooks WHERE ruleset = 'Glossary' LIMIT 150"
-        );
+    console.log("Search queries:", searchQueries);
 
-        // Parse JSONB embeddings
-        const rulebookMatches = rulebookRows.map(row => ({
-            ...row,
-            embedding: typeof row.embedding === "string" ? JSON.parse(row.embedding) : row.embedding
-        }));
+    // === STEP 5: EMBEDDING + COSINE SEARCH ===
+    const embeddingRequests = searchQueries.map(q => ({
+      content: { parts: [{ text: q }] },
+      taskType: "RETRIEVAL_QUERY"
+    }));
+    const embeddingResult = await embeddingModel.batchEmbedContents({ requests: embeddingRequests });
+    const queryVectors = embeddingResult.embeddings.map(e => e.values);
 
-        // Compute similarity scores in JS
-        rulebookMatches.forEach(row => {
-            row.score = cosineSimilarity(queryEmbedding, row.embedding);
-        });
+    // Fetch rulebook entries
+    const { rows: rulebookRows } = await pool.query(
+      `SELECT id, content, ruleset, embedding
+       FROM rulebooks
+       WHERE ruleset = $1`,
+      [ruleSet]
+    );
 
-        // Build glossary context
-        const glossaryDefinitions = glossaryRows
-            .map(row => `• ${row.text}`)
-            .join("\n") || "No glossary terms available.";
+    const rulebookMatches = rulebookRows.map(row => ({
+      ...row,
+      embedding: row.embedding ? (typeof row.embedding === "string" ? JSON.parse(row.embedding) : row.embedding) : []
+    }));
 
-        // Filter low-similarity matches
-        const SIMILARITY_THRESHOLD = 0.65;
-        const relevantMatches = rulebookMatches
-            .filter(m => m.score > SIMILARITY_THRESHOLD)
-            .sort((a, b) => b.score - a.score)
-            .slice(0, 10); // top 10 matches
+    // Compute similarity for all query vectors
+    const scoredMatches = [];
+    for (const row of rulebookMatches) {
+      for (const qVec of queryVectors) {
+        const score = cosineSimilarity(qVec, row.embedding);
+        scoredMatches.push({ ...row, score });
+      }
+    }
 
-        console.log("Relevant Matches:", relevantMatches.length);
+    const SIMILARITY_THRESHOLD = 0.65;
+    const relevantMatches = Array.from(
+      new Map(
+        scoredMatches
+          .filter(m => m.score > SIMILARITY_THRESHOLD)
+          .sort((a, b) => b.score - a.score)
+          .map(m => [m.id, m])
+      ).values()
+    ).slice(0, 10);
 
-        if (relevantMatches.length === 0) {
-            return {
-                statusCode: 200,
-                body: JSON.stringify({
-                    answer: `I couldn't find a rule in the ${ruleSet} documents that matches your question. Please try rephrasing it.`
-                })
-            };
-        }
+    if (!relevantMatches.length) {
+      return {
+        statusCode: 200,
+        body: JSON.stringify({
+          answer: `I couldn't find a rule in the ${ruleSet} documents that matches your question.`
+        })
+      };
+    }
 
-        // === STEP 5: WEIGHTED SEMANTIC RANKING ===
-        const weightedRankingPrompt = `
-You are helping to rank rulebook snippets for relevance.
-The user asked: "${question}"
+    const topMatch = relevantMatches[0]; // explicitly mark top match for quoting
+    const finalContext = relevantMatches
+      .map((m, i) => `Result ${i + 1} (Score: ${m.score.toFixed(4)}):\n${m.content}`)
+      .join("\n\n---\n\n");
 
-Each snippet includes a **similarity score** (from 0 to 1). 
-Higher scores mean the snippet is more likely relevant. Use these scores as your primary ranking signal.
-If two snippets have close scores, resolve ties using semantic relevance to the user's question.
+    // === STEP 6: FINAL PROMPT ===
+    const selectedPrompt = prompts[ruleSet] || prompts.default;
+    const finalPrompt = `${selectedPrompt}
 
-Return ONLY the top 3 snippets. Do NOT include any explanations.
-
-SNIPPETS:
-${relevantMatches
-    .map((m, i) => `[${i + 1}] (Score: ${m.score.toFixed(4)}) ${m.content}`)
-    .join("\n\n")}`;
-
-        const rankingResult = await generativeModel.generateContent(weightedRankingPrompt);
-        const selectedSnippets = await rankingResult.response.text();
-
-        // === STEP 6: BUILD FINAL PROMPT ===
-        const selectedPrompt = prompts[ruleSet] || prompts.default;
-
-        const finalPrompt = `${selectedPrompt}
+**Glossary Definitions (Authoritative):**
+${glossaryDefinitions}
 
 **Instructions:**
-1. Review ALL the provided text snippets below.
+1. Review ALL the provided text snippets.
 2. Decide which snippets are directly relevant to answering the user's question.
 3. Synthesize the relevant information into a clear, conversational answer.
-4. If multiple snippets are relevant, combine them intelligently.
-5. At the end, quote the **single most relevant** rule verbatim.
+4. If multiple snippets are relevant, combine intelligently.
+5. Quote the **single most relevant** rule verbatim (highlighted below).
 
-**Response Structure:**
-Your response must have two distinct parts:
-
-**Part 1: The Explanation**
-First, provide a clear, conversational, and authoritative answer to the user's question. Synthesize the information from the context into an easy-to-understand explanation. Use bold text for key terms.
-
-**Part 2: The Rulebook Quotation**
-Second, add a section titled "**Official Rulebook Text:**". Below this title, provide a direct, word-for-word quotation of the single most relevant rule or section from the "CONTEXT FROM RULEBOOK" that supports your answer.
+**Top Match for Quotation:**
+${topMatch.content}
 
 ---
 CONTEXT FROM RULEBOOK:
-${selectedSnippets}
+${finalContext}
 ---
 
 USER'S QUESTION (Answer according to ${ruleSet} rules):
-${question}`;
+${rephrased_question}`;
 
-        // === STEP 7: SEND FINAL PROMPT TO GEMINI ===
-        const generationResult = await generativeModel.generateContent(finalPrompt);
-        const aiAnswer = await generationResult.response.text();
+    // === STEP 7: GENERATE AI ANSWER ===
+    const generationResult = await generativeModel.generateContent(finalPrompt);
+    const aiAnswer = await generationResult.response.text();
 
-        return {
-            statusCode: 200,
-            body: JSON.stringify({ answer: aiAnswer })
-        };
+    console.log("=== AI RESPONSE ===");
+    console.log(aiAnswer);
 
-    } catch (error) {
-        console.error("=== ERROR IN ask-gemini.js ===", error);
-        return {
-            statusCode: 500,
-            body: JSON.stringify({ error: "Internal Server Error", details: error.message })
-        };
-    }
+    return {
+      statusCode: 200,
+      body: JSON.stringify({ answer: aiAnswer })
+    };
+
+  } catch (error) {
+    console.error("=== ERROR IN ask-gemini.js ===", error);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: "Internal Server Error", details: error.message })
+    };
+  }
 }
