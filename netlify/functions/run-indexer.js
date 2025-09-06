@@ -64,6 +64,14 @@ async function indexFile(filePath, ruleSet) {
 }
 
 // Main Netlify function handler
+export async function handler(event) {
+    const secret = event.headers['x-secret-key'];
+    if (secret !== process.env.RUN_INDEXER_SECRET) {
+        return { statusCode: 401, body: 'Unauthorized' };
+    }
+}
+
+
 exports.handler = async function(event) {
     try {
         await setupDatabase();
