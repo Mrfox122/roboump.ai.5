@@ -57,7 +57,7 @@ export async function handler(event) {
 
         // Build glossary context
         const glossaryDefinitions = glossaryRows
-            .map(row => `• ${row.term}: ${row.text}`)
+            .map(row => `• ${row.content}`)
             .join("\n") || "No glossary terms available.";
 
         // Filter low-similarity matches
