@@ -1,4 +1,4 @@
-// === ask-gemini.js (Enhanced with Automatic Sub-Queries) ===
+ === ask-gemini.js (Enhanced with Automatic Sub-Queries + Fix) ===
 import { Pool } from "pg";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import prompts from "./prompts.js";
@@ -52,13 +52,11 @@ A: ["pitcher step toward third base legality", "throw to fielder off base legali
 
 // === STEP 2: FETCH RELEVANT RULES FOR EACH SUB-QUERY ===
 async function fetchRelevantRulesForQuery(query, ruleSet) {
-  // Generate embedding for this sub-query
   const embeddingResponse = await embeddingModel.embedContent({
     content: { parts: [{ text: query }] }
   });
   const queryEmbedding = embeddingResponse.embedding.values;
 
-  // Pull rules for this ruleSet
   const { rows } = await pool.query(
     `SELECT id, content, ruleset, embedding
      FROM rulebooks
@@ -71,7 +69,6 @@ async function fetchRelevantRulesForQuery(query, ruleSet) {
     embedding: typeof row.embedding === "string" ? JSON.parse(row.embedding) : row.embedding
   }));
 
-  // Score matches by similarity
   matches.forEach(row => {
     row.score = cosineSimilarity(queryEmbedding, row.embedding);
   });
@@ -79,7 +76,7 @@ async function fetchRelevantRulesForQuery(query, ruleSet) {
   return matches
     .filter(m => m.score > 0.65)
     .sort((a, b) => b.score - a.score)
-    .slice(0, 5); // top 5 per sub-query
+    .slice(0, 5);
 }
 
 // === MAIN HANDLER ===
@@ -89,20 +86,20 @@ export async function handler(event) {
     console.log("=== Incoming Question ===", question);
     console.log("Using Rule Set:", ruleSet);
 
-    // === STEP 3: GET SUB-QUERIES FROM GEMINI ===
+    // === STEP 3: GET SUB-QUERIES ===
     const subQueries = await generateSubQueries(question, ruleSet);
+    const rephrased_question = subQueries.join(" ");
     console.log("Generated Sub-Queries:", subQueries);
+    console.log("Rephrased Question:", rephrased_question);
 
-    // === STEP 4: FETCH RELEVANT RULES FOR ALL SUB-QUERIES ===
+    // === STEP 4: FETCH RELEVANT RULES ===
     let allMatches = [];
     for (const subQuery of subQueries) {
       const matches = await fetchRelevantRulesForQuery(subQuery, ruleSet);
       allMatches = allMatches.concat(matches);
     }
 
-    // Deduplicate by rule ID
     const uniqueMatches = Array.from(new Map(allMatches.map(m => [m.id, m])).values());
-
     console.log("Total Relevant Rules:", uniqueMatches.length);
 
     if (uniqueMatches.length === 0) {
@@ -114,11 +111,10 @@ export async function handler(event) {
       };
     }
 
-    // === STEP 5: BUILD FINAL CONTEXT ===
+    // === STEP 5: BUILD CONTEXT ===
     const finalContext = uniqueMatches
       .map((match, i) => `Result ${i + 1} (Score: ${match.score.toFixed(4)}):\n${match.content}`)
       .join("\n\n---\n\n");
-
     // === STEP 6: FINAL PROMPT ===
     const selectedPrompt = prompts[ruleSet] || prompts.default;
     const finalPrompt = `${selectedPrompt}
