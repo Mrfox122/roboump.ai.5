@@ -1,4 +1,4 @@
- === ask-gemini.js (Enhanced with Automatic Sub-Queries + Fix) ===
+// === ask-gemini.js (Enhanced with Automatic Sub-Queries + Fix) ===
 import { Pool } from "pg";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import prompts from "./prompts.js";
