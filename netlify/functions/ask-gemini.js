@@ -124,16 +124,31 @@ export async function handler(event) {
 
     const finalPrompt = `${selectedPrompt}
 
-**Your Task:**
-You will be given a user's question and a collection of text snippets from a rulebook.
-
 **Instructions:**
-1. Review ALL the provided text snippets below.
-2. If answering requires a **single rule**, explain using that rule.
-3. If answering requires **multiple rules**, explain how they work **together**.
-4. Provide a **clear, conversational, authoritative** answer.
-5. Use **bold text** for important terms.
-6. At the end, quote **all rules used** in the "Official Rulebook Text" section.
+1. Review ALL the provided text snippets.
+2. Identify if the answer requires more than one rule to explain.
+3. Decide which snippets are directly relevant to answering the user's question.
+4. Synthesize the relevant information into a clear, conversational answer.
+5. Multiple snippets from one rule should be merged, while multiple snippets from different rules need explicit cross-rule reasoning.
+6. Always quote the single most relevant rule verbatim
+7. Quote a second rule as necessary, especially if cross rule reasoning is used.
+8. Do not quote rules inside the explanation
+
+
+**Response Structure:**
+Your response must have **two distinct parts**:
+
+**Part 1: The Explanation**
+Provide a clear, conversational, and authoritative answer to the user's question.
+Use **bold text** for key terms.
+Reference multiple rules **only if necessary** and explain how they interact.
+Integrate the glossary definitions naturally.
+
+**Part 2: The Rulebook Quotation**
+Provide a section titled "**Official Rulebook Text:**"
+Always quote word-for-word the **single most relevant rule**.
+If a second rule was used, include it as "**Additional Relevant Rule**" below the first.
+Do not combine it with your explanation.
 
 ---
 CONTEXT FROM RULEBOOK:
