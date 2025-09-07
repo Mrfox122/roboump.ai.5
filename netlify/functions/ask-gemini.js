@@ -1,4 +1,4 @@
-// === ask-gemini.js (Enhanced with Automatic Sub-Queries + Fix) ===
+// === ask-gemini.js (Enhanced with Automatic Sub-Queries) ===
 import { Pool } from "pg";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import prompts from "./prompts.js";
@@ -52,11 +52,13 @@ A: ["pitcher step toward third base legality", "throw to fielder off base legali
 
 // === STEP 2: FETCH RELEVANT RULES FOR EACH SUB-QUERY ===
 async function fetchRelevantRulesForQuery(query, ruleSet) {
+  // Generate embedding for this sub-query
   const embeddingResponse = await embeddingModel.embedContent({
     content: { parts: [{ text: query }] }
   });
   const queryEmbedding = embeddingResponse.embedding.values;
 
+  // Pull rules for this ruleSet
   const { rows } = await pool.query(
     `SELECT id, content, ruleset, embedding
      FROM rulebooks
@@ -69,6 +71,7 @@ async function fetchRelevantRulesForQuery(query, ruleSet) {
     embedding: typeof row.embedding === "string" ? JSON.parse(row.embedding) : row.embedding
   }));
 
+  // Score matches by similarity
   matches.forEach(row => {
     row.score = cosineSimilarity(queryEmbedding, row.embedding);
   });
@@ -76,7 +79,7 @@ async function fetchRelevantRulesForQuery(query, ruleSet) {
   return matches
     .filter(m => m.score > 0.65)
     .sort((a, b) => b.score - a.score)
-    .slice(0, 5);
+    .slice(0, 5); // top 5 per sub-query
 }
 
 // === MAIN HANDLER ===
@@ -86,20 +89,20 @@ export async function handler(event) {
     console.log("=== Incoming Question ===", question);
     console.log("Using Rule Set:", ruleSet);
 
-    // === STEP 3: GET SUB-QUERIES ===
+    // === STEP 3: GET SUB-QUERIES FROM GEMINI ===
     const subQueries = await generateSubQueries(question, ruleSet);
-    const rephrased_question = subQueries.join(" ");
     console.log("Generated Sub-Queries:", subQueries);
-    console.log("Rephrased Question:", rephrased_question);
 
-    // === STEP 4: FETCH RELEVANT RULES ===
+    // === STEP 4: FETCH RELEVANT RULES FOR ALL SUB-QUERIES ===
     let allMatches = [];
     for (const subQuery of subQueries) {
       const matches = await fetchRelevantRulesForQuery(subQuery, ruleSet);
       allMatches = allMatches.concat(matches);
     }
 
+    // Deduplicate by rule ID
     const uniqueMatches = Array.from(new Map(allMatches.map(m => [m.id, m])).values());
+
     console.log("Total Relevant Rules:", uniqueMatches.length);
 
     if (uniqueMatches.length === 0) {
@@ -111,42 +114,26 @@ export async function handler(event) {
       };
     }
 
-    // === STEP 5: BUILD CONTEXT ===
+    // === STEP 5: BUILD FINAL CONTEXT ===
     const finalContext = uniqueMatches
       .map((match, i) => `Result ${i + 1} (Score: ${match.score.toFixed(4)}):\n${match.content}`)
       .join("\n\n---\n\n");
-    // === STEP 6: FINAL PROMPT ===
+
+    // === STEP 6: BUILD FINAL PROMPT ===
     const selectedPrompt = prompts[ruleSet] || prompts.default;
+
     const finalPrompt = `${selectedPrompt}
 
-**Glossary Definitions (Authoritative):**
-${glossaryDefinitions}
+**Your Task:**
+You will be given a user's question and a collection of text snippets from a rulebook.
 
 **Instructions:**
-1. Review ALL the provided text snippets.
-2. Identify if the answer requires more than one rule to explain.
-3. Decide which snippets are directly relevant to answering the user's question.
-4. Synthesize the relevant information into a clear, conversational answer.
-5. Multiple snippets from one rule should be merged, while multiple snippets from different rules need explicit cross-rule reasoning.
-6. Always quote the single most relevant rule verbatim
-7. Quote a second rule as necessary, especially if cross rule reasoning is used.
-8. Do not quote rules inside the explanation
-
-
-**Response Structure:**
-Your response must have **two distinct parts**:
-
-**Part 1: The Explanation**
-Provide a clear, conversational, and authoritative answer to the user's question.
-Use **bold text** for key terms.
-Reference multiple rules **only if necessary** and explain how they interact.
-Integrate the glossary definitions naturally.
-
-**Part 2: The Rulebook Quotation**
-Provide a section titled "**Official Rulebook Text:**"
-Always quote word-for-word the **single most relevant rule**.
-If a second rule was used, include it as "**Additional Relevant Rule**" below the first.
-Do not combine it with your explanation.
+1. Review ALL the provided text snippets below.
+2. If answering requires a **single rule**, explain using that rule.
+3. If answering requires **multiple rules**, explain how they work **together**.
+4. Provide a **clear, conversational, authoritative** answer.
+5. Use **bold text** for important terms.
+6. At the end, quote **all rules used** in the "Official Rulebook Text" section.
 
 ---
 CONTEXT FROM RULEBOOK:
@@ -154,7 +141,7 @@ ${finalContext}
 ---
 
 USER'S QUESTION (Answer according to ${ruleSet} rules):
-${rephrased_question}`;
+${question}`;
 
     // === STEP 7: SEND TO GEMINI ===
     const generationResult = await generativeModel.generateContent(finalPrompt);
@@ -176,6 +163,3 @@ ${rephrased_question}`;
     };
   }
 }
-
-
-
