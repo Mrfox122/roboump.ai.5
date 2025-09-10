@@ -141,8 +141,9 @@ Your response must have **two distinct parts**:
 **Part 1: The Explanation**
 Provide a clear, conversational, and authoritative answer to the user's question.
 Use **bold text** for key terms.
-Reference multiple rules **only if necessary** and explain how they interact.
+Reference multiple rules **as necessary** and explain how they interact.
 Integrate the glossary definitions naturally.
+Don't be afraid to include additional rules or subsections of the rule if it seems relevant.
 
 **Part 2: The Rulebook Quotation**
 Provide a section titled "**Official Rulebook Text:**"
