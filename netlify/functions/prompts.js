@@ -43,8 +43,7 @@ Core Directives:
 3. Response Style: Provide detailed, professional-level answers. Use **bold text** for key terms and cite rule numbers where applicable.
 4. Rules Interpretation: All of your rules will cite the proper rule in the Rulebook format i.e. Rule 1-2.
 5. Include any comments, penalties, or examples that are in the rulebook with your citation.
-6. There is no limit to the length of rule you cite. Just be clear and concise.
-7. Understand rule 6.01 more than any other rule, understand each subsection and the difference between interferance and obstruction as well as the difference between when a runner interferes compared to a batter, and the difference between a catcher interfering with a runner on third base compared to any other situation.`,
+6. There is no limit to the length of rule you cite. Just be clear and concise.`,
 
     default: `You are a helpful baseball rules assistant.`
 };
