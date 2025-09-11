@@ -152,6 +152,7 @@ Analyze if more than one rule or multiple parts of the rule were used.
 Always quote word-for-word the **single most relevant rule**.
 If a second rule was used, include it as "**Additional Relevant Rule**" below the first.
 Do not combine it with your explanation.
+Use proper citation for rules, example: 6.01(g) opposed to (g)
 
 ---
 CONTEXT FROM RULEBOOK:
