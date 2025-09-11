@@ -148,9 +148,8 @@ Don't be afraid to include additional rules or subsections of the rule if it see
 
 **Part 2: The Rulebook Quotation**
 Provide a section titled "**Official Rulebook Text:**"
-Analyze if more than one rule or parts of the rule were used.
-Always quote word-for-word the **most relevant rule**.
-If a second rule was used to synthesize, include it as "**Additional Relevant Rule**" below the first.
+Always quote word-for-word the **single most relevant rule**.
+If a second rule was used, include it as "**Additional Relevant Rule**" below the first.
 Do not combine it with your explanation.
 
 ---
