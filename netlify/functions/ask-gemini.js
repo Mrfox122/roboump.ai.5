@@ -126,13 +126,14 @@ export async function handler(event) {
 
 **Instructions:**
 1. Review ALL the provided text snippets.
-2. Identify if the answer requires more than one rule to explain.
-3. Decide which snippets are directly relevant to answering the user's question.
-4. Synthesize the relevant information into a clear, conversational answer.
-5. Multiple snippets from one rule should be merged, while multiple snippets from different rules need explicit cross-rule reasoning.
-6. Always quote the single most relevant rule verbatim
-7. Quote a second rule as necessary, especially if cross rule reasoning is used.
-8. Do not quote rules inside the explanation
+2. Read that rule to see if an exception or a cross-referenced rule applies.
+3. Identify if the answer requires more than one rule to explain.
+4. Decide which snippets are directly relevant to answering the user's question.
+5. Synthesize the relevant information into a clear, conversational answer.
+6. Multiple snippets from one rule should be merged, while multiple snippets from different rules need explicit cross-rule reasoning.
+7. Always quote the single most relevant rule verbatim
+8. Quote a second rule as necessary, especially if cross rule reasoning is used.
+9. Do not quote rules inside the explanation
 
 
 **Response Structure:**
