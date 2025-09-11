@@ -176,3 +176,12 @@ button { padding: 10px 20px; margin: 5px; cursor: pointer; }
 .homepage-button:hover {
     background-color: #5a6268; /* Darker grey on hover */
 }
+
+/* --- AI Improvement Note Style --- */
+.ai-note {
+    font-size: 14px;
+    font-style: italic;
+    color: #6c757d; /* A neutral grey */
+    margin-top: -10px; /* Pulls it closer to the heading */
+    margin-bottom: 20px;
+}
