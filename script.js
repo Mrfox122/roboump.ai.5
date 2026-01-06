@@ -7,48 +7,74 @@ document.getElementById('questionInput').addEventListener('keyup', function(even
 });
 
 async function askQuestion() {
+    // (Keep all the variable declarations from before)
+    const shareButton = document.getElementById('shareButton');
+    shareButton.disabled = true;
     const questionInput = document.getElementById('questionInput');
     const question = questionInput.value;
+    const ruleSet = document.getElementById('ruleSetSelect').value;
+    const answerEl = document.getElementById('answer');
+    const button = document.getElementById('askButton');
+    const feedbackArea = document.getElementById('feedback-area');
+
     if (!question) {
         alert("Please enter a question.");
         return;
     }
 
-    // --- 1. UI RESET ---
-    document.getElementById('shareButton').disabled = true;
-    document.getElementById('askButton').disabled = true;
-    document.getElementById('answer').textContent = 'Consulting the expert...';
-    document.getElementById('feedback-container').style.display = 'none'; // Hide entire feedback area
-    document.getElementById('initial-feedback').style.display = 'block';   // Show initial buttons
-    document.getElementById('advanced-feedback').style.display = 'none'; // Hide advanced options
-    document.getElementById('feedback-message').textContent = '';        // Clear status message
+    // UI Reset
+    answerEl.textContent = 'Consulting the expert...';
+    button.disabled = true;
+    if (feedbackArea) feedbackArea.style.display = 'none';
 
-    // --- 2. API CALL ---
-    const ruleSet = document.getElementById('ruleSetSelect').value;
     grecaptcha.ready(function() {
         grecaptcha.execute('6LchII8rAAAAABrbtifib5ALdna7P8h-PItnTsrE', {action: 'submit'}).then(async function(token) {
-            try {
-                currentQuestionText = question; // Save question for feedback
-                const response = await fetch('/api/ask-gemini', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ question, ruleSet, token })
-                });
+            
+            // --- NEW TIMEOUT LOGIC ---
+            const TIMEOUT_DURATION = 25000; // 25 seconds in milliseconds
 
-                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                
+            // Promise 1: The actual API call
+            const fetchPromise = fetch('/api/ask-gemini', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ question, ruleSet, token })
+            });
+
+            // Promise 2: A timer
+            const timeoutPromise = new Promise((_, reject) => 
+                setTimeout(() => reject(new Error('timeout')), TIMEOUT_DURATION)
+            );
+
+            try {
+                // Race the two promises. Whichever finishes first wins.
+                const response = await Promise.race([fetchPromise, timeoutPromise]);
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                currentQuestionText = question; // Save for feedback
                 const data = await response.json();
-                document.getElementById('answer').innerHTML = marked.parse(data.answer);
-                
-                // --- 3. SHOW FEEDBACK WIDGET ---
-                document.getElementById('feedback-container').style.display = 'block';
+                answerEl.innerHTML = marked.parse(data.answer);
+
+                // Show and reset feedback buttons
+                if (feedbackArea) {
+                    document.getElementById('feedback-message').textContent = '';
+                    document.querySelectorAll('.feedback-btn').forEach(btn => btn.disabled = false);
+                    feedbackArea.style.display = 'block';
+                }
                 activateShareButton(question, ruleSet);
 
             } catch (error) {
                 console.error("Error asking question:", error);
-                document.getElementById('answer').textContent = 'Sorry, an error occurred. Please try again.';
+                // Check if the error was our custom timeout
+                if (error.message === 'timeout') {
+                    answerEl.textContent = 'Sorry, the request timed out. The server is likely under heavy load. Please try again in a moment.';
+                } else {
+                    answerEl.textContent = 'Sorry, an error occurred while generating the answer. Please try again.';
+                }
             } finally {
-                document.getElementById('askButton').disabled = false;
+                button.disabled = false; // Always re-enable the button
             }
         });
     });
