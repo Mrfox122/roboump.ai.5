@@ -2,20 +2,25 @@
 let currentQuestionText = "";
 
 document.getElementById('askButton').addEventListener('click', askQuestion);
+
 document.getElementById('questionInput').addEventListener('keyup', function(event) {
-    if (event.key === 'Enter') askQuestion();
+    if (event.key === 'Enter') {
+        askQuestion();
+    }
 });
 
+
 async function askQuestion() {
-    // (Keep all the variable declarations from before)
+
     const shareButton = document.getElementById('shareButton');
     shareButton.disabled = true;
+
     const questionInput = document.getElementById('questionInput');
     const question = questionInput.value;
     const ruleSet = document.getElementById('ruleSetSelect').value;
     const answerEl = document.getElementById('answer');
     const button = document.getElementById('askButton');
-    const feedbackArea = document.getElementById('feedback-area');
+    const feedbackArea = document.getElementById('feedback-container');
 
     if (!question) {
         alert("Please enter a question.");
@@ -27,98 +32,83 @@ async function askQuestion() {
     button.disabled = true;
     if (feedbackArea) feedbackArea.style.display = 'none';
 
+
+    // Execute reCAPTCHA
     grecaptcha.ready(function() {
         grecaptcha.execute('6LchII8rAAAAABrbtifib5ALdna7P8h-PItnTsrE', {action: 'submit'}).then(async function(token) {
-            
-            // --- NEW TIMEOUT LOGIC ---
-            const TIMEOUT_DURATION = 25000; // 25 seconds in milliseconds
-
-            // Promise 1: The actual API call
-            const fetchPromise = fetch('/api/ask-gemini', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ question, ruleSet, token })
-            });
-
-            // Promise 2: A timer
-            const timeoutPromise = new Promise((_, reject) => 
-                setTimeout(() => reject(new Error('timeout')), TIMEOUT_DURATION)
-            );
 
             try {
-                // Race the two promises. Whichever finishes first wins.
-                const response = await Promise.race([fetchPromise, timeoutPromise]);
+                currentQuestionText = question;
+
+                // --- DEBUG LOG #1 ---
+                console.log("Fetching answer from API...");
+
+                const response = await fetch('/api/ask-gemini', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ question, ruleSet, token })
+                });
 
                 if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    // Try to get more specific error text from the server
+                    const errorText = await response.text();
+                    throw new Error(`HTTP error! status: ${response.status} - ${errorText}`);
                 }
 
-                currentQuestionText = question; // Save for feedback
                 const data = await response.json();
                 answerEl.innerHTML = marked.parse(data.answer);
 
-                // Show and reset feedback buttons
+                // --- DEBUG LOG #2 ---
+                console.log("Answer received and displayed. Attempting to show feedback...");
+
+                // Show and Reset Feedback Buttons
                 if (feedbackArea) {
+                    document.getElementById('initial-feedback').style.display = 'block';
+                    document.getElementById('advanced-feedback').style.display = 'none';
                     document.getElementById('feedback-message').textContent = '';
                     document.querySelectorAll('.feedback-btn').forEach(btn => btn.disabled = false);
-                    feedbackArea.style.display = 'block';
+                    feedbackArea.style.display = 'block'; // This is the line we're testing
+                } else {
+                    console.error("Critical Error: feedback-container div not found!");
                 }
+
                 activateShareButton(question, ruleSet);
 
             } catch (error) {
-                console.error("Error asking question:", error);
-                // Check if the error was our custom timeout
-                if (error.message === 'timeout') {
-                    answerEl.textContent = 'Sorry, the request timed out. The server is likely under heavy load. Please try again in a moment.';
-                } else {
-                    answerEl.textContent = 'Sorry, an error occurred while generating the answer. Please try again.';
-                }
+                console.error("CRASH in askQuestion function:", error);
+                answerEl.textContent = 'Sorry, an error occurred. Please check the developer console (F12) for details.';
             } finally {
-                button.disabled = false; // Always re-enable the button
+                button.disabled = false;
             }
         });
     });
 }
 
-// --- NEW FEEDBACK LOGIC ---
-
-// Called by Thumbs Up (👍)
+// --- FEEDBACK LOGIC ---
 function submitSimpleFeedback(score) {
-    if (score === 1) {
-        sendFeedbackAPI('GOOD');
-    }
+    if (score === 1) sendFeedbackAPI('GOOD');
 }
 
-// Called by Thumbs Down (👎)
 function showAdvancedFeedback() {
     document.getElementById('initial-feedback').style.display = 'none';
     document.getElementById('advanced-feedback').style.display = 'block';
 }
 
-// Called by the advanced feedback buttons
 function submitAdvancedFeedback(feedbackType) {
     const comment = document.getElementById('feedback-comment').value;
     sendFeedbackAPI(feedbackType, comment);
 }
 
-// The single function that sends data to the backend
 async function sendFeedbackAPI(feedback_type, comment = null) {
     const msg = document.getElementById('feedback-message');
     msg.textContent = "Saving...";
-    
-    // Hide all feedback buttons after a choice is made
     document.getElementById('initial-feedback').style.display = 'none';
     document.getElementById('advanced-feedback').style.display = 'none';
-
     try {
         await fetch('/api/submit-feedback', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ 
-                question: currentQuestionText, 
-                feedback_type: feedback_type,
-                comment: comment
-            })
+            body: JSON.stringify({ question: currentQuestionText, feedback_type, comment })
         });
         msg.textContent = "Thank you for the feedback!";
     } catch (err) {
@@ -127,8 +117,7 @@ async function sendFeedbackAPI(feedback_type, comment = null) {
     }
 }
 
-// --- SHARING & OTHER FUNCTIONS ---
-
+// --- OTHER FUNCTIONS ---
 function trackSponsorClick() {
   if (typeof gtag === 'function') gtag('event', 'click', { 'event_category': 'sponsorship', 'event_label': 'Contact Banner' });
 } 
@@ -161,4 +150,4 @@ function checkForURLParameters() {
         document.getElementById('ruleSetSelect').value = ruleSet;
         askQuestion();
     }
-}``
+}
