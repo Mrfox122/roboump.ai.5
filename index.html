@@ -1,81 +1,64 @@
 <!DOCTYPE html>
-
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
     <title>RoboUmp AI - Instant Baseball Rule and Umpire Mechanics Answers</title>
-
     <link rel="icon" type="image/png" href="images/favicon.png">
-
     <meta name="description" content="Get instant, expert answers to your baseball umpiring questions. RoboUmp AI provides precise rule interpretations and mechanics for NCAA, NFHS, and MLB rulebooks.">
-
     <meta property="og:title" content="RoboUmp AI - Instant Baseball Rule and Umpire Mechanics Answers">
-<meta property="og:description" content="Get instant, expert answers to your baseball umpiring questions for NCAA, NFHS, and MLB rulebooks.">
-<meta property="og:image" content="https://roboump.app/images/share-image.png">
-<meta property="og:url" content="https://roboump.app">
-<meta name="twitter:card" content="summary_large_image">
-<meta property="og:type" content="website">
+    <meta property="og:description" content="Get instant, expert answers to your baseball umpiring questions for NCAA, NFHS, and MLB rulebooks.">
+    <meta property="og:image" content="https://roboump.app/images/share-image.png">
+    <meta property="og:url" content="https://roboump.app">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta property="og:type" content="website">
 
     <link rel="stylesheet" href="style.css">
-
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-
     <script src="https://www.google.com/recaptcha/api.js?render=6LchII8rAAAAABrbtifib5ALdna7P8h-PItnTsrE"></script>
-
    
-
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-K393VRGP52"></script>
-
     <script>
-
       window.dataLayer = window.dataLayer || [];
-
       function gtag(){dataLayer.push(arguments);}
-
       gtag('js', new Date());
-
       gtag('config', 'G-K393VRGP52');
-
     </script>
-
 </head>
 
 <body>
-
     <div class="container">
-        <h1>Umpire AI Assistant</h1>
+        <h1>Umpire AI Assistant</h1>    
         <h2>Your expert resource for baseball rules and mechanics.</h2>
-        <p class="ai-note">Our AI's expert instructions are updated continuously for improved accuracy.</p>
-        
+        <p class="ai-note">Our AI's expert instructions are updated continuously for improved accuracy.</p> 
+
         <a href="changelog.html" class="changelog-button">Changelog</a>
         <div class="input-area"></div>
 
         <div class="input-area">
-            <select id="ruleSetSelect">
-                <option value="NCAA">NCAA Rules</option>
-                <option value="MLB">MLB (Pro) Rules</option>
-            </select>
-            <textarea id="questionInput" placeholder="e.g., What is the infield fly rule?"></textarea>
-            <button id="askButton">Ask</button>
+           <select id="ruleSetSelect">
+              <option value="NCAA">NCAA Rules</option>
+              <option value="MLB">MLB (Pro) Rules</option>
+          </select>
+          <textarea id="questionInput" placeholder="e.g., What is the infield fly rule?"></textarea>
+           <button id="askButton">Ask</button>
             <button id="shareButton" class="share-button" disabled>Share</button>
-        </div>
+        </div>        
 
         <div id="answer-container" class="answer-container">
             <p id="answer"></p>
     
             <!-- Correctly Placed Feedback Section -->
             <div id="feedback-container" style="display:none; margin-top: 15px; border-top: 1px solid #e0e0e0; padding-top: 10px;">
+                
                 <!-- Initial Question: Was it helpful? -->
                 <div id="initial-feedback">
                     <span style="font-size: 0.9em; color: #6c757d; margin-right: 10px;">Was this answer helpful?</span>
                     <button class="feedback-btn" onclick="submitSimpleFeedback(1)">👍</button>
                     <button class="feedback-btn" onclick="showAdvancedFeedback()">👎</button>
                 </div>
+
                 <!-- Advanced Feedback: What was wrong? (Initially hidden) -->
                 <div id="advanced-feedback" style="display:none;">
                     <p style="font-size: 0.9em; color: #6c757d; margin: 0 0 10px 0;">Sorry about that! What was the issue?</p>
@@ -84,8 +67,10 @@
                     <br>
                     <textarea id="feedback-comment" placeholder="(Optional) How can we improve?" rows="2" style="width: 90%; margin-top: 10px;"></textarea>
                 </div>
+
                 <!-- Status Message -->
                 <div id="feedback-message" style="margin-top: 10px; font-style: italic; color: #28a745;"></div>
+
             </div>
         </div>
     </div>
@@ -100,10 +85,9 @@
     </div>
 
     <div class="version">
-        <span>Version 0.9.4 | <a href="changelog.html">Changelog</a></span>
+        <!-- I've updated your version number here based on our latest changes -->
+        <span>Version 0.9.5 | <a href="changelog.html">Changelog</a></span>
     </div>
 
 </body>
-</html> 
-
-
+</html>
