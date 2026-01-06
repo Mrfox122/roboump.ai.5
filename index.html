@@ -68,11 +68,20 @@
             <button id="shareButton" class="share-button" disabled>Share</button>
         </div>        
 
+            
         <div id="answer-container" class="answer-container">
-
             <p id="answer"></p>
-
+    
+            <!-- NEW FEEDBACK SECTION -->
+         <div id="feedback-area" style="display:none; margin-top: 15px; border-top: 1px solid #ccc; padding-top: 10px;">
+        <span style="font-size: 0.9em; color: #666;">Was this accurate?</span>
+        <button class="feedback-btn" onclick="sendFeedback(1)">👍 Yes</button>
+        <button class="feedback-btn" onclick="sendFeedback(-1)">👎 No</button>
+        <span id="feedback-message" style="margin-left: 10px; font-size: 0.9em; color: green;"></span>
+            </div>
         </div>
+
+  
 
     </div>
 

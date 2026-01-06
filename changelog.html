@@ -15,9 +15,9 @@
         <li class="completed-task"> Rework indexing of the Official Baseball Rules (OBR) for the MLB ruleset to better encompass subsections and comments. </li>
         <li class="completed-task">Migration of the vector database from Pinecone to Netlify DB (Neon) to improve performance and simplify the architecture.</li>
         <li class="completed-task">Fix contact us page. </strong> new error noted due to DNS server settings<strong></li>
+        <li class="completed-task">Implement a user feedback scoring system. <strong> That the ai can learn from.</strong></li>
+        <li class="completed-task">After migration to vector database we should be able to store questions/answers in Neon for sharing</li>
         <li>Add additional glossary terms.</li>
-        <li>After migration to vector database we should be able to store questions/answers in Neon for sharing</li>
-        <li>Implement a user feedback scoring system. <strong> That the ai can learn from.</strong></li>
         <li>Add NFHS ruleset</li>
     
     </ul>
@@ -28,6 +28,8 @@
         <li><strong>"Rules Committee" Adjudication Layer:</strong> Implemented a multi-step reasoning process. Instead of just summarizing the first result found, the AI now reviews the top candidates, scores them based on relevance to the specific game situation, and selects the single best rule before answering.</li>
         <li><strong>2025 Rulebooks Live:</strong> Fully updated and indexed the 2025 NCAA and 2025 MLB (OBR) rule sets.</li>
         <li><strong>Indexing Optimization:</strong> Rewrote the database ingestion engine to use bulk processing, significantly improving the speed and reliability of rulebook updates.</li>
+        <li><strong>Question Databasing:</strong> Rewrote the database SQL to track questions and answers for neural network developement.</li>
+        <li><strong>User Feedback Scoring System:</strong> Added scoring system for neural network development. This allows users to give the ai feedback in which it can learn from. </li>
     </ul>
 </div>
 
