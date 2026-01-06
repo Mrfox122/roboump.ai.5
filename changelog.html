@@ -22,6 +22,16 @@
     
     </ul>
 <div class="changelog-entry">
+    <h2>Version 0.9.4 - January 6, 2026</h2>
+    <ul>
+        <li><strong>New "Situational Analyst" Engine:</strong> The AI now parses your question into a structured game state (outs, runners, play type) before searching the rulebook. This ensures it understands the specific baseball context rather than just matching keywords.</li>
+        <li><strong>"Rules Committee" Adjudication Layer:</strong> Implemented a multi-step reasoning process. Instead of just summarizing the first result found, the AI now reviews the top candidates, scores them based on relevance to the specific game situation, and selects the single best rule before answering.</li>
+        <li><strong>2025 Rulebooks Live:</strong> Fully updated and indexed the 2025 NCAA and 2025 MLB (OBR) rule sets.</li>
+        <li><strong>Indexing Optimization:</strong> Rewrote the database ingestion engine to use bulk processing, significantly improving the speed and reliability of rulebook updates.</li>
+    </ul>
+</div>
+
+<div class="changelog-entry">
     <h2>Version 0.9.3.1 - September 5, 2025</h2>
     <ul>
         <li><strong>Fixed multistep search</li>

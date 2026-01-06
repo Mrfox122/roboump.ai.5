@@ -1,8 +1,6 @@
-// File: netlify/functions/submit-form.js
+import axios from 'axios';
 
-const axios = require('axios');
-
-exports.handler = async (event) => {
+export async function handler(event) {
   // Only allow POST requests
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: 'Method Not Allowed' };
@@ -39,4 +37,4 @@ exports.handler = async (event) => {
   } catch (error) {
     return { statusCode: 500, body: 'Error verifying reCAPTCHA.' };
   }
-};
+}

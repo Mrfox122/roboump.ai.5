@@ -1,20 +1,11 @@
-// run-indexer.js
-// Run this with: node run-indexer.js
-// Make sure package.json has "type": "module"
-
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { Pool } from "pg";
 import fs from "fs/promises";
 import path from "path";
-import 'dotenv/config';
 
-// === CONFIG ===
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const embeddingModel = genAI.getGenerativeModel({ model: "embedding-001" });
-
-const pool = new Pool({
-  connectionString: process.env.NETLIFY_DATABASE_URL
-});
+const pool = new Pool({ connectionString: process.env.NETLIFY_DATABASE_URL });
 
 const filesToIndex = {
   "NCAA": './rulebooks/2025-NCAA.txt',
@@ -23,87 +14,79 @@ const filesToIndex = {
   "Glossary": './rulebooks/glossary.txt'
 };
 
-// === DATABASE SETUP ===
-async function setupDatabase() {
-  const client = await pool.connect();
+export async function handler(event) {
+  if (event.httpMethod !== 'POST') return { statusCode: 405, body: 'Method Not Allowed' };
+
+  const fileKey = event.headers['x-file-key'];
+  if (!filesToIndex[fileKey]) return { statusCode: 400, body: `Invalid selection` };
+
   try {
-    console.log("Setting up database schema...");
-    await client.query(`
-      CREATE TABLE IF NOT EXISTS rulebooks (
-        id SERIAL PRIMARY KEY,
-        content TEXT NOT NULL,
-        ruleset TEXT NOT NULL,
-        embedding JSONB NOT NULL
-      );
-    `);
-    console.log("Database ready.");
-  } finally {
-    client.release();
-  }
-}
+    // 1. Read and Chunk
+    const filePath = filesToIndex[fileKey];
+    const absolutePath = path.resolve(process.cwd(), filePath);
+    const text = await fs.readFile(absolutePath, 'utf-8');
+    const chunks = text.split('---').map(c => c.trim()).filter(c => c.length > 10);
+    
+    console.log(`Processing ${chunks.length} chunks for ${fileKey}...`);
 
-// === INDEX A FILE ===
-async function indexFile(filePath, ruleset) {
-  const absolutePath = path.resolve(filePath);
-  const text = await fs.readFile(absolutePath, 'utf-8');
+    const client = await pool.connect();
+    
+    try {
+        // 2. Prep Database (Create table if missing, Clear old rules)
+        await client.query(`
+            CREATE TABLE IF NOT EXISTS rulebooks (
+                id SERIAL PRIMARY KEY,
+                content TEXT NOT NULL,
+                ruleset TEXT NOT NULL,
+                embedding JSONB NOT NULL
+            );
+        `);
+        await client.query('DELETE FROM rulebooks WHERE ruleset = $1', [fileKey]);
+        
+        // 3. Process in LARGER Batches (Speed Boost #1)
+        // We can do 100 at a time with Google, which is much faster than 20
+        const batchSize = 50; 
+        
+        for (let i = 0; i < chunks.length; i += batchSize) {
+            const batch = chunks.slice(i, i + batchSize);
+            
+            // A. Get Embeddings (One call to Google)
+            console.log(`Fetching embeddings for batch ${Math.floor(i / batchSize) + 1}...`);
+            const embeddingResult = await embeddingModel.batchEmbedContents({
+                requests: batch.map(t => ({ content: { parts: [{ text: t }] }, taskType: "RETRIEVAL_DOCUMENT" }))
+            });
+            const embeddings = embeddingResult.embeddings.map(e => e.values);
 
-  const chunks = text
-    .split('---')
-    .map(c => c.trim())
-    .filter(c => c.length > 10);
+            // B. SQL Bulk Insert (Speed Boost #2)
+            // Instead of looping await client.query(), we build ONE giant query.
+            
+            const values = [];
+            const placeholders = [];
+            
+            batch.forEach((chunk, index) => {
+                const offset = index * 3; // 3 parameters per row ($1, $2, $3)
+                placeholders.push(`($${offset + 1}, $${offset + 2}, $${offset + 3})`);
+                values.push(chunk, fileKey, JSON.stringify(embeddings[index]));
+            });
 
-  console.log(`Split ${filePath} into ${chunks.length} chunks.`);
+            const queryText = `
+                INSERT INTO rulebooks (content, ruleset, embedding) 
+                VALUES ${placeholders.join(', ')}
+            `;
 
-  const batchSize = 50;
+            // ONE call to database per batch
+            await client.query(queryText, values);
+            console.log(`Saved batch ${Math.floor(i / batchSize) + 1} to DB.`);
+        }
 
-  for (let i = 0; i < chunks.length; i += batchSize) {
-    const batch = chunks.slice(i, i + batchSize);
+        return { statusCode: 200, body: `Success! Indexed ${chunks.length} rules.` };
 
-    // Create embeddings
-    const embeddingResult = await embeddingModel.batchEmbedContents({
-      requests: batch.map(textChunk => ({
-        content: { parts: [{ text: textChunk }] },
-        taskType: "RETRIEVAL_DOCUMENT"
-      }))
-    });
-
-    const embeddings = embeddingResult.embeddings.map(e => e.values);
-
-    // Insert batch into DB
-    const values = [];
-    const placeholders = [];
-
-    batch.forEach((chunk, j) => {
-      placeholders.push(`($${values.length + 1}, $${values.length + 2}, $${values.length + 3})`);
-      values.push(chunk, ruleset, JSON.stringify(embeddings[j])); // store embedding as JSON
-    });
-
-    const query = `INSERT INTO rulebooks (content, ruleset, embedding) VALUES ${placeholders.join(', ')}`;
-    await pool.query(query, values);
-    console.log(`Inserted batch ${Math.floor(i / batchSize) + 1} of ${Math.ceil(chunks.length / batchSize)}`);
-  }
-
-  console.log(`Finished indexing ${ruleset}.`);
-}
-
-// === MAIN ===
-async function main() {
-  try {
-    await setupDatabase();
-
-    for (const [ruleset, filePath] of Object.entries(filesToIndex)) {
-      console.log(`\nIndexing ${ruleset}...`);
-      // Clear old data
-      await pool.query('DELETE FROM rulebooks WHERE ruleset = $1', [ruleset]);
-      await indexFile(filePath, ruleset);
+    } finally {
+        client.release();
     }
 
-    console.log("\n✅ All rulebooks indexed successfully.");
-    process.exit(0);
-  } catch (err) {
-    console.error("Error during indexing:", err);
-    process.exit(1);
+  } catch (error) {
+    console.error("Error:", error);
+    return { statusCode: 500, body: error.message };
   }
 }
-
-main();

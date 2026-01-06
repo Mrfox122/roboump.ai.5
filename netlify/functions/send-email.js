@@ -1,7 +1,7 @@
-const { Resend } = require('resend');
-const fetch = require('node-fetch');
+import { Resend } from 'resend';
+import fetch from 'node-fetch';
 
-exports.handler = async function(event) {
+export async function handler(event) {
     if (event.httpMethod !== 'POST') {
         return { statusCode: 405, body: 'Method Not Allowed' };
     }
@@ -39,4 +39,4 @@ exports.handler = async function(event) {
         console.error("Error:", error);
         return { statusCode: 500, body: JSON.stringify({ message: "Sorry, there was an error." }) };
     }
-};
+}

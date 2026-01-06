@@ -1,9 +1,4 @@
 // prompts.js
-// ============================================
-// Stores all persona templates for rule sets.
-// Centralizes the AI identities for maintainability.
-// ============================================
-
 const prompts = {
     NCAA: `You are the "NCAA Rules and Umpire Mechanics Digital Assistant." Your identity is that of an expert college baseball umpire instructor and rules interpreter. Your entire knowledge base is built upon the official 2025 CCA College Umpire Mechanics book and the corresponding NCAA Baseball rulebook. You are precise, authoritative, and dedicated to helping umpires improve their craft.
 
@@ -48,4 +43,4 @@ Core Directives:
     default: `You are a helpful baseball rules assistant.`
 };
 
-module.exports = prompts;
+export default prompts;

@@ -1,4 +1,3 @@
-// === ask-gemini.js (Enhanced with Automatic Sub-Queries) ===
 import { Pool } from "pg";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import prompts from "./prompts.js";
@@ -6,9 +5,10 @@ import prompts from "./prompts.js";
 const pool = new Pool({ connectionString: process.env.NETLIFY_DATABASE_URL });
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 const embeddingModel = genAI.getGenerativeModel({ model: "embedding-001" });
-const generativeModel = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
+// Using Flash for logic/analysis because it's fast and smart
+const reasoningModel = genAI.getGenerativeModel({ model: "gemini-2.0-flash" }); 
 
-// === COSINE SIMILARITY ===
+// === HELPER: COSINE SIMILARITY ===
 function cosineSimilarity(vecA, vecB) {
   const dot = vecA.reduce((sum, a, i) => sum + a * vecB[i], 0);
   const magA = Math.sqrt(vecA.reduce((sum, a) => sum + a * a, 0));
@@ -16,116 +16,120 @@ function cosineSimilarity(vecA, vecB) {
   return dot / (magA * magB);
 }
 
-// === STEP 1: ASK GEMINI TO CREATE SUB-QUERIES ===
-async function generateSubQueries(question, ruleSet) {
-  const subQueryPrompt = `
-You are an expert baseball rules analyst.
+// === COMPONENT 2.2: THE SITUATIONAL ANALYST ===
+async function analyzeSituation(question) {
+  const analysisPrompt = `
+    You are an expert Baseball Official Scorer.
+    Analyze this user question: "${question}"
+    
+    Extract the game situation into a JSON object.
+    If a detail is missing, use "null".
+    
+    Output Format (JSON ONLY):
+    {
+      "outs": integer or null,
+      "runners": ["1B", "2B", "3B"] or [],
+      "batter_action": string or null (e.g., "bunt", "fly ball", "hit by pitch"),
+      "defense_action": string or null (e.g., "obstruction", "tag", "appeal"),
+      "key_terms": [string] (list of 3-5 specific search keywords found in the rulebook)
+    }
+  `;
 
-The user has asked: "${question}"
-These rules come from the ${ruleSet} rulebook.
-
-If answering this question requires **multiple rule checks**, break the question into the **smallest possible sub-queries**.
-Otherwise, just return one sub-query: the original question.
-
-Return ONLY a JSON array of sub-queries.
-
-Examples:
-Q: "Can a pitcher fake a throw to third, then throw to first?"
-A: ["pitcher fake throw to third legality", "throw to first after fake legality"]
-
-Q: "What is a balk?"
-A: ["definition of a balk"]
-
-Q: "Runner on second, pitcher steps to third and throws to a fielder off-base — legal?"
-A: ["pitcher step toward third base legality", "throw to fielder off base legality"]
-`;
-
-  const result = await generativeModel.generateContent(subQueryPrompt);
-  const text = await result.response.text();
   try {
-    return JSON.parse(text);
-  } catch {
-    console.warn("Sub-query parse failed, using original question.");
-    return [question];
+    const result = await reasoningModel.generateContent(analysisPrompt);
+    const text = result.response.text();
+    const jsonStr = text.replace(/```json/g, "").replace(/```/g, "").trim();
+    return JSON.parse(jsonStr);
+  } catch (e) {
+    console.error("Situational Analysis Failed:", e);
+    return { key_terms: [question] }; // Fallback
   }
 }
 
-// === STEP 2: FETCH RELEVANT RULES FOR EACH SUB-QUERY ===
-async function fetchRelevantRulesForQuery(query, ruleSet) {
-  // Generate embedding for this sub-query
-  const embeddingResponse = await embeddingModel.embedContent({
-    content: { parts: [{ text: query }] }
-  });
-  const queryEmbedding = embeddingResponse.embedding.values;
+// === COMPONENT 2.3: THE RULES COMMITTEE (ADJUDICATION) ===
+async function adjudicateRules(situation, candidateRules) {
+  if (candidateRules.length === 0) return "No specific rule found.";
 
-  // Pull rules for this ruleSet
-  const { rows } = await pool.query(
-    `SELECT id, content, ruleset, embedding
-     FROM rulebooks
-     WHERE ruleset = $1`,
-    [ruleSet]
-  );
+  const adjudicationPrompt = `
+    You are the Crew Chief Umpire.
+    
+    THE SITUATION:
+    ${JSON.stringify(situation, null, 2)}
+    
+    THE CANDIDATE RULES (from database):
+    ${candidateRules.map((r, i) => `[Rule #${i+1}]: ${r.content}`).join("\n\n")}
+    
+    TASK:
+    1. Analyze which rule best applies to the specific Situation.
+    2. Discard rules that share keywords but apply to different situations.
+    3. Return the text of the most relevant rules.
+    
+    Output ONLY the relevant rule text.
+  `;
 
-  const matches = rows.map(row => ({
-    ...row,
-    embedding: typeof row.embedding === "string" ? JSON.parse(row.embedding) : row.embedding
-  }));
-
-  // Score matches by similarity
-  matches.forEach(row => {
-    row.score = cosineSimilarity(queryEmbedding, row.embedding);
-  });
-
-  return matches
-    .filter(m => m.score > 0.65)
-    .sort((a, b) => b.score - a.score)
-    .slice(0, 5); // top 5 per sub-query
+  const result = await reasoningModel.generateContent(adjudicationPrompt);
+  return result.response.text();
 }
 
 // === MAIN HANDLER ===
 export async function handler(event) {
   try {
-    const { question, ruleSet } = JSON.parse(event.body);
-    console.log("=== Incoming Question ===", question);
-    console.log("Using Rule Set:", ruleSet);
+    const { question, ruleSet, token } = JSON.parse(event.body);
+    
+    console.log(`\n--- NEW QUERY: ${question} (${ruleSet}) ---`);
 
-    // === STEP 3: GET SUB-QUERIES FROM GEMINI ===
-    const subQueries = await generateSubQueries(question, ruleSet);
-    console.log("Generated Sub-Queries:", subQueries);
+    // === STEP 1: SITUATIONAL ANALYSIS ===
+    const situation = await analyzeSituation(question);
+    console.log("Situation:", JSON.stringify(situation));
 
-    // === STEP 4: FETCH RELEVANT RULES FOR ALL SUB-QUERIES ===
-    let allMatches = [];
-    for (const subQuery of subQueries) {
-      const matches = await fetchRelevantRulesForQuery(subQuery, ruleSet);
-      allMatches = allMatches.concat(matches);
+    // === STEP 2: RETRIEVAL (RAG) ===
+    // Search using extracted keywords + original question
+    const searchQuery = `${question} ${situation.key_terms ? situation.key_terms.join(" ") : ""}`;
+    
+    const embeddingResponse = await embeddingModel.embedContent({
+      content: { parts: [{ text: searchQuery }] }
+    });
+    const queryEmbedding = embeddingResponse.embedding.values;
+
+    const { rows } = await pool.query(
+      `SELECT id, content, ruleset, embedding FROM rulebooks WHERE ruleset = $1`,
+      [ruleSet]
+    );
+
+    const matches = rows.map(row => ({
+      ...row,
+      embedding: JSON.parse(row.embedding),
+      score: 0
+    }));
+
+    matches.forEach(row => {
+      row.score = cosineSimilarity(queryEmbedding, row.embedding);
+    });
+
+    // Get Top Candidates for Adjudication
+    const topCandidates = matches
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 6) // Grab top 6 to give the Committee options
+      .filter(m => m.score > 0.55);
+
+    // === STEP 3: ADJUDICATION (The Rules Committee) ===
+    let finalRuleContext = "";
+    if (topCandidates.length > 0) {
+        console.log(`Adjudicating ${topCandidates.length} rules...`);
+        finalRuleContext = await adjudicateRules(situation, topCandidates);
+    } else {
+        finalRuleContext = "No specific rule text found in the library matching this query.";
     }
 
-    // Deduplicate by rule ID
-    const uniqueMatches = Array.from(new Map(allMatches.map(m => [m.id, m])).values());
-
-    console.log("Total Relevant Rules:", uniqueMatches.length);
-
-    if (uniqueMatches.length === 0) {
-      return {
-        statusCode: 200,
-        body: JSON.stringify({
-          answer: `I couldn't find a rule in the ${ruleSet} documents that matches your question. Please try rephrasing it.`
-        })
-      };
-    }
-
-    // === STEP 5: BUILD FINAL CONTEXT ===
-    const finalContext = uniqueMatches
-      .map((match, i) => `Result ${i + 1} (Score: ${match.score.toFixed(4)}):\n${match.content}`)
-      .join("\n\n---\n\n");
-
-    // === STEP 6: BUILD FINAL PROMPT ===
+    // === STEP 4: FINAL RESPONSE GENERATION ===
+    // Here we inject your specific structure requirements
+    
     const selectedPrompt = prompts[ruleSet] || prompts.default;
 
     const finalPrompt = `${selectedPrompt}
 
 **Instructions:**
-1. Review ALL the provided text snippets.
+1. Review ALL the provided text snippets (The Adjudicated Rules).
 2. Read that rule to see if an exception or a cross-referenced rule applies.
 3. Identify if the answer requires more than one rule to explain.
 4. Decide which snippets are directly relevant to answering the user's question.
@@ -134,7 +138,6 @@ export async function handler(event) {
 7. Always quote the single most relevant rule verbatim
 8. Quote a second rule as necessary, especially if cross rule reasoning is used.
 9. Do not quote rules inside the explanation
-
 
 **Response Structure:**
 Your response must have **two distinct parts**:
@@ -155,19 +158,18 @@ Do not combine it with your explanation.
 Use proper citation for rules, example: 6.01(g) opposed to (g)
 
 ---
-CONTEXT FROM RULEBOOK:
-${finalContext}
+**SITUATION ANALYSIS (Internal Logic):**
+${JSON.stringify(situation)}
+
+**ADJUDICATED RULE CONTEXT (Evidence):**
+${finalRuleContext}
 ---
 
-USER'S QUESTION (Answer according to ${ruleSet} rules):
+**USER'S QUESTION (Answer according to ${ruleSet} rules):**
 ${question}`;
 
-    // === STEP 7: SEND TO GEMINI ===
-    const generationResult = await generativeModel.generateContent(finalPrompt);
-    const aiAnswer = await generationResult.response.text();
-
-    console.log("=== AI FINAL RESPONSE ===");
-    console.log(aiAnswer);
+    const response = await reasoningModel.generateContent(finalPrompt);
+    const aiAnswer = response.response.text();
 
     return {
       statusCode: 200,
@@ -175,10 +177,10 @@ ${question}`;
     };
 
   } catch (error) {
-    console.error("=== ERROR IN ask-gemini.js ===", error);
+    console.error("Error:", error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ error: "Internal Server Error", details: error.message })
+      body: JSON.stringify({ error: "Internal Server Error" })
     };
   }
 }
