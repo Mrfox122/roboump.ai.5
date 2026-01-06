@@ -71,6 +71,30 @@ async function adjudicateRules(situation, candidateRules) {
   return result.response.text();
 }
 
+// === Data Collection ===
+
+async function logInteraction(client, question, ruleSet, situation, topCandidates, finalRule, answer) {
+    try {
+        await client.query(
+            `INSERT INTO query_logs 
+            (user_question, ruleset, situation_analysis, candidate_rules, selected_rule, ai_answer) 
+            VALUES ($1, $2, $3, $4, $5, $6)`,
+            [
+                question, 
+                ruleSet, 
+                JSON.stringify(situation), 
+                JSON.stringify(topCandidates), 
+                finalRule, 
+                answer
+            ]
+        );
+        console.log("Logged interaction to DB.");
+    } catch (e) {
+        console.error("Logging failed (non-fatal):", e);
+    }
+}
+
+
 // === MAIN HANDLER ===
 export async function handler(event) {
   try {
@@ -170,6 +194,12 @@ ${question}`;
 
     const response = await reasoningModel.generateContent(finalPrompt);
     const aiAnswer = response.response.text();
+    const client = await pool.connect();
+try {
+    await logInteraction(client, question, ruleSet, situation, topCandidates, finalRuleContext, aiAnswer);
+} finally {
+    client.release();
+}
 
     return {
       statusCode: 200,
