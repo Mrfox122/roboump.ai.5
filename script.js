@@ -1,104 +1,88 @@
-// Global variable to track the last question asked (for feedback)
+// Global variable to track the current question for feedback
 let currentQuestionText = "";
 
 document.getElementById('askButton').addEventListener('click', askQuestion);
-
 document.getElementById('questionInput').addEventListener('keyup', function(event) {
-    if (event.key === 'Enter') {
-        askQuestion();
-    }
+    if (event.key === 'Enter') askQuestion();
 });
 
-
 async function askQuestion() {
-
-    const shareButton = document.getElementById('shareButton');
-    shareButton.disabled = true;
-
     const questionInput = document.getElementById('questionInput');
-    const ruleSetSelect = document.getElementById('ruleSetSelect');
     const question = questionInput.value;
-    const ruleSet = ruleSetSelect.value;
-    const answerEl = document.getElementById('answer');
-    const button = document.getElementById('askButton');
-
-    // --- NEW: Grab feedback elements ---
-    const feedbackArea = document.getElementById('feedback-area');
-    const feedbackMsg = document.getElementById('feedback-message');
-    const feedbackBtns = document.querySelectorAll('.feedback-btn');
-
-
     if (!question) {
         alert("Please enter a question.");
         return;
     }
 
+    // --- 1. UI RESET ---
+    document.getElementById('shareButton').disabled = true;
+    document.getElementById('askButton').disabled = true;
+    document.getElementById('answer').textContent = 'Consulting the expert...';
+    document.getElementById('feedback-container').style.display = 'none'; // Hide entire feedback area
+    document.getElementById('initial-feedback').style.display = 'block';   // Show initial buttons
+    document.getElementById('advanced-feedback').style.display = 'none'; // Hide advanced options
+    document.getElementById('feedback-message').textContent = '';        // Clear status message
 
-    // Disable button and show loading state
-    answerEl.textContent = 'Consulting the expert...';
-    button.disabled = true;
-
-    // --- NEW: Hide feedback buttons while loading new answer ---
-    if (feedbackArea) feedbackArea.style.display = 'none';
-
-
-    // Execute reCAPTCHA
+    // --- 2. API CALL ---
+    const ruleSet = document.getElementById('ruleSetSelect').value;
     grecaptcha.ready(function() {
         grecaptcha.execute('6LchII8rAAAAABrbtifib5ALdna7P8h-PItnTsrE', {action: 'submit'}).then(async function(token) {
-
             try {
-                // --- NEW: Capture question text for the feedback logic ---
-                currentQuestionText = question;
-
+                currentQuestionText = question; // Save question for feedback
                 const response = await fetch('/api/ask-gemini', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    // Send the token along with the question and ruleSet
-                    body: JSON.stringify({
-                        question: question,
-                        ruleSet: ruleSet,
-                        token: token
-                    })
+                    body: JSON.stringify({ question, ruleSet, token })
                 });
 
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                
                 const data = await response.json();
-                answerEl.innerHTML = marked.parse(data.answer);
-
-                // --- NEW: Show feedback buttons and reset them for the new answer ---
-                if (feedbackArea) {
-                    feedbackArea.style.display = 'block';
-                    if (feedbackMsg) feedbackMsg.textContent = ''; 
-                    feedbackBtns.forEach(btn => btn.disabled = false);
-                }
-
+                document.getElementById('answer').innerHTML = marked.parse(data.answer);
+                
+                // --- 3. SHOW FEEDBACK WIDGET ---
+                document.getElementById('feedback-container').style.display = 'block';
                 activateShareButton(question, ruleSet);
-
 
             } catch (error) {
                 console.error("Error asking question:", error);
-                answerEl.textContent = 'Sorry, an error occurred. Please try again.';
+                document.getElementById('answer').textContent = 'Sorry, an error occurred. Please try again.';
             } finally {
-                button.disabled = false;
+                document.getElementById('askButton').disabled = false;
             }
         });
     });
 }
 
-// --- NEW: Feedback Submission Function ---
-async function sendFeedback(score) {
-    const msg = document.getElementById('feedback-message');
-    
-    // Disable buttons so they can't spam click
-    const buttons = document.querySelectorAll('.feedback-btn');
-    buttons.forEach(btn => btn.disabled = true);
+// --- NEW FEEDBACK LOGIC ---
 
-    if (msg) msg.textContent = "Saving...";
+// Called by Thumbs Up (👍)
+function submitSimpleFeedback(score) {
+    if (score === 1) {
+        sendFeedbackAPI('GOOD');
+    }
+}
+
+// Called by Thumbs Down (👎)
+function showAdvancedFeedback() {
+    document.getElementById('initial-feedback').style.display = 'none';
+    document.getElementById('advanced-feedback').style.display = 'block';
+}
+
+// Called by the advanced feedback buttons
+function submitAdvancedFeedback(feedbackType) {
+    const comment = document.getElementById('feedback-comment').value;
+    sendFeedbackAPI(feedbackType, comment);
+}
+
+// The single function that sends data to the backend
+async function sendFeedbackAPI(feedback_type, comment = null) {
+    const msg = document.getElementById('feedback-message');
+    msg.textContent = "Saving...";
+    
+    // Hide all feedback buttons after a choice is made
+    document.getElementById('initial-feedback').style.display = 'none';
+    document.getElementById('advanced-feedback').style.display = 'none';
 
     try {
         await fetch('/api/submit-feedback', {
@@ -106,72 +90,49 @@ async function sendFeedback(score) {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ 
                 question: currentQuestionText, 
-                score: score 
+                feedback_type: feedback_type,
+                comment: comment
             })
         });
-        
-        if (msg) {
-            msg.textContent = score === 1 ? "Thanks! We'll keep doing that." : "Thanks! We'll look into this.";
-        }
-        
+        msg.textContent = "Thank you for the feedback!";
     } catch (err) {
-        console.error(err);
-        if (msg) msg.textContent = "Error saving feedback.";
+        console.error("Feedback submission error:", err);
+        msg.textContent = "Error saving feedback.";
     }
 }
 
-// Your tracking function for the sponsorship banner
+// --- SHARING & OTHER FUNCTIONS ---
+
 function trackSponsorClick() {
-  if (typeof gtag === 'function') {
-    gtag('event', 'click', {
-      'event_category': 'sponsorship',
-      'event_label': 'Contact Banner'
-    });
-  }
+  if (typeof gtag === 'function') gtag('event', 'click', { 'event_category': 'sponsorship', 'event_label': 'Contact Banner' });
 } 
 
-// --- SHARING FUNCTIONALITY ---
-
-// This event listener runs the check for a shared link when the page first loads
 window.addEventListener('DOMContentLoaded', checkForURLParameters);
 
-// This is the main function that controls the Share button
 function activateShareButton(question, ruleSet) {
     const shareButton = document.getElementById('shareButton');
     const encodedQuestion = encodeURIComponent(question);
     const shareUrl = `${window.location.origin}${window.location.pathname}?ruleset=${ruleSet}&question=${encodedQuestion}`;
-    
-    shareButton.disabled = false; // Make the button clickable
-
+    shareButton.disabled = false;
     shareButton.onclick = function() {
-        // Use the modern Web Share API if available (on mobile)
         if (navigator.share) {
-            navigator.share({
-                title: 'RoboUmp AI Answer',
-                text: `Here's the answer to "${question}":`,
-                url: shareUrl,
-            });
+            navigator.share({ title: 'RoboUmp AI Answer', text: `Here's the answer to "${question}":`, url: shareUrl });
         } else {
-            // Fallback for desktop: copy link to clipboard
-            navigator.clipboard.writeText(shareUrl).then(function() {
+            navigator.clipboard.writeText(shareUrl).then(() => {
                 shareButton.textContent = 'Link Copied!';
-                setTimeout(() => {
-                    shareButton.textContent = 'Share';
-                }, 2000); // Reset text after 2 seconds
+                setTimeout(() => { shareButton.textContent = 'Share'; }, 2000);
             });
         }
     };
 }
 
-// This function checks for parameters in the URL when the page loads
 function checkForURLParameters() {
     const params = new URLSearchParams(window.location.search);
     const question = params.get('question');
     const ruleSet = params.get('ruleset');
-
     if (question && ruleSet) {
         document.getElementById('questionInput').value = decodeURIComponent(question);
         document.getElementById('ruleSetSelect').value = ruleSet;
-        askQuestion(); // Automatically ask the question from the shared link
+        askQuestion();
     }
-}
+}``
