@@ -92,7 +92,7 @@ export async function handler(event) {
             **Part 2: The Rulebook Quotation**
             Provide a section titled "**Official Rulebook Text:**". Quote word-for-word the single rule you selected in Step 2. Use proper citation if available in the text.
         `;
-        
+
         const result = await reasoningModel.generateContent(singleCallPrompt);
         const aiAnswer = result.response.text();
         
@@ -107,6 +107,16 @@ export async function handler(event) {
 
     } catch (error) {
         console.error("ERROR in ask-gemini.js:", error);
+
+  // --- NEW: Check for specific 429 error ---
+    if (error.status === 429) {
+      return {
+        statusCode: 429, // Send the 429 status code back to the frontend
+        body: JSON.stringify({ error: "Too many requests. Please wait a moment and try again." })
+      };
+    }
+    // --- END NEW ---
+
         return { statusCode: 500, body: JSON.stringify({ error: "Sorry, an internal error occurred. The AI failed to generate a response." }) };
     }
 }

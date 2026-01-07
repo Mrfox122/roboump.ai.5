@@ -15,44 +15,87 @@ async function askQuestion() {
     }
 
     // --- 1. UI RESET ---
+    const answerEl = document.getElementById('answer');
+    const button = document.getElementById('askButton');
+    const feedbackArea = document.getElementById('feedback-container');
+
     document.getElementById('shareButton').disabled = true;
-    document.getElementById('askButton').disabled = true;
-    document.getElementById('answer').textContent = 'Consulting the expert...';
+    button.disabled = true;
+    answerEl.textContent = 'Consulting the expert...';
     
     // Reset feedback widget to its initial state
-    document.getElementById('feedback-container').style.display = 'none';
-    document.getElementById('initial-feedback').style.display = 'block';
-    document.getElementById('advanced-feedback').style.display = 'none';
-    document.getElementById('feedback-message').textContent = '';
-    document.getElementById('feedback-comment').value = '';
-    document.getElementById('fb-explanation').checked = false;
-    document.getElementById('fb-rule').checked = false;
+    if (feedbackArea) {
+        feedbackArea.style.display = 'none';
+        document.getElementById('initial-feedback').style.display = 'block';
+        document.getElementById('advanced-feedback').style.display = 'none';
+        document.getElementById('feedback-message').textContent = '';
+        document.getElementById('feedback-comment').value = '';
+        document.getElementById('fb-explanation').checked = false;
+        document.getElementById('fb-rule').checked = false;
+    }
 
     // --- 2. API CALL ---
     const ruleSet = document.getElementById('ruleSetSelect').value;
     grecaptcha.ready(() => {
         grecaptcha.execute('6LchII8rAAAAABrbtifib5ALdna7P8h-PItnTsrE', {action: 'submit'}).then(async (token) => {
-            try {
-                currentQuestionText = question;
-                const response = await fetch('/api/ask-gemini', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ question, ruleSet, token })
-                });
+            
+            // =================================================================
+            // === THIS ENTIRE try...catch...finally BLOCK IS THE REPLACEMENT ===
+            // =================================================================
+            const TIMEOUT_DURATION = 25000; // 25 seconds
 
-                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                
+            // Promise 1: The actual API call
+            const fetchPromise = fetch('/api/ask-gemini', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ question, ruleSet, token })
+            });
+
+            // Promise 2: A timer
+            const timeoutPromise = new Promise((_, reject) => 
+                setTimeout(() => reject(new Error('timeout')), TIMEOUT_DURATION)
+            );
+
+            try {
+                const response = await Promise.race([fetchPromise, timeoutPromise]);
+
+                // Check for 429 "Too Many Requests" error specifically
+                if (response.status === 429) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error || 'Too many requests'); 
+                }
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`HTTP error! status: ${response.status} - ${errorText}`);
+                }
+
+                currentQuestionText = question;
                 const data = await response.json();
-                document.getElementById('answer').innerHTML = marked.parse(data.answer);
-                
-                document.getElementById('feedback-container').style.display = 'block';
+                answerEl.innerHTML = marked.parse(data.answer);
+
+                if (feedbackArea) {
+                    feedbackArea.style.display = 'block';
+                }
                 activateShareButton(question, ruleSet);
+
             } catch (error) {
-                console.error("Error asking question:", error);
-                document.getElementById('answer').textContent = 'Sorry, an error occurred. Please try again.';
+                console.error("Error in askQuestion:", error);
+                
+                // Display the correct error message to the user
+                if (error.message.includes('Too many requests')) {
+                    answerEl.textContent = 'The server is busy right now. Please wait a moment and try your question again.';
+                } else if (error.message === 'timeout') {
+                    answerEl.textContent = 'Sorry, the request timed out as it took longer than 25 seconds. Please try again.';
+                } else {
+                    answerEl.textContent = 'Sorry, an unexpected error occurred. Please try again.';
+                }
             } finally {
-                document.getElementById('askButton').disabled = false;
+                button.disabled = false; // Always re-enable the button
             }
+            // =================================================================
+            // === END OF THE REPLACEMENT BLOCK ===
+            // =================================================================
         });
     });
 }
@@ -76,12 +119,10 @@ function handleAdvancedSubmit() {
     if (explanationCheckbox.checked) feedbackTypes.push('WRONG_EXPLANATION');
     if (ruleCheckbox.checked) feedbackTypes.push('WRONG_RULE');
 
-    // If they clicked submit but didn't check a box, but wrote a comment
     if (feedbackTypes.length === 0 && comment.trim() !== "") {
         feedbackTypes.push('OTHER_ISSUE');
     }
     
-    // Don't submit if there's no feedback at all
     if (feedbackTypes.length === 0) {
         alert("Please select an issue before submitting.");
         return;
