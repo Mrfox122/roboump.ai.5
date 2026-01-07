@@ -2,89 +2,62 @@
 let currentQuestionText = "";
 
 document.getElementById('askButton').addEventListener('click', askQuestion);
-
-document.getElementById('questionInput').addEventListener('keyup', function(event) {
-    if (event.key === 'Enter') {
-        askQuestion();
-    }
+document.getElementById('questionInput').addEventListener('keyup', (event) => {
+    if (event.key === 'Enter') askQuestion();
 });
 
-
 async function askQuestion() {
-
-    const shareButton = document.getElementById('shareButton');
-    shareButton.disabled = true;
-
     const questionInput = document.getElementById('questionInput');
     const question = questionInput.value;
-    const ruleSet = document.getElementById('ruleSetSelect').value;
-    const answerEl = document.getElementById('answer');
-    const button = document.getElementById('askButton');
-    const feedbackArea = document.getElementById('feedback-container');
-
     if (!question) {
         alert("Please enter a question.");
         return;
     }
 
-    // UI Reset
-    answerEl.textContent = 'Consulting the expert...';
-    button.disabled = true;
-    if (feedbackArea) feedbackArea.style.display = 'none';
+    // --- 1. UI RESET ---
+    document.getElementById('shareButton').disabled = true;
+    document.getElementById('askButton').disabled = true;
+    document.getElementById('answer').textContent = 'Consulting the expert...';
+    
+    // Reset feedback widget to its initial state
+    document.getElementById('feedback-container').style.display = 'none';
+    document.getElementById('initial-feedback').style.display = 'block';
+    document.getElementById('advanced-feedback').style.display = 'none';
+    document.getElementById('feedback-message').textContent = '';
+    document.getElementById('feedback-comment').value = '';
+    document.getElementById('fb-explanation').checked = false;
+    document.getElementById('fb-rule').checked = false;
 
-
-    // Execute reCAPTCHA
-    grecaptcha.ready(function() {
-        grecaptcha.execute('6LchII8rAAAAABrbtifib5ALdna7P8h-PItnTsrE', {action: 'submit'}).then(async function(token) {
-
+    // --- 2. API CALL ---
+    const ruleSet = document.getElementById('ruleSetSelect').value;
+    grecaptcha.ready(() => {
+        grecaptcha.execute('6LchII8rAAAAABrbtifib5ALdna7P8h-PItnTsrE', {action: 'submit'}).then(async (token) => {
             try {
                 currentQuestionText = question;
-
-                // --- DEBUG LOG #1 ---
-                console.log("Fetching answer from API...");
-
                 const response = await fetch('/api/ask-gemini', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ question, ruleSet, token })
                 });
 
-                if (!response.ok) {
-                    // Try to get more specific error text from the server
-                    const errorText = await response.text();
-                    throw new Error(`HTTP error! status: ${response.status} - ${errorText}`);
-                }
-
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                
                 const data = await response.json();
-                answerEl.innerHTML = marked.parse(data.answer);
-
-                // --- DEBUG LOG #2 ---
-                console.log("Answer received and displayed. Attempting to show feedback...");
-
-                // Show and Reset Feedback Buttons
-                if (feedbackArea) {
-                    document.getElementById('initial-feedback').style.display = 'block';
-                    document.getElementById('advanced-feedback').style.display = 'none';
-                    document.getElementById('feedback-message').textContent = '';
-                    document.querySelectorAll('.feedback-btn').forEach(btn => btn.disabled = false);
-                    feedbackArea.style.display = 'block'; // This is the line we're testing
-                } else {
-                    console.error("Critical Error: feedback-container div not found!");
-                }
-
+                document.getElementById('answer').innerHTML = marked.parse(data.answer);
+                
+                document.getElementById('feedback-container').style.display = 'block';
                 activateShareButton(question, ruleSet);
-
             } catch (error) {
-                console.error("CRASH in askQuestion function:", error);
-                answerEl.textContent = 'Sorry, an error occurred. Please check the developer console (F12) for details.';
+                console.error("Error asking question:", error);
+                document.getElementById('answer').textContent = 'Sorry, an error occurred. Please try again.';
             } finally {
-                button.disabled = false;
+                document.getElementById('askButton').disabled = false;
             }
         });
     });
 }
 
-// --- FEEDBACK LOGIC ---
+// --- NEW FEEDBACK LOGIC ---
 function submitSimpleFeedback(score) {
     if (score === 1) sendFeedbackAPI('GOOD');
 }
@@ -94,16 +67,36 @@ function showAdvancedFeedback() {
     document.getElementById('advanced-feedback').style.display = 'block';
 }
 
-function submitAdvancedFeedback(feedbackType) {
+function handleAdvancedSubmit() {
+    const explanationCheckbox = document.getElementById('fb-explanation');
+    const ruleCheckbox = document.getElementById('fb-rule');
     const comment = document.getElementById('feedback-comment').value;
-    sendFeedbackAPI(feedbackType, comment);
+
+    let feedbackTypes = [];
+    if (explanationCheckbox.checked) feedbackTypes.push('WRONG_EXPLANATION');
+    if (ruleCheckbox.checked) feedbackTypes.push('WRONG_RULE');
+
+    // If they clicked submit but didn't check a box, but wrote a comment
+    if (feedbackTypes.length === 0 && comment.trim() !== "") {
+        feedbackTypes.push('OTHER_ISSUE');
+    }
+    
+    // Don't submit if there's no feedback at all
+    if (feedbackTypes.length === 0) {
+        alert("Please select an issue before submitting.");
+        return;
+    }
+
+    sendFeedbackAPI(feedbackTypes.join(','), comment);
 }
 
 async function sendFeedbackAPI(feedback_type, comment = null) {
     const msg = document.getElementById('feedback-message');
     msg.textContent = "Saving...";
+    
     document.getElementById('initial-feedback').style.display = 'none';
     document.getElementById('advanced-feedback').style.display = 'none';
+
     try {
         await fetch('/api/submit-feedback', {
             method: 'POST',
@@ -117,7 +110,7 @@ async function sendFeedbackAPI(feedback_type, comment = null) {
     }
 }
 
-// --- OTHER FUNCTIONS ---
+// --- SHARING & OTHER FUNCTIONS ---
 function trackSponsorClick() {
   if (typeof gtag === 'function') gtag('event', 'click', { 'event_category': 'sponsorship', 'event_label': 'Contact Banner' });
 } 
@@ -129,7 +122,7 @@ function activateShareButton(question, ruleSet) {
     const encodedQuestion = encodeURIComponent(question);
     const shareUrl = `${window.location.origin}${window.location.pathname}?ruleset=${ruleSet}&question=${encodedQuestion}`;
     shareButton.disabled = false;
-    shareButton.onclick = function() {
+    shareButton.onclick = () => {
         if (navigator.share) {
             navigator.share({ title: 'RoboUmp AI Answer', text: `Here's the answer to "${question}":`, url: shareUrl });
         } else {

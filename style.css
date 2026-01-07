@@ -185,3 +185,54 @@ button { padding: 10px 20px; margin: 5px; cursor: pointer; }
     margin-top: -10px; /* Pulls it closer to the heading */
     margin-bottom: 20px;
 }
+
+/* --- ADVANCED FEEDBACK STYLES --- */
+.feedback-checkbox {
+    display: none; /* Hide the default checkbox */
+}
+
+.feedback-option-card {
+    display: inline-block;
+    padding: 8px 12px;
+    border: 1px solid #ccc;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 5px 5px 10px 0;
+    font-size: 0.9em;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.feedback-option-card:hover {
+    background-color: #e9ecef;
+}
+
+/* Style for when the card is selected */
+.feedback-checkbox:checked + .feedback-option-card {
+    background-color: #e0e7ff;
+    border-color: #007bff;
+    font-weight: bold;
+}
+
+#feedback-comment {
+    width: 95%; 
+    margin-top: 10px;
+    padding: 5px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+.submit-feedback-btn {
+    display: block;
+    margin-top: 10px;
+    padding: 8px 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.submit-feedback-btn:hover {
+    background-color: #0056b3;
+}

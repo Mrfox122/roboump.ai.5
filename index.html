@@ -49,27 +49,35 @@
         <div id="answer-container" class="answer-container">
             <p id="answer"></p>
     
-            <!-- Correctly Placed Feedback Section -->
-            <div id="feedback-container" style="display:none; margin-top: 15px; border-top: 1px solid #e0e0e0; padding-top: 10px;">
-                
-                <!-- Initial Question: Was it helpful? -->
-                <div id="initial-feedback">
-                    <span style="font-size: 0.9em; color: #6c757d; margin-right: 10px;">Was this answer helpful?</span>
-                    <button class="feedback-btn" onclick="submitSimpleFeedback(1)">👍</button>
-                    <button class="feedback-btn" onclick="showAdvancedFeedback()">👎</button>
-                </div>
+            <!-- NEW & IMPROVED FEEDBACK WIDGET -->
+<div id="feedback-container" style="display:none; margin-top: 15px; border-top: 1px solid #e0e0e0; padding-top: 10px;">
+    
+    <!-- Initial Question: Was it helpful? -->
+    <div id="initial-feedback">
+        <span style="font-size: 0.9em; color: #6c757d; margin-right: 10px;">Was this answer helpful?</span>
+        <button class="feedback-btn" onclick="submitSimpleFeedback(1)">👍</button>
+        <button class="feedback-btn" onclick="showAdvancedFeedback()">👎</button>
+    </div>
 
-                <!-- Advanced Feedback: What was wrong? (Initially hidden) -->
-                <div id="advanced-feedback" style="display:none;">
-                    <p style="font-size: 0.9em; color: #6c757d; margin: 0 0 10px 0;">Sorry about that! What was the issue?</p>
-                    <button class="feedback-option-btn" onclick="submitAdvancedFeedback('WRONG_RULE')">The Rule Text Was Wrong/Incomplete</button>
-                    <button class="feedback-option-btn" onclick="submitAdvancedFeedback('WRONG_EXPLANATION')">The Explanation Was Wrong</button>
-                    <br>
-                    <textarea id="feedback-comment" placeholder="(Optional) How can we improve?" rows="2" style="width: 90%; margin-top: 10px;"></textarea>
-                </div>
+    <!-- Advanced Feedback: What was wrong? (Initially hidden) -->
+    <div id="advanced-feedback" style="display:none;">
+        <p style="font-size: 0.9em; color: #6c757d; margin: 0 0 10px 0;">Sorry about that! What was the issue? (Select all that apply)</p>
+        
+        <!-- Checkboxes styled as cards -->
+        <input type="checkbox" id="fb-explanation" value="WRONG_EXPLANATION" class="feedback-checkbox">
+        <label for="fb-explanation" class="feedback-option-card">The Explanation Was Wrong</label>
 
-                <!-- Status Message -->
-                <div id="feedback-message" style="margin-top: 10px; font-style: italic; color: #28a745;"></div>
+        <input type="checkbox" id="fb-rule" value="WRONG_RULE" class="feedback-checkbox">
+        <label for="fb-rule" class="feedback-option-card">The Rule Text Was Wrong/Incomplete</label>
+
+        <textarea id="feedback-comment" placeholder="(Optional) Please provide more detail..." rows="2"></textarea>
+        
+        <button class="submit-feedback-btn" onclick="handleAdvancedSubmit()">Submit Feedback</button>
+    </div>
+
+    <!-- Status Message -->
+    <div id="feedback-message" style="margin-top: 10px; font-style: italic; color: #28a745;"></div>
+</div>
 
             </div>
         </div>
@@ -86,7 +94,7 @@
 
     <div class="version">
         <!-- I've updated your version number here based on our latest changes -->
-        <span>Version 0.9.5 | <a href="changelog.html">Changelog</a></span>
+        <span>Version 0.9.4 | <a href="changelog.html">Changelog</a></span>
     </div>
 
 </body>

@@ -7,16 +7,14 @@ export async function handler(event) {
     }
     
     try {
-        // Now expecting 'feedback_type' and optional 'comment'
         const { question, feedback_type, comment } = JSON.parse(event.body);
 
         if (!question || !feedback_type) {
-            return { statusCode: 400, body: "Missing question or feedback type." };
+            return { statusCode: 400, body: "Missing required feedback fields." };
         }
 
         const client = await pool.connect();
         try {
-            // Find the most recent log for this question and update it
             const result = await client.query(
                 `UPDATE query_logs 
                  SET feedback_type = $1, user_comment = $2
@@ -33,7 +31,6 @@ export async function handler(event) {
         } finally {
             client.release();
         }
-
     } catch (error) {
         console.error("Feedback Error:", error);
         return { statusCode: 500, body: JSON.stringify({ error: error.message }) };
