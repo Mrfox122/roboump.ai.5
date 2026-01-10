@@ -5,3 +5,13 @@ pinecone.io
 
 # Local Netlify folder
 .netlify
+
+# Ignore Node.js dependencies
+/node_modules
+
+# Ignore Python virtual environment
+/supervisor_training/venv
+/training_lab/venv
+
+# Ignore large trained model files
+*.pth

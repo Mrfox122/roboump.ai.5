@@ -1,6 +1,7 @@
 import { Pool } from "pg";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import prompts from "./prompts.js";
+import fetch from 'node-fetch';
 
 // --- Database & AI Clients ---
 const pool = new Pool({ connectionString: process.env.NETLIFY_DATABASE_URL });
@@ -10,20 +11,23 @@ const reasoningModel = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
 
 // --- Helper Functions ---
 function cosineSimilarity(vecA, vecB) {
+  if (!vecA || !vecB) return 0;
   const dot = vecA.reduce((sum, a, i) => sum + a * vecB[i], 0);
   const magA = Math.sqrt(vecA.reduce((sum, a) => sum + a * a, 0));
   const magB = Math.sqrt(vecB.reduce((sum, b) => sum + b * b, 0));
+  if (magA === 0 || magB === 0) return 0;
   return dot / (magA * magB);
 }
 
-async function logInteraction(question, ruleSet, situation, candidates, selected, answer) {
+async function logInteraction(question, ruleSet, candidates, selected, answer, supervisorVerdict) {
+    // The supervisor verdict is saved in the 'user_comment' field for now for easy debugging.
     const client = await pool.connect();
     try {
         await client.query(
-            `INSERT INTO query_logs (user_question, ruleset, situation_analysis, candidate_rules, selected_rule, ai_answer) VALUES ($1, $2, $3, $4, $5, $6)`,
-            [question, ruleSet, JSON.stringify(situation), JSON.stringify(candidates), selected, answer]
+            `INSERT INTO query_logs (user_question, ruleset, situation_analysis, candidate_rules, selected_rule, ai_answer, user_comment) VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+            [question, ruleSet, JSON.stringify({query: question}), JSON.stringify(candidates), selected, answer, supervisorVerdict]
         );
-        console.log("Interaction logged to DB.");
+        console.log("Interaction logged with Supervisor verdict.");
     } catch (e) {
         console.error("Logging failed (non-fatal):", e);
     } finally {
@@ -31,24 +35,53 @@ async function logInteraction(question, ruleSet, situation, candidates, selected
     }
 }
 
+// --- Supervisor Call Function ---
+async function getSupervisorVerdict(question, ruleText) {
+  const endpoint = process.env.SUPERVISOR_ENDPOINT_URL;
+  if (!endpoint) {
+    console.warn("SUPERVISOR_ENDPOINT_URL not set. Skipping self-correction check.");
+    return { is_likely_correct: true, reason: "Supervisor not configured" };
+  }
+
+  try {
+    const response = await fetch(`${endpoint}/predict`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ question: question, rule: ruleText })
+    });
+
+    if (!response.ok) {
+        console.error(`Supervisor API returned an error: ${response.status} ${response.statusText}`);
+        return { is_likely_correct: true, reason: `API Error: ${response.status}` }; // Fail open (assume correct) on error
+    }
+    return await response.json();
+  } catch (error) {
+    console.error("Failed to call Supervisor service:", error);
+    return { is_likely_correct: true, reason: "Service Unreachable" }; // Fail open (assume correct) on network error
+  }
+}
+
+
 // === MAIN HANDLER ===
 export async function handler(event) {
     console.log('--- ask-gemini HANDLER STARTED ---');
-    if (event.httpMethod !== 'POST') return { statusCode: 405, body: 'Method Not Allowed' };
+    if (event.httpMethod !== 'POST') {
+        return { statusCode: 405, body: 'Method Not Allowed' };
+    }
 
     try {
         const { question, ruleSet } = JSON.parse(event.body);
         console.log(`--- NEW QUERY: ${question} (${ruleSet}) ---`);
 
-        // --- Step 1: Retrieval (RAG) - Get the Top 5 Candidates ---
+        // --- Step 1: Retrieval (RAG) ---
         const embeddingResponse = await embeddingModel.embedContent({ content: { parts: [{ text: question }] } });
         const queryEmbedding = embeddingResponse.embedding.values;
 
         const { rows } = await pool.query(`SELECT id, content, embedding FROM rulebooks WHERE ruleset = $1`, [ruleSet]);
         
         const matches = rows.map(row => ({
-            ...row,
-            embedding: JSON.parse(row.embedding),
+            id: row.id,
+            content: row.content,
             score: cosineSimilarity(queryEmbedding, JSON.parse(row.embedding))
         }));
 
@@ -57,9 +90,10 @@ export async function handler(event) {
         if (topCandidates.length === 0) {
             return { statusCode: 200, body: JSON.stringify({ answer: "I'm sorry, I couldn't find any relevant rules for that question. Please try rephrasing it." }) };
         }
+        
+        console.log(`Found ${topCandidates.length} candidate rules.`);
 
-        // --- Step 2: Single-Call Reasoning (Analyst, Committee, and Responder in one prompt) ---
-       // --- Step 2: Single-Call Reasoning (Analyst, Committee, and Responder in one prompt) ---
+        // --- Step 2: Single-Call Reasoning (Analyst, Committee, and Responder) ---
         const systemPersona = prompts[ruleSet] || prompts.default;
         
         const singleCallPrompt = `
@@ -96,27 +130,50 @@ export async function handler(event) {
         const result = await reasoningModel.generateContent(singleCallPrompt);
         const aiAnswer = result.response.text();
         
-        console.log("--- FINAL ANSWER GENERATED ---");
+        console.log("--- Initial Gemini answer generated. ---");
 
-        // We can't know the exact "thought process" with a single call, so we log what we have.
-        // For more detailed logging, we would need to go back to multi-call.
-        // This is the trade-off for speed.
-        await logInteraction(question, ruleSet, { query: question }, topCandidates, "Combined in single call", aiAnswer);
+        // --- STEP 3: META-COGNITIVE SUPERVISION ---
+        // Extract the rule text that Gemini *should have* used.
+        const ruleTextForSupervisor = aiAnswer.includes("**Official Rulebook Text:**") 
+            ? aiAnswer.split("**Official Rulebook Text:**")[1].trim()
+            : topCandidates[0].content; // Fallback to the top candidate if formatting fails
         
+        console.log("Asking Supervisor for a second opinion...");
+        const supervisorVerdict = await getSupervisorVerdict(question, ruleTextForSupervisor);
+        console.log("Supervisor Verdict:", supervisorVerdict);
+        
+        const verdictString = JSON.stringify(supervisorVerdict);
+
+        // --- STEP 4: DECISION GATE ---
+        if (!supervisorVerdict.is_likely_correct && supervisorVerdict.reason !== "Supervisor not configured") {
+            console.warn("SUPERVISOR FLAGGED THIS ANSWER AS LIKELY INCORRECT.");
+            const fallbackAnswer = "I have identified a potential inconsistency in my reasoning for that specific question and have flagged it for review. Could you please try rephrasing your question? Your feedback is valuable for my learning process.";
+            
+            // Log the bad answer and the supervisor's verdict for later analysis
+            await logInteraction(question, ruleSet, topCandidates, ruleTextForSupervisor, fallbackAnswer, verdictString);
+            
+            return {
+                statusCode: 200,
+                body: JSON.stringify({ answer: fallbackAnswer })
+            };
+        }
+
+        // If the Supervisor approves, log and return the good answer.
+        await logInteraction(question, ruleSet, topCandidates, ruleTextForSupervisor, aiAnswer, verdictString);
+
         return { statusCode: 200, body: JSON.stringify({ answer: aiAnswer }) };
 
     } catch (error) {
         console.error("ERROR in ask-gemini.js:", error);
-
-  // --- NEW: Check for specific 429 error ---
-    if (error.status === 429) {
-      return {
-        statusCode: 429, // Send the 429 status code back to the frontend
-        body: JSON.stringify({ error: "Too many requests. Please wait a moment and try again." })
-      };
+        if (error.status === 429) {
+            return {
+                statusCode: 429,
+                body: JSON.stringify({ error: "Too many requests. Please wait a moment and try again." })
+            };
+        }
+        return { 
+            statusCode: 500, 
+            body: JSON.stringify({ error: "Sorry, an internal error occurred. The AI failed to generate a response." }) 
+        };
     }
-    // --- END NEW ---
-
-        return { statusCode: 500, body: JSON.stringify({ error: "Sorry, an internal error occurred. The AI failed to generate a response." }) };
-    }
-}
+}```
