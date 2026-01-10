@@ -1,11 +1,14 @@
-[build]
-  command = "npm install"
-  functions = "netlify/functions"
+# netlify.toml
 
+# This section is for your LOCAL development server
+[dev]
+  functions_timeout = 30 # Time in seconds
+
+# This NEW section tells Netlify's LIVE build system how to behave
 [functions]
-  included_files = ["rulebooks/**"]
+  directory = "netlify/functions"
+  node_bundler = "esbuild" # This is the magic line that fixes the error
 
-[[redirects]]
-  from = "/api/*"
-  to = "/.netlify/functions/:splat"
-  status = 200
+[build.environment]
+  # This is a best practice to ensure Netlify uses a modern version of Node.js
+  AWS_LAMBDA_JS_RUNTIME = "nodejs20.x"
